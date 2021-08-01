@@ -11,6 +11,7 @@
     "mongodb": "^4.0.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.12",
+    "react-google-maps": "^9.4.5",
     "uuid": "^8.3.2"
   },
   "scripts": {
