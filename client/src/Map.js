@@ -5,6 +5,7 @@ import {
   useLoadScript,
   withGoogleMap,
   Marker,
+  Polyline,
 } from "@react-google-maps/api";
 /* eslint-disable no-undef */
 
@@ -24,6 +25,7 @@ const RenderMap = ({
   midpoint,
   nyc,
   center,
+  line,
   midpointLat,
   midpointLng,
 }) => {
@@ -32,6 +34,18 @@ const RenderMap = ({
   }
 
   // const {center, recenter} = useContext(MapContext);
+  const lineOptions = {
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 30000,
+  };
 
   return (
     <GoogleMap
@@ -54,6 +68,12 @@ const RenderMap = ({
           {nyc && <Marker position={{lat: nyc.lat(), lng: nyc.lng()}}></Marker>}
         </>
       )}
+      {line && (
+        <Polyline
+          path={[{lat: clickedLat, lng: clickedLng}, nyc]}
+          options={lineOptions}
+        ></Polyline>
+      )}
     </GoogleMap>
   );
 };
@@ -64,9 +84,16 @@ const Map = () => {
   const [midpointLat, setMidpointLat] = useState(null);
   const [midpointLng, setMidpointLng] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
-
+  const [line, setLine] = useState(false);
+  const path = [];
   const {center, recenter} = useContext(MapContext);
 
+  // const drawLine = (clickSpot, answer) => {
+  //   // const Line = new google.map.PolyLine({
+  //     path = [midpoint, nyc],
+
+  //   // });
+  // }
   //   <script
   //     async
   //     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0&libraries=geometry&callback=initMap"
@@ -117,10 +144,6 @@ const Map = () => {
 
       console.log("midpoint", midpoint);
       console.log(distanceTest);
-      // setMidpointLat((ev.latLng.lat() + 40.715) / 2);
-      // setMidpointLng((ev.latLng.lng() - 74.002) / 2);
-      // midpoint = {midpointLat, midpointLng};
-      // console.log("midpoint", midpoint);
     }, 50);
   };
 
@@ -131,11 +154,6 @@ const Map = () => {
     nyc,
     london
   );
-  // console.log("distance", distance);
-
-  // const onLoad = (map) => {
-  //   center = mapCenter;
-  // };
 
   return (
     <div>
@@ -146,12 +164,14 @@ const Map = () => {
         midpoint={midpoint}
         nyc={nyc}
         center={center}
+        line={line}
         // midpointLng={midpointLng}
         // midpointLat={midpointLat}
       />
       <button
         onClick={() => {
           recenter(midpoint.lat(), midpoint.lng());
+          setLine(true);
         }}
       >
         guess
