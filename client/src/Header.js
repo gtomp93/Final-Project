@@ -14,7 +14,6 @@ const Header = ({handleTest}) => {
       <div>Header</div>
       <LoginButton>Log In</LoginButton>
       <LogoutButton>Log Out</LogoutButton>
-      <button onClick={handleTest}>Test</button>
       {isAuthenticated && <NavLink to="/profile">Profile</NavLink>}
     </>
   );

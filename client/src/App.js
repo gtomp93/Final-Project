@@ -18,57 +18,47 @@ function App() {
 
   console.log(user);
 
-  const handleTest = () => {
-    fetch("/users", {
-      method: "POST",
-      body: JSON.stringify({test: "test2"}),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
+  // useEffect(() => {
+  //   const addUser = async () => {
+  //     console.log("somewhere");
+  //     let doesNotExist = false;
+  //     if (isAuthenticated) {
+  //       let email = user.email;
+  //       console.log("here");
+  //       const result = await fetch("/checkusers", {
+  //         method: "POST",
+  //         body: JSON.stringify({email}),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //         .then((res) => res.json())
+  //         .then((res) => {
+  //           console.log("res", res);
+  //           doesNotExist = res.doesNotExist;
+  //         });
 
-  useEffect(() => {
-    const addUser = async () => {
-      console.log("somewhere");
-      let doesNotExist = false;
-      if (isAuthenticated) {
-        let email = user.email;
-        console.log("here");
-        const result = await fetch("/checkusers", {
-          method: "POST",
-          body: JSON.stringify({email}),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            console.log("res", res);
-            doesNotExist = res.doesNotExist;
-          });
+  //       console.log("result", result);
 
-        console.log("result", result);
-
-        if (doesNotExist) {
-          console.log("there");
-          await fetch("/users", {
-            method: "POST",
-            body: JSON.stringify({email}),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-        }
-      }
-    };
-    addUser();
-  }, [isAuthenticated]);
+  //       if (doesNotExist) {
+  //         console.log("there");
+  //         await fetch("/users", {
+  //           method: "POST",
+  //           body: JSON.stringify({email}),
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         });
+  //       }
+  //     }
+  //   };
+  //   addUser();
+  // }, [isAuthenticated]);
 
   return (
     <>
       <Router>
-        <Header handleTest={handleTest}>Hello World</Header>
+        <Header>Hello World</Header>
         <Switch />
         <Route exact path="/">
           <Map />
