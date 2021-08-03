@@ -1,6 +1,6 @@
 import React, {useState, useContext, Component} from "react";
 import {MapContext} from "./MapContext";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import {
   GoogleMap,
@@ -36,8 +36,13 @@ const options = {
 };
 
 const locations = [
+  {lat: 62.0213432, lng: -7.2212925},
   {lat: 48.5245856, lng: -64.2058584},
   {lat: -22.9468822, lng: -43.1982841},
+  {lat: 35.2835117, lng: 138.8666567},
+  {lat: 37.322816, lng: -113.0400476},
+  {lat: 0.6198964, lng: 73.4599683},
+  {lat: 62.0218124, lng: -6.7825299},
 ];
 
 const streetViewOptions = {
@@ -130,7 +135,7 @@ const Map = () => {
 
       console.log("midpoint", midpoint);
       console.log(distance);
-    }, 300);
+    }, 200);
   };
   console.log("distance", distance);
   console.log("zoom", zoom);
@@ -223,9 +228,15 @@ const Container = styled.div`
   }
 `;
 const MapContainer = styled.div`
-  &:hover {
-    width: 60%;
-  }
+  ${(props) =>
+    !props.fullSize &&
+    css`
+      &:hover {
+        transition: 250ms;
+        width: 60%;
+      }
+    `}
+
   position: absolute;
   bottom: 0;
   right: 0;

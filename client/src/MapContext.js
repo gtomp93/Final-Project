@@ -12,25 +12,25 @@ export const MapContextProvider = ({children}) => {
   const recenter = (lat, lng, distance) => {
     setCenter({lat, lng});
     if (distance > 4000000) {
-      setZoom(2);
+      setZoom(1);
     } else if (distance > 2000000) {
-      setZoom(3);
+      setZoom(2);
     } else if (distance > 1000000) {
-      setZoom(4);
+      setZoom(3);
     } else if (distance > 500000) {
-      setZoom(5);
+      setZoom(4);
     } else if (distance > 200000) {
-      setZoom(6);
+      setZoom(5);
     } else if (distance > 100000) {
-      setZoom(7);
+      setZoom(6);
     } else if (distance > 50000) {
-      setZoom(8);
+      setZoom(7);
     } else if (distance > 20000) {
-      setZoom(9);
+      setZoom(8);
     } else if (distance > 5000) {
-      setZoom(10);
+      setZoom(9);
     } else if (distance < 1000) {
-      setZoom(11);
+      setZoom(10);
     }
   };
 
@@ -38,7 +38,7 @@ export const MapContextProvider = ({children}) => {
     setGuessed(false);
     setLocationIndex(locationIndex + 1);
     setZoom(2);
-    setCenter(0, 0);
+    setCenter({lat: 0, lng: 0});
   };
 
   return (
