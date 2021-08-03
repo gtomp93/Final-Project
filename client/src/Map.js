@@ -15,21 +15,30 @@ import {
 const mapContainerStyle = {
   // width: "80vw",
   // height: "500px",
-  width: "100%",
+  width: "38%",
   aspectRatio: "9/5",
+  position: "absolute",
+  bottom: "0",
+  right: "0",
+  zIndex: "500",
 };
 
 const streetViewStyle = {
-  width: "300px",
+  width: "100%",
   aspectRatio: "9/5",
-  position: "absolute",
-  bottom: "23px",
-  right: "0",
+  // position: "absolute",
+  // top: "23px",
+  // right: "0",
+};
+
+const options = {
+  // setClickable: false,
 };
 
 const streetViewOptions = {
   disableDefaultUI: true,
   enableCloseButton: false,
+  showRoadLabels: false,
 };
 
 const libraries = ["geometry"];
@@ -55,7 +64,7 @@ const Map = () => {
   const [midpointLng, setMidpointLng] = useState(null);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
-  const [line, setLine] = useState(false);
+  const [guessed, setGuessed] = useState(false);
   const path = [];
   const {center, recenter, zoom, setZoom} = useContext(MapContext);
 
@@ -84,8 +93,9 @@ const Map = () => {
 
   let clickSpot = null;
 
-  let nyc = new google.maps.LatLng(40.715, -74.002);
-  let london = new google.maps.LatLng(51.506, -0.119);
+  let answerCoords = {lat: 44.6620659, lng: -63.5992192};
+
+  let answer = new google.maps.LatLng(answerCoords.lat, answerCoords.lng);
 
   const mapClickHandler = (ev) => {
     setTimeout(() => {
@@ -94,10 +104,10 @@ const Map = () => {
       setClickedLng(ev.latLng.lng());
       setClickedLat(ev.latLng.lat());
       setDistance(
-        google.maps.geometry.spherical.computeDistanceBetween(nyc, clickSpot)
+        google.maps.geometry.spherical.computeDistanceBetween(answer, clickSpot)
       );
-      let midpointLat = (ev.latLng.lat() + 40.715) / 2;
-      let midpointLng = (ev.latLng.lng() - 74.002) / 2;
+      let midpointLat = (ev.latLng.lat() + answerCoords.lat) / 2;
+      let midpointLng = (ev.latLng.lng() + answerCoords.lng) / 2;
       if (Math.abs(midpointLng - ev.latLng.lng()) > 90) {
         midpointLng = midpointLng + 180;
       }
@@ -105,14 +115,15 @@ const Map = () => {
 
       console.log("midpoint", midpoint);
       console.log(distance);
-    }, 350);
+    }, 300);
   };
   console.log("distance", distance);
   console.log("zoom", zoom);
 
   return (
-    <Container>
-      {/* <RenderMap
+    <>
+      <Container>
+        {/* <RenderMap
         clickedLat={clickedLat}
         clickedLng={clickedLng}
         mapClickHandler={mapClickHandler}
@@ -123,61 +134,75 @@ const Map = () => {
         // midpointLng={midpointLng}
         // midpointLat={midpointLat}
       /> */}
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={zoom}
-        center={center}
-        onClick={(ev) => {
-          mapClickHandler(ev);
-        }}
-        style={{width: "75v", top: "0", left: "0"}}
-        // onLoad={onLoad}
-      >
-        {/* <StreetViewPanorama
+
+        <MapContainer>
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={zoom}
+            center={center}
+            onClick={(ev) => {
+              if (!guessed) {
+                mapClickHandler(ev);
+              }
+            }}
+            // onLoad={onLoad}
+          >
+            {/* <StreetViewPanorama
           position={{lat: 44.657627, lng: -63.5932431}}
           visible={true}
           style={{width: "30px", height: "30px"}}
         /> */}
-        {clickedLat && clickedLng && (
-          <>
-            <Marker position={{lat: clickedLat, lng: clickedLng}} />
-            {/* {midpoint && (
+            {clickedLat && clickedLng && (
+              <>
+                <Marker
+                  position={{lat: clickedLat, lng: clickedLng}}
+                  options={options}
+                  clickable={false}
+                  cursor={false}
+                />
+                {/* {midpoint && (
               <Marker
                 position={{lat: midpoint.lat(), lng: midpoint.lng()}}
               ></Marker>
             )} */}
-            {line && (
-              <Marker position={{lat: nyc.lat(), lng: nyc.lng()}}></Marker>
+                {guessed && (
+                  <Marker
+                    position={{lat: answer.lat(), lng: answer.lng()}}
+                    clickable={false}
+                    cursor={false}
+                  ></Marker>
+                )}
+              </>
             )}
-          </>
-        )}
-        {line && (
-          <Polyline
-            path={[{lat: clickedLat, lng: clickedLng}, midpoint, nyc]}
-            options={lineOptions}
-          ></Polyline>
-        )}
-      </GoogleMap>
-      <GoogleMap
-        mapContainerStyle={streetViewStyle}
-        options={streetViewOptions}
-        linksControl={false}
-      >
-        <StreetViewPanorama
-          position={{lat: 44.657627, lng: -63.5932431}}
-          visible={true}
+            {guessed && (
+              <Polyline
+                path={[{lat: clickedLat, lng: clickedLng}, midpoint, answer]}
+                options={lineOptions}
+              ></Polyline>
+            )}
+          </GoogleMap>
+        </MapContainer>
+        <GoogleMap
+          mapContainerStyle={streetViewStyle}
           options={streetViewOptions}
-        />
-      </GoogleMap>
+          linksControl={false}
+        >
+          <StreetViewPanorama
+            position={{lat: 44.6620659, lng: -63.5992192}}
+            visible={true}
+            options={streetViewOptions}
+          />
+        </GoogleMap>
+      </Container>
       <button
         onClick={() => {
           recenter(midpoint.lat(), midpoint.lng(), distance);
-          setLine(true);
+          setGuessed(!guessed);
         }}
       >
         guess
       </button>
-    </Container>
+    </>
   );
 };
 
@@ -187,7 +212,13 @@ const Container = styled.div`
   position: relative;
   width: 98vw;
   @media (min-width: 900px) {
-    width: 80vw;
+    width: 90vw;
     margin-left: 5px;
+    position: relative;
+  }
+`;
+const MapContainer = styled.div`
+  &:hover {
+    width: 50%;
   }
 `;
