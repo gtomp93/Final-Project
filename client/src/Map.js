@@ -1,82 +1,38 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, Component} from "react";
 import {MapContext} from "./MapContext";
+import styled from "styled-components";
+
 import {
   GoogleMap,
   useLoadScript,
   withGoogleMap,
   Marker,
   Polyline,
+  StreetViewPanorama,
 } from "@react-google-maps/api";
 /* eslint-disable no-undef */
 
 const mapContainerStyle = {
-  width: "800px",
-  height: "500px",
+  // width: "80vw",
+  // height: "500px",
+  width: "100%",
+  aspectRatio: "9/5",
 };
+
+const streetViewStyle = {
+  width: "300px",
+  aspectRatio: "9/5",
+  position: "absolute",
+  bottom: "23px",
+  right: "0",
+};
+
+const streetViewOptions = {
+  disableDefaultUI: true,
+  enableCloseButton: false,
+};
+
 const libraries = ["geometry"];
-// const zoom = 2;
-
-// const center = {lat: 0, lng: 0};
-
-// const RenderMap = ({
-//   clickedLat,
-//   clickedLng,
-//   mapClickHandler,
-//   midpoint,
-//   nyc,
-//   center,
-//   line,
-//   midpointLat,
-//   midpointLng,
-// }) => {
-//   if (midpoint) {
-//     console.log("midpoint", midpoint.lat(), midpoint.lng());
-//   }
-
-//   // const {center, recenter} = useContext(MapContext);
-//   const lineOptions = {
-//     strokeColor: "#FF0000",
-//     strokeOpacity: 0.8,
-//     strokeWeight: 2,
-//     fillColor: "#FF0000",
-//     fillOpacity: 0.35,
-//     clickable: false,
-//     draggable: false,
-//     editable: false,
-//     visible: true,
-//     radius: 30000,
-//   };
-
-//   return (
-//     <GoogleMap
-//       mapContainerStyle={mapContainerStyle}
-//       zoom={zoom}
-//       center={center}
-//       onClick={(ev) => {
-//         mapClickHandler(ev);
-//       }}
-//       // onLoad={onLoad}
-//     >
-//       {clickedLat && clickedLng && (
-//         <>
-//           <Marker position={{lat: clickedLat, lng: clickedLng}} />
-//           {midpoint && (
-//             <Marker
-//               position={{lat: midpoint.lat(), lng: midpoint.lng()}}
-//             ></Marker>
-//           )}
-//           {nyc && <Marker position={{lat: nyc.lat(), lng: nyc.lng()}}></Marker>}
-//         </>
-//       )}
-//       {line && (
-//         <Polyline
-//           path={[{lat: clickedLat, midpoint, lng: clickedLng}, nyc]}
-//           options={lineOptions}
-//         ></Polyline>
-//       )}
-//     </GoogleMap>
-//   );
-// };
 
 const lineOptions = {
   strokeColor: "#FF0000",
@@ -126,19 +82,7 @@ const Map = () => {
     return "loading maps";
   }
 
-  // const mapContainerStyle = {
-  //   width: "800px",
-  //   height: "400px",
-  // };
-  // const center = {lat: 0, lng: 0};
-
-  // let clickedLng = null;
-  // let clickedLat = null
   let clickSpot = null;
-  // let distance = null;
-  // let midpointLat = null;
-  // let midpointLng = null;
-  // let midpoint = null;
 
   let nyc = new google.maps.LatLng(40.715, -74.002);
   let london = new google.maps.LatLng(51.506, -0.119);
@@ -167,7 +111,7 @@ const Map = () => {
   console.log("zoom", zoom);
 
   return (
-    <div>
+    <Container>
       {/* <RenderMap
         clickedLat={clickedLat}
         clickedLng={clickedLng}
@@ -186,17 +130,23 @@ const Map = () => {
         onClick={(ev) => {
           mapClickHandler(ev);
         }}
+        style={{width: "75v", top: "0", left: "0"}}
         // onLoad={onLoad}
       >
+        {/* <StreetViewPanorama
+          position={{lat: 44.657627, lng: -63.5932431}}
+          visible={true}
+          style={{width: "30px", height: "30px"}}
+        /> */}
         {clickedLat && clickedLng && (
           <>
             <Marker position={{lat: clickedLat, lng: clickedLng}} />
-            {midpoint && (
+            {/* {midpoint && (
               <Marker
                 position={{lat: midpoint.lat(), lng: midpoint.lng()}}
               ></Marker>
-            )}
-            {nyc && (
+            )} */}
+            {line && (
               <Marker position={{lat: nyc.lat(), lng: nyc.lng()}}></Marker>
             )}
           </>
@@ -208,6 +158,17 @@ const Map = () => {
           ></Polyline>
         )}
       </GoogleMap>
+      <GoogleMap
+        mapContainerStyle={streetViewStyle}
+        options={streetViewOptions}
+        linksControl={false}
+      >
+        <StreetViewPanorama
+          position={{lat: 44.657627, lng: -63.5932431}}
+          visible={true}
+          options={streetViewOptions}
+        />
+      </GoogleMap>
       <button
         onClick={() => {
           recenter(midpoint.lat(), midpoint.lng(), distance);
@@ -216,8 +177,17 @@ const Map = () => {
       >
         guess
       </button>
-    </div>
+    </Container>
   );
 };
 
 export default Map;
+
+const Container = styled.div`
+  position: relative;
+  width: 98vw;
+  @media (min-width: 900px) {
+    width: 80vw;
+    margin-left: 5px;
+  }
+`;
