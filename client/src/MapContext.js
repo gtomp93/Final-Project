@@ -6,6 +6,9 @@ export const MapContext = createContext(null);
 export const MapContextProvider = ({children}) => {
   const [center, setCenter] = useState({lat: 0, lng: 0});
   const [zoom, setZoom] = useState(2);
+  const [guessed, setGuessed] = useState(false);
+  const [locationIndex, setLocationIndex] = useState(0);
+
   const recenter = (lat, lng, distance) => {
     setCenter({lat, lng});
     if (distance > 4000000) {
@@ -31,8 +34,26 @@ export const MapContextProvider = ({children}) => {
     }
   };
 
+  const resetMap = () => {
+    setGuessed(false);
+    setLocationIndex(locationIndex + 1);
+    setZoom(2);
+    setCenter(0, 0);
+  };
+
   return (
-    <MapContext.Provider value={{center, recenter, zoom, setZoom}}>
+    <MapContext.Provider
+      value={{
+        center,
+        recenter,
+        zoom,
+        setZoom,
+        guessed,
+        setGuessed,
+        resetMap,
+        locationIndex,
+      }}
+    >
       {children}
     </MapContext.Provider>
   );

@@ -15,12 +15,12 @@ import {
 const mapContainerStyle = {
   // width: "80vw",
   // height: "500px",
-  width: "38%",
+  // width: "38%",
   aspectRatio: "9/5",
-  position: "absolute",
-  bottom: "0",
-  right: "0",
-  zIndex: "500",
+  // position: "absolute",
+  // bottom: "0",
+  // right: "0",
+  // zIndex: "500",
 };
 
 const streetViewStyle = {
@@ -34,6 +34,11 @@ const streetViewStyle = {
 const options = {
   // setClickable: false,
 };
+
+const locations = [
+  {lat: 48.5245856, lng: -64.2058584},
+  {lat: -22.9468822, lng: -43.1982841},
+];
 
 const streetViewOptions = {
   disableDefaultUI: true,
@@ -64,9 +69,18 @@ const Map = () => {
   const [midpointLng, setMidpointLng] = useState(null);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
-  const [guessed, setGuessed] = useState(false);
-  const path = [];
-  const {center, recenter, zoom, setZoom} = useContext(MapContext);
+  // const [guessed, setGuessed] = useState(false);
+  // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
+  const {
+    center,
+    recenter,
+    zoom,
+    setZoom,
+    guessed,
+    setGuessed,
+    resetMap,
+    locationIndex,
+  } = useContext(MapContext);
 
   // const drawLine = (clickSpot, answer) => {
   //   // const Line = new google.map.PolyLine({
@@ -93,9 +107,10 @@ const Map = () => {
 
   let clickSpot = null;
 
-  let answerCoords = {lat: 44.6620659, lng: -63.5992192};
+  // let answerCoords = {lat: 44.6620659, lng: -63.5992192};
+  let answerCoords = locations[locationIndex];
 
-  let answer = new google.maps.LatLng(answerCoords.lat, answerCoords.lng);
+  let answer = new google.maps.LatLng(answerCoords);
 
   const mapClickHandler = (ev) => {
     setTimeout(() => {
@@ -123,19 +138,7 @@ const Map = () => {
   return (
     <>
       <Container>
-        {/* <RenderMap
-        clickedLat={clickedLat}
-        clickedLng={clickedLng}
-        mapClickHandler={mapClickHandler}
-        midpoint={midpoint}
-        nyc={nyc}
-        center={center}
-        line={line}
-        // midpointLng={midpointLng}
-        // midpointLat={midpointLat}
-      /> */}
-
-        <MapContainer>
+        <MapContainer fullSize={guessed}>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={zoom}
@@ -145,13 +148,7 @@ const Map = () => {
                 mapClickHandler(ev);
               }
             }}
-            // onLoad={onLoad}
           >
-            {/* <StreetViewPanorama
-          position={{lat: 44.657627, lng: -63.5932431}}
-          visible={true}
-          style={{width: "30px", height: "30px"}}
-        /> */}
             {clickedLat && clickedLng && (
               <>
                 <Marker
@@ -160,11 +157,7 @@ const Map = () => {
                   clickable={false}
                   cursor={false}
                 />
-                {/* {midpoint && (
-              <Marker
-                position={{lat: midpoint.lat(), lng: midpoint.lng()}}
-              ></Marker>
-            )} */}
+
                 {guessed && (
                   <Marker
                     position={{lat: answer.lat(), lng: answer.lng()}}
@@ -188,7 +181,7 @@ const Map = () => {
           linksControl={false}
         >
           <StreetViewPanorama
-            position={{lat: 44.6620659, lng: -63.5992192}}
+            position={answerCoords}
             visible={true}
             options={streetViewOptions}
           />
@@ -199,9 +192,21 @@ const Map = () => {
           recenter(midpoint.lat(), midpoint.lng(), distance);
           setGuessed(!guessed);
         }}
+        disabled={guessed}
       >
-        guess
+        Guess
       </button>
+      {guessed && (
+        <button
+          onClick={() => {
+            resetMap();
+            setClickedLat(null);
+            setClickedLng(null);
+          }}
+        >
+          Next
+        </button>
+      )}
     </>
   );
 };
@@ -219,6 +224,11 @@ const Container = styled.div`
 `;
 const MapContainer = styled.div`
   &:hover {
-    width: 50%;
+    width: 60%;
   }
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 500;
+  width: ${(props) => (props.fullSize ? "100%" : "38%")};
 `;
