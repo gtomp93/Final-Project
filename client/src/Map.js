@@ -331,7 +331,7 @@ const MapWrapper = styled.div`
   height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
 
   @media (min-width: 501px) {
-    display: ${(props) => (!props.hide ? "block" : "none")};
+    display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
     height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
   }
