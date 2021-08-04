@@ -21,7 +21,6 @@ const mapContainerStyle = {
 };
 
 const streetViewStyle = {
-  width: "100%",
   height: "100%",
   // aspectRatio: "10/5",
   // position: "relative",
@@ -29,6 +28,7 @@ const streetViewStyle = {
   top: "0",
   left: "0",
   width: "100%",
+  // display: "none",
 };
 
 const options = {
@@ -269,7 +269,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 100vw;
+  height: 96vh;
 `;
 
 const BigWrapper = styled.div`
@@ -278,24 +278,22 @@ const BigWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-
   @media (min-width: 600px) {
     width: 80%;
-    height: 80%;
   }
 
   @media (min-width: 501px) and (max-height: 420px) {
-    height: 69%;
+    height: 90%;
   }
   @media (min-width: 501px) and (max-height: 300px) {
-    height: 58%;
+    height: 85%;
   }
 `;
 
 const MapsWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 55%;
+  aspect-ratio: 9/5;
 `;
 
 // const StreetViewWrapper = styled.div`
@@ -309,26 +307,26 @@ const MapWrapper = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  /* width: 32%; */
-  /* height: 32%; */
-  z-index: 2;
+  z-index: 500;
+  display: block;
+
+  width: ${(props) =>
+    props.guessed || props.expand || !props.hide ? "100%" : "36%"};
 
   ${(props) =>
     !props.guessed &&
     !props.expand &&
     css`
+      transition: 250ms ease-in-out;
+
       @media (min-width: 500px) {
         &:hover {
-          transition: 250ms;
           width: 65%;
           height: 65%;
         }
       }
     `};
   display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
-
-  width: ${(props) =>
-    props.guessed || props.expand || !props.hide ? "100%" : "36%"};
 
   height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
 
