@@ -79,6 +79,7 @@ const Map = () => {
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
+  const [testPoint, setTestPoint] = useState(null);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
   const {
@@ -117,6 +118,7 @@ const Map = () => {
   let answer = new google.maps.LatLng(answerCoords);
 
   const mapClickHandler = (ev) => {
+    let testPointLng = null;
     setTimeout(() => {
       clickSpot = ev.latLng;
       console.log(ev.latLng.lng(), "lng", ev.latLng.lat(), "lat");
@@ -131,6 +133,20 @@ const Map = () => {
         midpointLng = midpointLng + 180;
       }
       setMidpoint(new google.maps.LatLng(midpointLat, midpointLng));
+
+      if (
+        midpointLng - answerCoords.lng > 0 ||
+        midpointLng - answerCoords.lng < -270
+      ) {
+        testPointLng = answerCoords.lng + 0.00001;
+      } else if (
+        midpointLng - answerCoords.lng < 0 ||
+        midpointLng - answerCoords.lng > 270
+      ) {
+        testPointLng = answerCoords.lng - 0.00001;
+      }
+
+      setTestPoint(new google.maps.LatLng(answerCoords.lat, testPointLng));
 
       console.log("midpoint", midpoint);
       console.log(distance);
@@ -179,7 +195,7 @@ const Map = () => {
                   <Polyline
                     path={[
                       {lat: clickedLat, lng: clickedLng},
-                      midpoint,
+                      testPoint,
                       answer,
                     ]}
                     options={lineOptions}
