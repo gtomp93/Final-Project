@@ -18,6 +18,8 @@ const mapContainerStyle = {
   // height: "500px",
   // width: "38%",
   aspectRatio: "9/5",
+  boxShadow: "0px -2px 2px rgba(34,34,34,0.6)",
+  borderRadius: "7px",
   // position: "absolute",
   // bottom: "0",
   // right: "0",
@@ -36,6 +38,7 @@ const options = {
   fullscreenControl: false,
   streetViewControl: false,
   mapTypeControl: false,
+  disableDefaultUI: true,
 };
 
 const locations = [
@@ -75,6 +78,7 @@ const Map = () => {
   const [clickedLng, setClickedLng] = useState(null);
   const [midpointLat, setMidpointLat] = useState(null);
   const [midpointLng, setMidpointLng] = useState(null);
+  const [hide, setHide] = useState(false);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
@@ -152,7 +156,7 @@ const Map = () => {
               visible={true}
               options={streetViewOptions}
             />
-            <MapContainer fullSize={guessed} expand={expand}>
+            <MapContainer guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={zoom}
@@ -198,22 +202,37 @@ const Map = () => {
               onClick={() => {
                 recenter(midpoint.lat(), midpoint.lng(), distance);
                 setGuessed(!guessed);
+                setExpand(false);
+                setHide(false);
               }}
               disabled={!clickedLat}
             >
               Guess
             </button>
             {!guessed && (
-              <ExpandButton
-                onClick={() => {
-                  setExpand(!expand);
-                }}
-              >
-                <ExpandArrows size="20px" />
-                <span style={{marginLeft: "5px"}}>
-                  {expand ? "Collapse Map" : "Expand Map"}
-                </span>
-              </ExpandButton>
+              <div style={{display: "flex"}}>
+                <HideButton
+                  onClick={() => {
+                    setHide(!hide);
+                    setExpand(false);
+                  }}
+                >
+                  {hide ? "Show Map" : "Hide Map"}
+                </HideButton>
+                {!hide && (
+                  <ExpandButton
+                    onClick={() => {
+                      setExpand(!expand);
+                      setHide(false);
+                    }}
+                  >
+                    <ExpandArrows size="20px" />
+                    <span style={{marginLeft: "5px"}}>
+                      {expand ? "Collapse Map" : "Expand Map"}
+                    </span>
+                  </ExpandButton>
+                )}
+              </div>
             )}
             {guessed && (
               <button
@@ -221,6 +240,8 @@ const Map = () => {
                   resetMap();
                   setClickedLat(null);
                   setClickedLng(null);
+                  setExpand(false);
+                  setHide(false);
                 }}
               >
                 Next
@@ -229,40 +250,6 @@ const Map = () => {
           </BottomContainer>
         </StreetviewContainer>
       </Container>
-      {/* <BottomContainer>
-        <button
-          onClick={() => {
-            recenter(midpoint.lat(), midpoint.lng(), distance);
-            setGuessed(!guessed);
-          }}
-          disabled={guessed}
-        >
-          Guess
-        </button>
-        {!guessed && (
-          <ExpandButton
-            onClick={() => {
-              setExpand(!expand);
-            }}
-          >
-            <ExpandArrows size="20px" />
-            <span style={{marginLeft: "5px"}}>
-              {expand ? "Collapse Map" : "Expand Map"}
-            </span>
-          </ExpandButton>
-        )}
-        {guessed && (
-          <button
-            onClick={() => {
-              resetMap();
-              setClickedLat(null);
-              setClickedLng(null);
-            }}
-          >
-            Next
-          </button>
-        )}
-      </BottomContainer> */}
     </>
   );
 };
@@ -285,21 +272,27 @@ const Container = styled.div`
 //BsArrowsFullscreen
 const MapContainer = styled.div`
   ${(props) =>
-    !props.fullSize &&
+    !props.guessed &&
+    !props.expand &&
     css`
-      @media (min-width: 769px) {
+      @media (min-width: 500px) {
         &:hover {
           transition: 250ms;
           width: 60%;
         }
       }
     `};
-
+  display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 500;
-  width: ${(props) => (props.fullSize || props.expand ? "100%" : "38%")};
+  width: ${(props) =>
+    props.guessed || props.expand || !props.hide ? "100%" : "38%"};
+  @media (min-width: 501px) {
+    display: ${(props) => (!props.hide ? "block" : "none")};
+    width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
+  }
 `;
 
 // @media (hover: none) { … }
@@ -320,31 +313,17 @@ const BottomContainer = styled.div`
   justify-content: space-between;
 `;
 
+const HideButton = styled.button``;
+
 const ExpandButton = styled.button`
-  display: flex;
-  align-items: center;
-  @media (hover: none) {
-    display: inline-block;
-  }
+  display: none;
 
-  @media (min-width: 769px) {
-    display: none;
+  @media (min-width: 501px) {
+    display: flex;
+    align-items: center;
   } ;
 `;
 
-const ExpandArrows = styled(BsArrowsFullscreen)`
-  @media (hover: none) {
-    z-index: 600;
-    position: absolute;
-    bottom: 31%;
-    right: 34%;
-    background-color: inherit;
-    border: none;
-  }
-
-  @media (min-width: 769px) {
-    display: none;
-  } ;
-`;
+const ExpandArrows = styled(BsArrowsFullscreen)``;
 
 //  width: ${(props) => (props.fullSize ? "100%" : "38%")};
