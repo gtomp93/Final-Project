@@ -283,6 +283,13 @@ const BigWrapper = styled.div`
     width: 80%;
     height: 80%;
   }
+
+  @media (min-width: 501px) and (max-height: 420px) {
+    height: 69%;
+  }
+  @media (min-width: 501px) and (max-height: 300px) {
+    height: 58%;
+  }
 `;
 
 const MapsWrapper = styled.div`
