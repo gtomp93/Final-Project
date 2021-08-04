@@ -14,31 +14,28 @@ import {
 /* eslint-disable no-undef */
 
 const mapContainerStyle = {
-  // width: "80vw",
-  // height: "500px",
-  // width: "38%",
-  aspectRatio: "9/5",
-  boxShadow: "0px -2px 2px rgba(34,34,34,0.6)",
-  borderRadius: "7px",
-  // position: "absolute",
-  // bottom: "0",
-  // right: "0",
-  // zIndex: "500",
+  // boxShadow: "0px -2px 2px rgba(34,34,34,0.6)",
+  // borderRadius: "6px",
+  width: "100%",
+  height: "100%",
 };
 
 const streetViewStyle = {
   width: "100%",
-  aspectRatio: "10/5",
-  position: "relative",
-  // top: "23px",
-  // right: "0",
+  height: "100%",
+  // aspectRatio: "10/5",
+  // position: "relative",
+  position: "absolute",
+  top: "0",
+  left: "0",
+  width: "100%",
 };
 
 const options = {
   fullscreenControl: false,
   streetViewControl: false,
   mapTypeControl: false,
-  disableDefaultUI: true,
+  // disableDefaultUI: true,
 };
 
 const locations = [
@@ -78,7 +75,7 @@ const Map = () => {
   const [clickedLng, setClickedLng] = useState(null);
   const [midpointLat, setMidpointLat] = useState(null);
   const [midpointLng, setMidpointLng] = useState(null);
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(true);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
@@ -144,19 +141,13 @@ const Map = () => {
 
   return (
     <>
-      <Container>
-        <StreetviewContainer>
-          <GoogleMap
-            mapContainerStyle={streetViewStyle}
-            options={streetViewOptions}
-            linksControl={false}
-          >
-            <StreetViewPanorama
-              position={answerCoords}
-              visible={true}
-              options={streetViewOptions}
-            />
-            <MapContainer guessed={guessed} expand={expand} hide={hide}>
+      <PageContainer>
+        <BigWrapper>
+          {/* <Container>
+        <GoogleMapsContainer>
+          <StreetviewContainer> */}
+          <MapsWrapper>
+            <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={zoom}
@@ -195,17 +186,34 @@ const Map = () => {
                   ></Polyline>
                 )}
               </GoogleMap>
-            </MapContainer>
-          </GoogleMap>
+            </MapWrapper>
+            {/* <StreetViewWrapper> */}
+            <GoogleMap
+              mapContainerStyle={streetViewStyle}
+              options={streetViewOptions}
+              linksControl={false}
+            >
+              <StreetViewPanorama
+                position={answerCoords}
+                visible={true}
+                options={streetViewOptions}
+              />
+            </GoogleMap>
+            {/* </StreetViewWrapper> */}
+            {/* </StreetviewContainer> */}
+            {/* <MapContainer guessed={guessed} expand={expand} hide={hide}> */}
+          </MapsWrapper>
+          {/* </MapContainer>
+        </GoogleMapsContainer> */}
           <BottomContainer>
             <button
               onClick={() => {
                 recenter(midpoint.lat(), midpoint.lng(), distance);
                 setGuessed(!guessed);
                 setExpand(false);
-                setHide(false);
+                setHide(true);
               }}
-              disabled={!clickedLat}
+              disabled={!clickedLat || guessed}
             >
               Guess
             </button>
@@ -248,29 +256,56 @@ const Map = () => {
               </button>
             )}
           </BottomContainer>
-        </StreetviewContainer>
-      </Container>
+        </BigWrapper>
+      </PageContainer>
     </>
   );
 };
 
 export default Map;
 
-const Container = styled.div`
+const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   width: 100vw;
+  height: 100vw;
+`;
+
+const BigWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
   @media (min-width: 600px) {
-    width: 100vw;
-    margin-left: 5px;
-    position: relative;
+    width: 80%;
+    height: 80%;
   }
 `;
 
-//BsArrowsFullscreen
-const MapContainer = styled.div`
+const MapsWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 55%;
+`;
+
+// const StreetViewWrapper = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+// `;
+
+const MapWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /* width: 32%; */
+  /* height: 32%; */
+  z-index: 2;
+
   ${(props) =>
     !props.guessed &&
     !props.expand &&
@@ -278,34 +313,82 @@ const MapContainer = styled.div`
       @media (min-width: 500px) {
         &:hover {
           transition: 250ms;
-          width: 60%;
+          width: 65%;
+          height: 65%;
         }
       }
     `};
   display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: 500;
+
   width: ${(props) =>
-    props.guessed || props.expand || !props.hide ? "100%" : "38%"};
+    props.guessed || props.expand || !props.hide ? "100%" : "36%"};
+
+  height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
+
   @media (min-width: 501px) {
     display: ${(props) => (!props.hide ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
+    height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
   }
 `;
 
-// @media (hover: none) { … }
+// const Container = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   position: relative;
+//   width: 100vw;
+//   @media (min-width: 600px) {
+//     width: 100vw;
+//     margin-left: 5px;
+//     position: relative;
+//   }
+// `;
 
-const StreetviewContainer = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
+// const GoogleMapsContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   position: relative;
+// `;
+
+// //BsArrowsFullscreen
+// const MapContainer = styled.div`
+//   ${(props) =>
+//     !props.guessed &&
+//     !props.expand &&
+//     css`
+//       @media (min-width: 500px) {
+//         &:hover {
+//           transition: 250ms;
+//           width: 60%;
+//         }
+//       }
+//     `};
+//   display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+//   z-index: 500;
+//   width: ${(props) =>
+//     props.guessed || props.expand || !props.hide ? "100%" : "38%"};
+//   @media (min-width: 501px) {
+//     display: ${(props) => (!props.hide ? "block" : "none")};
+//     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
+//   }
+// `;
+
+// // @media (hover: none) { … }
+
+// const StreetviewContainer = styled.div`
+//   width: 80%;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   @media (max-width: 768px) {
+//     width: 100%;
+//   }
+// `;
 
 const BottomContainer = styled.div`
   width: 100%;
@@ -326,4 +409,4 @@ const ExpandButton = styled.button`
 
 const ExpandArrows = styled(BsArrowsFullscreen)``;
 
-//  width: ${(props) => (props.fullSize ? "100%" : "38%")};
+// //  width: ${(props) => (props.fullSize ? "100%" : "38%")};
