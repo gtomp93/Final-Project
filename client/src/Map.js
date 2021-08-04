@@ -1,6 +1,7 @@
 import React, {useState, useContext, Component} from "react";
 import {MapContext} from "./MapContext";
 import styled, {css} from "styled-components";
+import {BsArrowsFullscreen} from "react-icons/bs";
 
 import {
   GoogleMap,
@@ -25,14 +26,15 @@ const mapContainerStyle = {
 
 const streetViewStyle = {
   width: "100%",
-  aspectRatio: "9/5",
-  // position: "absolute",
+  aspectRatio: "10/5",
+  position: "relative",
   // top: "23px",
   // right: "0",
 };
 
 const options = {
-  // setClickable: false,
+  fullscreenControl: false,
+  streetViewControl: false,
 };
 
 const locations = [
@@ -74,6 +76,7 @@ const Map = () => {
   const [midpointLng, setMidpointLng] = useState(null);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
+  const [expand, setExpand] = useState(false);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
   const {
@@ -87,12 +90,6 @@ const Map = () => {
     locationIndex,
   } = useContext(MapContext);
 
-  // const drawLine = (clickSpot, answer) => {
-  //   // const Line = new google.map.PolyLine({
-  //     path = [midpoint, nyc],
-
-  //   // });
-  // }
   //   <script
   //     async
   //     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0&libraries=geometry&callback=initMap"
@@ -143,7 +140,7 @@ const Map = () => {
   return (
     <>
       <Container>
-        <MapContainer fullSize={guessed}>
+        {/* <MapContainer fullSize={guessed} expand={expand}>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={zoom}
@@ -153,21 +150,20 @@ const Map = () => {
                 mapClickHandler(ev);
               }
             }}
+            options={options}
+            fullscreenControl={false}
           >
             {clickedLat && clickedLng && (
               <>
                 <Marker
                   position={{lat: clickedLat, lng: clickedLng}}
-                  options={options}
                   clickable={false}
-                  cursor={false}
                 />
 
                 {guessed && (
                   <Marker
                     position={{lat: answer.lat(), lng: answer.lng()}}
                     clickable={false}
-                    cursor={false}
                   ></Marker>
                 )}
               </>
@@ -179,39 +175,129 @@ const Map = () => {
               ></Polyline>
             )}
           </GoogleMap>
-        </MapContainer>
-        <GoogleMap
-          mapContainerStyle={streetViewStyle}
-          options={streetViewOptions}
-          linksControl={false}
-        >
-          <StreetViewPanorama
-            position={answerCoords}
-            visible={true}
+        </MapContainer> */}
+        <StreetviewContainer>
+          <GoogleMap
+            mapContainerStyle={streetViewStyle}
             options={streetViewOptions}
-          />
-        </GoogleMap>
+            linksControl={false}
+          >
+            <StreetViewPanorama
+              position={answerCoords}
+              visible={true}
+              options={streetViewOptions}
+            />
+            <MapContainer fullSize={guessed} expand={expand}>
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                zoom={zoom}
+                center={center}
+                onClick={(ev) => {
+                  if (!guessed) {
+                    mapClickHandler(ev);
+                  }
+                }}
+                options={options}
+                fullscreenControl={false}
+              >
+                {clickedLat && clickedLng && (
+                  <>
+                    <Marker
+                      position={{lat: clickedLat, lng: clickedLng}}
+                      clickable={false}
+                    />
+
+                    {guessed && (
+                      <Marker
+                        position={{lat: answer.lat(), lng: answer.lng()}}
+                        clickable={false}
+                      ></Marker>
+                    )}
+                  </>
+                )}
+                {guessed && (
+                  <Polyline
+                    path={[
+                      {lat: clickedLat, lng: clickedLng},
+                      midpoint,
+                      answer,
+                    ]}
+                    options={lineOptions}
+                  ></Polyline>
+                )}
+              </GoogleMap>
+            </MapContainer>
+          </GoogleMap>
+          <BottomContainer>
+            <button
+              onClick={() => {
+                recenter(midpoint.lat(), midpoint.lng(), distance);
+                setGuessed(!guessed);
+              }}
+              disabled={guessed}
+            >
+              Guess
+            </button>
+            {!guessed && (
+              <ExpandButton
+                onClick={() => {
+                  setExpand(!expand);
+                }}
+              >
+                <ExpandArrows size="20px" />
+                <span style={{marginLeft: "5px"}}>
+                  {expand ? "Collapse Map" : "Expand Map"}
+                </span>
+              </ExpandButton>
+            )}
+            {guessed && (
+              <button
+                onClick={() => {
+                  resetMap();
+                  setClickedLat(null);
+                  setClickedLng(null);
+                }}
+              >
+                Next
+              </button>
+            )}
+          </BottomContainer>
+        </StreetviewContainer>
       </Container>
-      <button
-        onClick={() => {
-          recenter(midpoint.lat(), midpoint.lng(), distance);
-          setGuessed(!guessed);
-        }}
-        disabled={guessed}
-      >
-        Guess
-      </button>
-      {guessed && (
+      {/* <BottomContainer>
         <button
           onClick={() => {
-            resetMap();
-            setClickedLat(null);
-            setClickedLng(null);
+            recenter(midpoint.lat(), midpoint.lng(), distance);
+            setGuessed(!guessed);
           }}
+          disabled={guessed}
         >
-          Next
+          Guess
         </button>
-      )}
+        {!guessed && (
+          <ExpandButton
+            onClick={() => {
+              setExpand(!expand);
+            }}
+          >
+            <ExpandArrows size="20px" />
+            <span style={{marginLeft: "5px"}}>
+              {expand ? "Collapse Map" : "Expand Map"}
+            </span>
+          </ExpandButton>
+        )}
+        {guessed && (
+          <button
+            onClick={() => {
+              resetMap();
+              setClickedLat(null);
+              setClickedLng(null);
+            }}
+          >
+            Next
+          </button>
+        )}
+      </BottomContainer> */}
     </>
   );
 };
@@ -219,27 +305,78 @@ const Map = () => {
 export default Map;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
-  width: 98vw;
-  @media (min-width: 900px) {
-    width: 90vw;
+  width: 100vw;
+  @media (min-width: 600px) {
+    width: 100vw;
     margin-left: 5px;
     position: relative;
   }
 `;
+
+//BsArrowsFullscreen
 const MapContainer = styled.div`
   ${(props) =>
     !props.fullSize &&
     css`
-      &:hover {
-        transition: 250ms;
-        width: 60%;
+      @media (min-width: 769px) {
+        &:hover {
+          transition: 250ms;
+          width: 60%;
+        }
       }
-    `}
+    `};
 
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 500;
-  width: ${(props) => (props.fullSize ? "100%" : "38%")};
+  width: ${(props) => (props.fullSize || props.expand ? "100%" : "38%")};
 `;
+
+// @media (hover: none) { … }
+
+const StreetviewContainer = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const BottomContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ExpandButton = styled.button`
+  display: flex;
+  align-items: center;
+  @media (hover: none) {
+    display: inline-block;
+  }
+
+  @media (min-width: 769px) {
+    display: none;
+  } ;
+`;
+
+const ExpandArrows = styled(BsArrowsFullscreen)`
+  @media (hover: none) {
+    z-index: 600;
+    position: absolute;
+    bottom: 31%;
+    right: 34%;
+    background-color: inherit;
+    border: none;
+  }
+
+  @media (min-width: 769px) {
+    display: none;
+  } ;
+`;
+
+//  width: ${(props) => (props.fullSize ? "100%" : "38%")};
