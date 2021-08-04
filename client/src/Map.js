@@ -35,6 +35,7 @@ const streetViewStyle = {
 const options = {
   fullscreenControl: false,
   streetViewControl: false,
+  mapTypeControl: false,
 };
 
 const locations = [
@@ -140,42 +141,6 @@ const Map = () => {
   return (
     <>
       <Container>
-        {/* <MapContainer fullSize={guessed} expand={expand}>
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={zoom}
-            center={center}
-            onClick={(ev) => {
-              if (!guessed) {
-                mapClickHandler(ev);
-              }
-            }}
-            options={options}
-            fullscreenControl={false}
-          >
-            {clickedLat && clickedLng && (
-              <>
-                <Marker
-                  position={{lat: clickedLat, lng: clickedLng}}
-                  clickable={false}
-                />
-
-                {guessed && (
-                  <Marker
-                    position={{lat: answer.lat(), lng: answer.lng()}}
-                    clickable={false}
-                  ></Marker>
-                )}
-              </>
-            )}
-            {guessed && (
-              <Polyline
-                path={[{lat: clickedLat, lng: clickedLng}, midpoint, answer]}
-                options={lineOptions}
-              ></Polyline>
-            )}
-          </GoogleMap>
-        </MapContainer> */}
         <StreetviewContainer>
           <GoogleMap
             mapContainerStyle={streetViewStyle}
@@ -344,6 +309,9 @@ const StreetviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const BottomContainer = styled.div`
