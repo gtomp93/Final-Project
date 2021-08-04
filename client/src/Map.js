@@ -199,7 +199,7 @@ const Map = () => {
                 recenter(midpoint.lat(), midpoint.lng(), distance);
                 setGuessed(!guessed);
               }}
-              disabled={guessed}
+              disabled={!clickedLat}
             >
               Guess
             </button>
