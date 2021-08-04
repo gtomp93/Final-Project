@@ -16,7 +16,7 @@ function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
   const {user, isAuthenticated, isLoading} = useAuth0();
 
-  console.log(user);
+  // console.log(user);
 
   // useEffect(() => {
   //   const addUser = async () => {
@@ -58,7 +58,7 @@ function App() {
   return (
     <>
       <Router>
-        <Header>Hello World</Header>
+        <Header></Header>
         <Switch />
         <Route exact path="/">
           <Map />

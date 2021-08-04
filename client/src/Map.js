@@ -80,6 +80,7 @@ const Map = () => {
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
+  const [resize, setResize] = useState(false);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
   const {
@@ -132,7 +133,24 @@ const Map = () => {
       if (Math.abs(midpointLng - ev.latLng.lng()) > 90) {
         midpointLng = midpointLng + 180;
       }
+
       setMidpoint(new google.maps.LatLng(midpointLat, midpointLng));
+
+      if (
+        google.maps.geometry.spherical.computeDistanceBetween(
+          answer,
+          clickSpot
+        ) > 2000000 &&
+        (midpointLat > 40 || midpointLat < -40)
+      ) {
+        console.log("here");
+        if (midpointLat > 40) {
+          midpointLat = midpointLat - 33;
+        } else if (midpointLat < -40) {
+          midpointLat = midpointLat + 33;
+        }
+        setMidpoint(new google.maps.LatLng(midpointLat, midpointLng));
+      }
 
       if (
         midpointLng - answerCoords.lng > 0 ||
@@ -148,21 +166,26 @@ const Map = () => {
 
       setTestPoint(new google.maps.LatLng(answerCoords.lat, testPointLng));
 
+      if (distance > 2000000) {
+        setResize(true);
+      }
+
       console.log("midpoint", midpoint);
       console.log(distance);
     }, 200);
   };
   console.log("distance", distance);
   console.log("zoom", zoom);
+  console.log("resize", resize);
 
   return (
     <>
       <PageContainer>
-        <BigWrapper>
+        <BigWrapper guessed={guessed} resize={resize}>
           {/* <Container>
         <GoogleMapsContainer>
           <StreetviewContainer> */}
-          <MapsWrapper>
+          <MapsWrapper resize={resize} guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
@@ -266,6 +289,7 @@ const Map = () => {
                   setClickedLng(null);
                   setExpand(false);
                   setHide(false);
+                  setResize(false);
                 }}
               >
                 Next
@@ -284,8 +308,9 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100vw;
-  height: 96vh;
+  height: 95vh;
 `;
 
 const BigWrapper = styled.div`
@@ -304,12 +329,27 @@ const BigWrapper = styled.div`
   @media (min-width: 501px) and (max-height: 300px) {
     height: 85%;
   }
+
+  ${(props) =>
+    props.guessed &&
+    css`
+      @media (min-width: 769px) and (min-height: 600px) {
+        height: 65%;
+      }
+    `};
 `;
 
 const MapsWrapper = styled.div`
   position: relative;
   width: 100%;
   aspect-ratio: 9/5;
+  ${(props) =>
+    props.guessed &&
+    css`
+      @media (min-width: 769px) {
+        height: 75%;
+      }
+    `};
 `;
 
 // const StreetViewWrapper = styled.div`
