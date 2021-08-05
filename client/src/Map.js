@@ -38,6 +38,12 @@ const options = {
   // disableDefaultUI: true,
 };
 
+const streetViewOptions = {
+  disableDefaultUI: true,
+  enableCloseButton: false,
+  showRoadLabels: false,
+};
+
 const locations = [
   {lat: 62.0213432, lng: -7.2212925},
   {lat: 48.5245856, lng: -64.2058584},
@@ -47,12 +53,6 @@ const locations = [
   {lat: 0.6198964, lng: 73.4599683},
   {lat: 62.0218124, lng: -6.7825299},
 ];
-
-const streetViewOptions = {
-  disableDefaultUI: true,
-  enableCloseButton: false,
-  showRoadLabels: false,
-};
 
 const libraries = ["geometry"];
 
@@ -145,9 +145,9 @@ const Map = () => {
       ) {
         console.log("here");
         if (midpointLat > 58) {
-          midpointLat = midpointLat - 35;
+          midpointLat = midpointLat - 15;
         } else if (midpointLat < -58) {
-          midpointLat = midpointLat + 35;
+          midpointLat = midpointLat + 15;
         }
         setMidpoint(new google.maps.LatLng(midpointLat, midpointLng));
       }
@@ -247,7 +247,7 @@ const Map = () => {
           <BottomContainer>
             <button
               onClick={() => {
-                recenter(midpoint.lat(), midpoint.lng(), distance);
+                recenter(midpoint.lat(), midpoint.lng(), distance, clickedLat);
                 setGuessed(!guessed);
                 setExpand(false);
                 setHide(true);

@@ -9,12 +9,17 @@ export const MapContextProvider = ({children}) => {
   const [guessed, setGuessed] = useState(false);
   const [locationIndex, setLocationIndex] = useState(0);
 
-  const recenter = (lat, lng, distance) => {
+  const recenter = (lat, lng, distance, clickspotLat) => {
     setCenter({lat, lng});
-    if (distance > 4000000) {
+    if (distance > 3000000) {
+      setZoom(1);
+    } else if (
+      distance > 1000000 &&
+      (clickspotLat > 58 || clickspotLat < -58)
+    ) {
       setZoom(1);
     } else if (distance > 1750000) {
-      setZoom(1);
+      setZoom(2);
     } else if (distance > 1000000) {
       setZoom(3);
     } else if (distance > 500000) {
