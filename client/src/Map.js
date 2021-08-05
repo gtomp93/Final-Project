@@ -1,4 +1,4 @@
-import React, {useState, useContext, Component} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {MapContext} from "./MapContext";
 import styled, {css} from "styled-components";
 import {BsArrowsFullscreen} from "react-icons/bs";
@@ -44,16 +44,6 @@ const streetViewOptions = {
   showRoadLabels: false,
 };
 
-const locations = [
-  {lat: 62.0213432, lng: -7.2212925},
-  {lat: 48.5245856, lng: -64.2058584},
-  {lat: -22.9468822, lng: -43.1982841},
-  {lat: 35.2835117, lng: 138.8666567},
-  {lat: 37.322816, lng: -113.0400476},
-  {lat: 0.6198964, lng: 73.4599683},
-  {lat: 62.0218124, lng: -6.7825299},
-];
-
 const libraries = ["geometry"];
 
 const lineOptions = {
@@ -81,6 +71,7 @@ const Map = () => {
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
   const [resize, setResize] = useState(false);
+  const [locations, setLocations] = useState(null);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
   const {
@@ -92,12 +83,20 @@ const Map = () => {
     setGuessed,
     resetMap,
     locationIndex,
+    status,
+    setStatus,
   } = useContext(MapContext);
 
   //   <script
   //     async
   //     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0&libraries=geometry&callback=initMap"
   //   ></script>;
+  useEffect(() => {
+    fetch("/locations/worldTour")
+      .then((res) => res.json())
+      .then((res) => setLocations(res.result.locations))
+      .catch(setStatus("error"));
+  }, []);
 
   const {isLoaded, loadError} = useLoadScript({
     googleMapsApiKey: "AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0",
@@ -111,9 +110,12 @@ const Map = () => {
     return "loading maps";
   }
 
+  if (!locations) {
+    return "loading";
+  }
+
   let clickSpot = null;
 
-  // let answerCoords = {lat: 44.6620659, lng: -63.5992192};
   let answerCoords = locations[locationIndex];
 
   let answer = new google.maps.LatLng(answerCoords);
@@ -182,9 +184,6 @@ const Map = () => {
     <>
       <PageContainer>
         <BigWrapper guessed={guessed} resize={resize}>
-          {/* <Container>
-        <GoogleMapsContainer>
-          <StreetviewContainer> */}
           <MapsWrapper resize={resize} guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
@@ -226,7 +225,6 @@ const Map = () => {
                 )}
               </GoogleMap>
             </MapWrapper>
-            {/* <StreetViewWrapper> */}
             <GoogleMap
               mapContainerStyle={streetViewStyle}
               options={streetViewOptions}
@@ -238,12 +236,8 @@ const Map = () => {
                 options={streetViewOptions}
               />
             </GoogleMap>
-            {/* </StreetViewWrapper> */}
-            {/* </StreetviewContainer> */}
-            {/* <MapContainer guessed={guessed} expand={expand} hide={hide}> */}
           </MapsWrapper>
-          {/* </MapContainer>
-        </GoogleMapsContainer> */}
+
           <BottomContainer>
             <button
               onClick={() => {
@@ -288,7 +282,7 @@ const Map = () => {
                   setClickedLat(null);
                   setClickedLng(null);
                   setExpand(false);
-                  setHide(false);
+                  setHide(true);
                   setResize(false);
                 }}
               >
@@ -380,6 +374,7 @@ const MapWrapper = styled.div`
         &:hover {
           width: 65%;
           height: 65%;
+          opacity: 1;
         }
       }
     `};
@@ -388,6 +383,7 @@ const MapWrapper = styled.div`
   height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
 
   @media (min-width: 501px) {
+    opacity: ${(props) => (props.guessed || props.expand ? "1" : "0.7")};
     display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
     height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};

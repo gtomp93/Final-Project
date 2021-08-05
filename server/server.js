@@ -1,8 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const PORT = 8000;
-const {addUser} = require("./handlers");
-const {checkForUser} = require("./handlers");
+const {addUser, checkForUser, getLocations} = require("./handlers");
 
 const bodyParser = require("body-parser");
 
@@ -14,6 +13,7 @@ express()
 
   .post("/users", addUser)
   .post("/checkusers", checkForUser)
+  .get("/locations/:_id", getLocations)
 
   .get("*", (req, res) => {
     res.status(404).json({

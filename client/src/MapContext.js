@@ -8,6 +8,7 @@ export const MapContextProvider = ({children}) => {
   const [zoom, setZoom] = useState(2);
   const [guessed, setGuessed] = useState(false);
   const [locationIndex, setLocationIndex] = useState(0);
+  const [status, setStatus] = useState("idle");
 
   const recenter = (lat, lng, distance, clickspotLat) => {
     setCenter({lat, lng});
@@ -59,6 +60,8 @@ export const MapContextProvider = ({children}) => {
         setGuessed,
         resetMap,
         locationIndex,
+        status,
+        setStatus,
       }}
     >
       {children}
