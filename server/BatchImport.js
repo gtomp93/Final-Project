@@ -25,9 +25,7 @@ const addLocations = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db("Final_Project");
-    const result = await db
-      .collection("Game Modes")
-      .insertOne({_id, locations});
+    const result = await db.Game_Modes.insertOne({_id, locations});
 
     console.log(result);
   } catch (err) {

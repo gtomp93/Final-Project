@@ -51,7 +51,7 @@ const addUser = async (req, res) => {
 
     const result = await db
       .collection("Users")
-      .insertOne({_id, email, givenName, lastName, picture});
+      .insertOne({_id, email, givenName, lastName, picture, score: 0});
     console.log("result", result);
     res.status(200).json({status: 200, result});
     client.close();
@@ -69,10 +69,24 @@ const getLocations = async (req, res) => {
     await client.connect();
     const db = client.db("Final_Project");
 
-    const result = await db.collection("Game Modes").findOne({_id});
+    const result = await db.collection("Game_Modes").findOne({_id});
     console.log("result", result);
 
-    res.status(200).json({status: 200, result});
+    const {locations} = result;
+
+    let arr = [];
+    while (arr.length < 5) {
+      var r = Math.floor(Math.random() * locations.length);
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
+    console.log(arr);
+
+    const randomLocations = arr.map((num) => {
+      return locations[num];
+    });
+
+    console.log(locations);
+    res.status(200).json({status: 200, randomLocations});
     client.close();
   } catch (err) {
     res.status(404).json({status: 404, message: "not found"});
@@ -80,4 +94,51 @@ const getLocations = async (req, res) => {
   }
 };
 
-module.exports = {addUser, checkForUser, getLocations};
+const getRandomLocations = async (req, res) => {
+  const {_id} = req.params;
+
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  const db = client.db("Final_Project");
+
+  const Game_Modes = db.collection;
+
+  const result = await db.collection("Game_Modes").findOne({_id});
+
+  // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
+  console.log("result", result);
+  console.log(result[0]);
+
+  res.status(200).json({status: 200, result});
+  client.close();
+};
+
+const updateUserScore = async (req, res) => {
+  try {
+    const {score, _id} = req.body;
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    const result = await db
+      .collection("Users")
+      .updateOne({_id}, {$inc: {score: score}});
+
+    console.log(result);
+
+    res.status(400).json({status: 200, result});
+
+    client.close();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
+  addUser,
+  checkForUser,
+  getLocations,
+  updateUserScore,
+  getRandomLocations,
+};

@@ -1,7 +1,9 @@
 import React, {useState, useContext, useEffect} from "react";
 import {MapContext} from "./MapContext";
+import {GameContext} from "./GameContext";
 import styled, {css} from "styled-components";
 import {BsArrowsFullscreen} from "react-icons/bs";
+import {Link, useParams} from "react-router-dom";
 
 import {
   GoogleMap,
@@ -11,6 +13,7 @@ import {
   Polyline,
   StreetViewPanorama,
 } from "@react-google-maps/api";
+import {UserContext} from "./UserContext";
 /* eslint-disable no-undef */
 
 const mapContainerStyle = {
@@ -61,6 +64,7 @@ const lineOptions = {
 };
 
 const Map = () => {
+  const {id} = useParams();
   const [clickedLat, setClickedLat] = useState(null);
   const [clickedLng, setClickedLng] = useState(null);
   const [midpointLat, setMidpointLat] = useState(null);
@@ -70,36 +74,36 @@ const Map = () => {
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
-  const [resize, setResize] = useState(false);
-  const [locations, setLocations] = useState(null);
+  // const [locations, setLocations] = useState(null);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
   const {
     center,
-    recenter,
+    submitGuess,
     zoom,
     setZoom,
     guessed,
     setGuessed,
     resetMap,
     locationIndex,
-    status,
-    setStatus,
+    points,
   } = useContext(MapContext);
+
+  const {locations} = useContext(GameContext);
 
   //   <script
   //     async
   //     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0&libraries=geometry&callback=initMap"
   //   ></script>;
-  useEffect(() => {
-    fetch("/locations/worldTour")
-      .then((res) => res.json())
-      .then((res) => setLocations(res.result.locations))
-      .catch(setStatus("error"));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/locations/${id}`)
+  //     .then((res) => res.json())
+  //     .then((res) => setLocations(res.randomLocations))
+  //     .catch(setStatus("error"));
+  // }, []);
 
   const {isLoaded, loadError} = useLoadScript({
-    googleMapsApiKey: "AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
@@ -168,23 +172,18 @@ const Map = () => {
 
       setTestPoint(new google.maps.LatLng(answerCoords.lat, testPointLng));
 
-      if (distance > 2000000) {
-        setResize(true);
-      }
-
       console.log("midpoint", midpoint);
       console.log(distance);
     }, 200);
   };
   console.log("distance", distance);
   console.log("zoom", zoom);
-  console.log("resize", resize);
 
   return (
     <>
       <PageContainer>
-        <BigWrapper guessed={guessed} resize={resize}>
-          <MapsWrapper resize={resize} guessed={guessed}>
+        <BigWrapper guessed={guessed}>
+          <MapsWrapper guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
@@ -237,11 +236,21 @@ const Map = () => {
               />
             </GoogleMap>
           </MapsWrapper>
-
+          {guessed && (
+            <div>
+              Your guess was {(distance / 1000).toFixed(2)} km away! You scored
+              {points} points!
+            </div>
+          )}
           <BottomContainer>
             <button
               onClick={() => {
-                recenter(midpoint.lat(), midpoint.lng(), distance, clickedLat);
+                submitGuess(
+                  midpoint.lat(),
+                  midpoint.lng(),
+                  distance,
+                  clickedLat
+                );
                 setGuessed(!guessed);
                 setExpand(false);
                 setHide(true);
@@ -283,7 +292,6 @@ const Map = () => {
                   setClickedLng(null);
                   setExpand(false);
                   setHide(true);
-                  setResize(false);
                 }}
               >
                 Next

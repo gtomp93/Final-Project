@@ -6,6 +6,7 @@ export const UserContext = createContext(null);
 export const UserContextProvider = ({children}) => {
   const {user, isAuthenticated, isLoading} = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
+  const [status, setStatus] = useState("idle");
 
   let userInfo = null;
 
@@ -62,7 +63,9 @@ export const UserContextProvider = ({children}) => {
   console.log("currentUser", currentUser);
 
   return (
-    <UserContext.Provider value={{currentUser, setCurrentUser}}>
+    <UserContext.Provider
+      value={{currentUser, setCurrentUser, status, setStatus}}
+    >
       {children}
     </UserContext.Provider>
   );

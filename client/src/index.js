@@ -6,6 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import {UserContextProvider} from "./UserContext";
 import {MapContextProvider} from "./MapContext";
+import {GameContextProvider} from "./GameContext";
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -17,9 +18,11 @@ ReactDOM.render(
     redirectUri={window.location.origin}
   >
     <UserContextProvider>
-      <MapContextProvider>
-        <App />
-      </MapContextProvider>
+      <GameContextProvider>
+        <MapContextProvider>
+          <App />
+        </MapContextProvider>
+      </GameContextProvider>
     </UserContextProvider>
   </Auth0Provider>,
   document.getElementById("root")

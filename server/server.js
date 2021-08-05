@@ -1,7 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const PORT = 8000;
-const {addUser, checkForUser, getLocations} = require("./handlers");
+const {
+  addUser,
+  checkForUser,
+  getLocations,
+  updateUserScore,
+  getRandomLocations,
+} = require("./handlers");
 
 const bodyParser = require("body-parser");
 
@@ -13,7 +19,9 @@ express()
 
   .post("/users", addUser)
   .post("/checkusers", checkForUser)
+  .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
+  .get("/RandomLocations/:_id", getRandomLocations)
 
   .get("*", (req, res) => {
     res.status(404).json({
