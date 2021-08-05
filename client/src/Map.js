@@ -140,14 +140,14 @@ const Map = () => {
         google.maps.geometry.spherical.computeDistanceBetween(
           answer,
           clickSpot
-        ) > 2000000 &&
-        (midpointLat > 40 || midpointLat < -40)
+        ) > 1750000 &&
+        (midpointLat > 58 || midpointLat < -58)
       ) {
         console.log("here");
-        if (midpointLat > 40) {
-          midpointLat = midpointLat - 33;
-        } else if (midpointLat < -40) {
-          midpointLat = midpointLat + 33;
+        if (midpointLat > 58) {
+          midpointLat = midpointLat - 35;
+        } else if (midpointLat < -58) {
+          midpointLat = midpointLat + 35;
         }
         setMidpoint(new google.maps.LatLng(midpointLat, midpointLng));
       }
@@ -334,7 +334,8 @@ const BigWrapper = styled.div`
     props.guessed &&
     css`
       @media (min-width: 769px) and (min-height: 600px) {
-        height: 65%;
+        height: 67%;
+        width: 55%;
       }
     `};
 `;

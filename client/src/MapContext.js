@@ -13,8 +13,8 @@ export const MapContextProvider = ({children}) => {
     setCenter({lat, lng});
     if (distance > 4000000) {
       setZoom(1);
-    } else if (distance > 2000000) {
-      setZoom(2);
+    } else if (distance > 1750000) {
+      setZoom(1);
     } else if (distance > 1000000) {
       setZoom(3);
     } else if (distance > 500000) {
