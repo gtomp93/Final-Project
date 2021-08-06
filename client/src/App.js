@@ -10,9 +10,11 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Profile from "./Profile";
 import Homepage from "./Homepage";
 import {useAuth0} from "@auth0/auth0-react";
+import CreateMap from "./CreateMap";
 
 import {Auth0Provider} from "@auth0/auth0-react";
 import LoginButton from "./LoginButton";
+import CreateMap from "./CreateMap";
 
 function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
@@ -31,6 +33,9 @@ function App() {
         </Route>
         <Route exact path="/map/:id">
           <Map />
+        </Route>
+        <Route exact path="/CreateMap">
+          <CreateMap />
         </Route>
         <Route exact path="/login">
           <Login />

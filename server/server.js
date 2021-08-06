@@ -7,6 +7,7 @@ const {
   getLocations,
   updateUserScore,
   getRandomLocations,
+  searchOpponent,
 } = require("./handlers");
 
 const bodyParser = require("body-parser");
@@ -22,6 +23,7 @@ express()
   .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
   .get("/RandomLocations/:_id", getRandomLocations)
+  .get("/searchOpponent", searchOpponent)
 
   .get("*", (req, res) => {
     res.status(404).json({

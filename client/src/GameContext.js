@@ -13,6 +13,11 @@ export const GameContextProvider = ({children}) => {
   const [locationIndex, setLocationIndex] = useState(0);
   const [points, setPoints] = useState(0);
   const [gameScore, setGameScore] = useState(0);
+  const [found, setFound] = useState(null);
+  const [opponent, setOpponent] = useState(null);
+  const [error, setError] = useState(false);
+  const [endGame, setEndGame] = useState(false);
+
   //   useEffect(() => {
   //     setLocations(
   //       JSON.parse(localStorage.getItem("locations"))
@@ -34,6 +39,26 @@ export const GameContextProvider = ({children}) => {
 
   if (selected === "multi") {
   }
+
+  const searchOpponent = (email) => {
+    fetch("/checkusers", {
+      method: "POST",
+      body: JSON.stringify({email}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("res", res);
+        if (res.doesNotExist) {
+          setError(true);
+        } else if (!res.doesNotExist) {
+          console.log("found er");
+          setOpponent(email);
+        }
+      });
+  };
 
   const submitGuess = (lat, lng, distance, clickspotLat) => {
     setCenter({lat, lng});
@@ -100,6 +125,11 @@ export const GameContextProvider = ({children}) => {
     }
     setPoints(score);
     setGameScore(gameScore + score);
+
+    if (locationIndex === locations.length - 1) {
+      setEndGame(true);
+    }
+
     fetch("/updateUserScore", {
       method: "PATCH",
       headers: {
@@ -135,6 +165,13 @@ export const GameContextProvider = ({children}) => {
         points,
         gameScore,
         resetMap,
+        opponent,
+        setOpponent,
+        searchOpponent,
+        error,
+        setError,
+        endGame,
+        setEndGame,
       }}
     >
       {children}

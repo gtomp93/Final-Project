@@ -135,10 +135,13 @@ const updateUserScore = async (req, res) => {
   }
 };
 
+const searchOpponent = (req, res) => {};
+
 module.exports = {
   addUser,
   checkForUser,
   getLocations,
   updateUserScore,
   getRandomLocations,
+  searchOpponent,
 };

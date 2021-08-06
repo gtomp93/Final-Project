@@ -91,6 +91,7 @@ const Map = () => {
     locationIndex,
     points,
     gameScore,
+    endGame,
   } = useContext(GameContext);
 
   //   <script
@@ -252,9 +253,7 @@ const Map = () => {
               {points} points!
             </div>
           )}
-          {guessed && locationIndex === locations.length - 1 && (
-            <div>Game Over. Your score is {gameScore}</div>
-          )}
+          {endGame && <div>Game Over. Your score is {gameScore}</div>}
           <BottomContainer>
             <button
               onClick={() => {
@@ -297,7 +296,7 @@ const Map = () => {
                 )}
               </div>
             )}
-            {guessed && (
+            {guessed && !endGame && (
               <button
                 onClick={() => {
                   resetMap();

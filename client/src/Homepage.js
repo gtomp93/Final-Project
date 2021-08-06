@@ -15,6 +15,7 @@ const Homepage = () => {
       <div style={{width: "100px", height: "50px", border: "solid black 1px"}}>
         <Link to={"/gameOptions/worldTour"}>Cities</Link>
       </div>
+      <Link to={"/CreateMap"}>Create Map</Link>
     </div>
   );
 };

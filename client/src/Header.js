@@ -11,8 +11,8 @@ const Header = ({handleTest}) => {
 
   return (
     <>
-      <LoginButton>Log In</LoginButton>
-      <LogoutButton>Log Out</LogoutButton>
+      {!isAuthenticated && <LoginButton>Log In</LoginButton>}
+      {isAuthenticated && <LogoutButton>Log Out</LogoutButton>}
       {isAuthenticated && <NavLink to="/profile">Profile</NavLink>}
     </>
   );
