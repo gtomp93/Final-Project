@@ -14,7 +14,6 @@ import CreateMap from "./CreateMap";
 
 import {Auth0Provider} from "@auth0/auth0-react";
 import LoginButton from "./LoginButton";
-import CreateMap from "./CreateMap";
 
 function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
