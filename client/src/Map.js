@@ -77,7 +77,10 @@ const Map = () => {
   // const [locations, setLocations] = useState(null);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
+  const {} = useContext(MapContext);
+
   const {
+    locations,
     center,
     submitGuess,
     zoom,
@@ -87,9 +90,8 @@ const Map = () => {
     resetMap,
     locationIndex,
     points,
-  } = useContext(MapContext);
-
-  const {locations} = useContext(GameContext);
+    gameScore,
+  } = useContext(GameContext);
 
   //   <script
   //     async
@@ -179,6 +181,14 @@ const Map = () => {
   console.log("distance", distance);
   console.log("zoom", zoom);
 
+  if (!locations) {
+    return "loading";
+  }
+  //   if (guessed && locationIndex === locations.length - 1) {
+  //     return `Game Over. Your final score is ${gameScore}
+  // `;
+  //   }
+
   return (
     <>
       <PageContainer>
@@ -241,6 +251,9 @@ const Map = () => {
               Your guess was {(distance / 1000).toFixed(2)} km away! You scored
               {points} points!
             </div>
+          )}
+          {guessed && locationIndex === locations.length - 1 && (
+            <div>Game Over. Your score is {gameScore}</div>
           )}
           <BottomContainer>
             <button

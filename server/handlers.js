@@ -64,7 +64,7 @@ const addUser = async (req, res) => {
 const getLocations = async (req, res) => {
   try {
     const {_id} = req.params;
-    // console.log("mode", mode);
+    console.log("id", _id);
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db("Final_Project");

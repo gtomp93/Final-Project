@@ -3,11 +3,12 @@ import {Link, useParams} from "react-router-dom";
 import {GameContext} from "./GameContext";
 
 const GameOptions = () => {
-  const {id} = useParams;
+  const {id} = useParams();
+  console.log("id", id);
   const {selected, setSelected, loadGame, locations} = useContext(GameContext);
 
   return (
-    <div style={{marginLeft: "20px"}}>
+    <div style={{marginLeft: "20px", marginTop: "25px"}}>
       <button
         onClick={() => {
           setSelected("single");
