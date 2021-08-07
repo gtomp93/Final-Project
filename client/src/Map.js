@@ -8,7 +8,6 @@ import {Link, useParams} from "react-router-dom";
 import {
   GoogleMap,
   useLoadScript,
-  withGoogleMap,
   Marker,
   Polyline,
   StreetViewPanorama,
@@ -38,7 +37,6 @@ const options = {
   fullscreenControl: false,
   streetViewControl: false,
   mapTypeControl: false,
-  // disableDefaultUI: true,
 };
 
 const streetViewOptions = {
@@ -117,15 +115,15 @@ const Map = () => {
     return "loading maps";
   }
 
-  if (!locations) {
-    return "loading";
-  }
+  // if (!locations) {
+  //   return "loading";
+  // }
 
   let clickSpot = null;
 
   let answerCoords = locations[locationIndex];
 
-  let answer = new google.maps.LatLng(answerCoords);
+  let answer = new window.google.maps.LatLng(answerCoords);
 
   const mapClickHandler = (ev) => {
     let testPointLng = null;

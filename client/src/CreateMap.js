@@ -2,11 +2,26 @@ import React, {useState} from "react";
 import Geocode from "react-geocode";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
+/*global google*/
+
 import {
   GoogleMap,
   useLoadScript,
   StreetViewPanorama,
 } from "@react-google-maps/api";
+
+const streetViewStyle = {
+  width: "200px",
+  height: "150px",
+};
+
+const streetViewOptions = {
+  disableDefaultUI: true,
+  enableCloseButton: false,
+  showRoadLabels: false,
+};
+
+const libraries = ["geometry"];
 
 const CreateMap = () => {
   const [location1, setLocation1] = useState("");
@@ -14,21 +29,33 @@ const CreateMap = () => {
   const [location3, setLocation3] = useState("");
   const [location4, setLocation4] = useState("");
   const [location5, setLocation5] = useState("");
-  //   const [location1Status, setLocation1Status] = useState("");
-  //   const [location2Status, setLocation2Status] = useState("");
-  //   const [location3Status, setLocation3Status] = useState("");
-  //   const [location4Status, setLocation4Stat] = useState("");
-  //   const [location5, setLocation5] = useState("");
-
+  const [position, setPosition] = useState(null);
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState(false);
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
 
+  const {isLoaded, loadError} = useLoadScript({
+    googleMapsApiKey: "AIzaSyBNbM3IAXNfPYnA-6hkhnxvjjX4CEp1fZg",
+    libraries,
+  });
+
+  if (loadError) {
+    return "error loading maps";
+  }
+  if (!isLoaded) {
+    return "loading maps";
+  }
+
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
   Geocode.setLanguage("en");
   Geocode.setLocationType("ROOFTOP");
+
+  if (isLoaded) {
+    let answer = new google.maps.LatLng({lat: 36.1124573, lng: -7.2212925});
+    console.log(answer);
+  }
 
   const getCoords = (input, index) => {
     console.log("index", index);
@@ -48,7 +75,8 @@ const CreateMap = () => {
       )
       .then((res) => {
         console.log(latitude, longitude);
-        if (latitude && longitude)
+        if (latitude && longitude) {
+          setPosition({lat: latitude, lng: longitude});
           switch (index) {
             case 0:
               console.log("made it");
@@ -68,6 +96,7 @@ const CreateMap = () => {
               break;
             default:
           }
+        }
       });
   };
 
@@ -190,6 +219,19 @@ const CreateMap = () => {
         getCoords={getCoords}
       />
       {complete && <button>Create Game</button>}
+      {position && (
+        <GoogleMap
+          mapContainerStyle={streetViewStyle}
+          options={streetViewOptions}
+          linksControl={false}
+        >
+          <StreetViewPanorama
+            position={position}
+            visible={true}
+            options={streetViewOptions}
+          />
+        </GoogleMap>
+      )}
     </>
   );
 };
