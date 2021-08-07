@@ -2,6 +2,11 @@ import React, {useState} from "react";
 import Geocode from "react-geocode";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
+import {
+  GoogleMap,
+  useLoadScript,
+  StreetViewPanorama,
+} from "@react-google-maps/api";
 
 const CreateMap = () => {
   const [location1, setLocation1] = useState("");
@@ -9,7 +14,12 @@ const CreateMap = () => {
   const [location3, setLocation3] = useState("");
   const [location4, setLocation4] = useState("");
   const [location5, setLocation5] = useState("");
-  const [clicked, setClicked] = useState(false);
+  //   const [location1Status, setLocation1Status] = useState("");
+  //   const [location2Status, setLocation2Status] = useState("");
+  //   const [location3Status, setLocation3Status] = useState("");
+  //   const [location4Status, setLocation4Stat] = useState("");
+  //   const [location5, setLocation5] = useState("");
+
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState(false);
 
@@ -66,6 +76,25 @@ const CreateMap = () => {
     arr[index] = coords;
     console.log(arr);
     setLocations(arr);
+    switch (index) {
+      case 0:
+        console.log("made it");
+        setLocation1("added");
+        break;
+      case 1:
+        setLocation2("added");
+        break;
+      case 2:
+        setLocation3("added");
+        break;
+      case 3:
+        setLocation4("added");
+        break;
+      case 4:
+        setLocation5("added");
+        break;
+      default:
+    }
     if (
       arr.every((item) => {
         return typeof item === "object";
@@ -73,7 +102,7 @@ const CreateMap = () => {
     ) {
       setComplete(true);
     }
-    setClicked(true);
+    // setClicked(true);
   };
 
   const removeLocation = (index) => {
@@ -82,6 +111,24 @@ const CreateMap = () => {
     setLocations(arr);
     if (complete) {
       setComplete(false);
+    }
+    switch (index) {
+      case 0:
+        setLocation1("");
+        break;
+      case 1:
+        setLocation2("");
+        break;
+      case 2:
+        setLocation3("");
+        break;
+      case 3:
+        setLocation4("");
+        break;
+      case 4:
+        setLocation5("");
+        break;
+      default:
     }
   };
 
@@ -101,8 +148,6 @@ const CreateMap = () => {
         removeLocation={removeLocation}
         index={0}
         getCoords={getCoords}
-        clicked={clicked}
-        setClicked={setClicked}
       />
       <LocationInput
         location={location2}
@@ -145,9 +190,6 @@ const CreateMap = () => {
         getCoords={getCoords}
       />
       {complete && <button>Create Game</button>}
-      {/* {locations.every((item) => {
-        console.log(typeof item); 
-        return typeof item === "object"; */}
     </>
   );
 };
