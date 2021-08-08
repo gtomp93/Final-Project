@@ -3,18 +3,49 @@ import styled from "styled-components";
 import Geocode from "react-geocode";
 
 const LocationInput = ({
-  location,
-  locations,
   getCoords,
   addLocation,
   index,
-  setLocation,
+  setLocationsList,
   removeLocation,
+  locationsList,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [location, setLocation] = useState(null);
 
-  console.log("location", location);
+  let latitude = null;
+  let longitude = null;
+
+  const searchLocation = (input, index) => {
+    console.log("index", index);
+
+    Geocode.fromAddress(input)
+      .then(
+        (response) => {
+          const {lat, lng} = response.results[0].geometry.location;
+          latitude = lat;
+          longitude = lng;
+          console.log(lat, lng);
+        },
+        (error) => {
+          console.error(error);
+          setStatus("error");
+        }
+      )
+      .then((res) => {
+        console.log(latitude, longitude);
+        if (latitude && longitude) {
+          getCoords(latitude, longitude, index);
+          setLocation({lat: latitude, lng: longitude});
+          setStatus("found");
+        }
+      });
+  };
+
+  console.log("index", index);
+  console.log("locationsList", locationsList);
 
   return (
     <div>
@@ -22,31 +53,38 @@ const LocationInput = ({
       <input
         value={inputValue}
         onChange={(ev) => {
-          setLocation(ev.target.value);
+          let copy = locationsList;
+          copy[index] = ev.target.value;
+          setLocationsList(copy);
           setInputValue(ev.target.value);
         }}
         placeholder="Enter Address"
         disabled={disabled}
       ></input>
-      {typeof location === "string" && location !== "added" && (
-        <Search onClick={() => getCoords(location, index)}>Search</Search>
-      )}{" "}
-      {typeof location === "object" && !locations[index] && (
+
+      {status === null && (
+        <Search onClick={() => searchLocation(locationsList[index])}>
+          Search
+        </Search>
+      )}
+      {status === "found" && (
         <Add
           onClick={() => {
             addLocation(location, index);
             setDisabled(true);
+            setStatus("added");
           }}
         >
           Add
         </Add>
       )}
-      {location === "added" && (
+      {status === "added" && (
         <Remove
           onClick={(ev) => {
             removeLocation(index);
             setInputValue("");
             setDisabled(false);
+            setStatus(null);
           }}
           type="reset"
           defaultValue="Reset"

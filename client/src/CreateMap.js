@@ -25,6 +25,7 @@ const streetViewOptions = {
 const libraries = ["geometry"];
 
 const CreateMap = () => {
+  const [locationsList, setLocationsList] = useState(["", "", "", "", ""]);
   const [location1, setLocation1] = useState("");
   const [location2, setLocation2] = useState("");
   const [location3, setLocation3] = useState("");
@@ -34,6 +35,8 @@ const CreateMap = () => {
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState(false);
   const [created, setCreated] = useState(false);
+  const [inputValues, setInputValues] = useState(["", "", "", "", ""]);
+  const [disabled, setDisabled] = useState(false);
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
@@ -61,75 +64,19 @@ const CreateMap = () => {
     console.log(answer);
   }
 
-  const getCoords = (input, index) => {
-    console.log("index", index);
-    let latitude = null;
-    let longitude = null;
-    Geocode.fromAddress(input)
-      .then(
-        (response) => {
-          const {lat, lng} = response.results[0].geometry.location;
-          latitude = lat;
-          longitude = lng;
-          console.log(lat, lng);
-        },
-        (error) => {
-          console.error(error);
-        }
-      )
-      .then((res) => {
-        console.log(latitude, longitude);
-        if (latitude && longitude) {
-          setPosition({lat: latitude, lng: longitude});
-          switch (index) {
-            case 0:
-              console.log("made it");
-              setLocation1({latitude, longitude});
-              break;
-            case 1:
-              setLocation2({latitude, longitude});
-              break;
-            case 2:
-              setLocation3({latitude, longitude});
-              break;
-            case 3:
-              setLocation4({latitude, longitude});
-              break;
-            case 4:
-              setLocation5({latitude, longitude});
-              break;
-            default:
-          }
-        }
-      });
+  const getCoords = (latitude, longitude, index) => {
+    setPosition({lat: latitude, lng: longitude});
+    // let copy = locationsList;
+    // copy[index] = {latitude, longitude};
+    // setLocationsList(copy);
   };
 
   const addLocation = (coords, index) => {
-    let arr = locations;
-    arr[index] = coords;
-    console.log(arr);
-    setLocations(arr);
-    switch (index) {
-      case 0:
-        console.log("made it");
-        setLocation1("added");
-        break;
-      case 1:
-        setLocation2("added");
-        break;
-      case 2:
-        setLocation3("added");
-        break;
-      case 3:
-        setLocation4("added");
-        break;
-      case 4:
-        setLocation5("added");
-        break;
-      default:
-    }
+    let copy = locationsList;
+    copy[index] = coords;
+    setLocationsList(copy);
     if (
-      arr.every((item) => {
+      copy.every((item) => {
         return typeof item === "object";
       })
     ) {
@@ -139,80 +86,48 @@ const CreateMap = () => {
   };
 
   const removeLocation = (index) => {
-    let arr = locations;
-    arr[index] = "";
-    setLocations(arr);
+    let copy = locationsList;
+    copy[index] = "";
+    setLocations(copy);
     if (complete) {
       setComplete(false);
     }
-    switch (index) {
-      case 0:
-        setLocation1("");
-        break;
-      case 1:
-        setLocation2("");
-        break;
-      case 2:
-        setLocation3("");
-        break;
-      case 3:
-        setLocation4("");
-        break;
-      case 4:
-        setLocation5("");
-        break;
-      default:
-    }
   };
 
-  console.log("location1", location1);
+  const addAnotherLocation = () => {
+    setComplete(false);
+    let copy = locationsList;
+    copy.push("");
+    setLocationsList(copy);
+  };
 
-  console.log("locations", locations);
+  //   console.log("location1", location1);
+
+  console.log("locationsList", locationsList);
+  console.log("inputValues", inputValues);
 
   return (
     <>
       <div>Create Map</div>
-      <LocationInput
-        location={location1}
-        setLocation={setLocation1}
-        setLocation={setLocation1}
-        addLocation={addLocation}
-        locations={locations}
-        removeLocation={removeLocation}
-        index={0}
-        getCoords={getCoords}
-      />
-      <LocationInput
-        location={location2}
-        setLocation={setLocation2}
-        setLocation={setLocation2}
-        addLocation={addLocation}
-        removeLocation={removeLocation}
-        locations={locations}
-        index={1}
-        getCoords={getCoords}
-      />
-      <LocationInput
-        location={location3}
-        setLocation={setLocation3}
-        setLocation={setLocation3}
-        addLocation={addLocation}
-        removeLocation={removeLocation}
-        locations={locations}
-        index={2}
-        getCoords={getCoords}
-      />
-      <LocationInput
-        location={location4}
-        setLocation={setLocation4}
-        setLocation={setLocation4}
-        addLocation={addLocation}
-        removeLocation={removeLocation}
-        locations={locations}
-        index={3}
-        getCoords={getCoords}
-      />
-      <LocationInput
+
+      <LocationsListContainer>
+        {locationsList.map((item, index) => {
+          return (
+            <div key={index}>
+              <LocationInput
+                index={index}
+                getCoords={getCoords}
+                locationsList={locationsList}
+                setLocationsList={setLocationsList}
+                addLocation={addLocation}
+                removeLocation={removeLocation}
+              />
+            </div>
+          );
+        })}
+      </LocationsListContainer>
+
+      {/* <LocationInput
         location={location5}
         setLocation={setLocation5}
         setLocation={setLocation5}
@@ -220,18 +135,27 @@ const CreateMap = () => {
         removeLocation={removeLocation}
         locations={locations}
         index={4}
-        getCoords={getCoords}
-      />
+        getCoords={getCoords} 
+      />*/}
       {complete && (
-        <button
-          onClick={() => {
-            addLocations(locations);
-            setCreated(true);
-          }}
-          disabled={created}
-        >
-          Create Game
-        </button>
+        <>
+          <button
+            onClick={() => {
+              addAnotherLocation();
+            }}
+          >
+            Add another location
+          </button>
+          <button
+            onClick={() => {
+              addLocations(locations);
+              setCreated(true);
+            }}
+            disabled={created}
+          >
+            Create Game
+          </button>
+        </>
       )}
       {position && (
         <GoogleMap
@@ -251,3 +175,11 @@ const CreateMap = () => {
 };
 
 export default CreateMap;
+
+const Search = styled.button``;
+
+const Add = styled.button``;
+
+const LocationsListContainer = styled.div`
+  margin-bottom: 40px;
+`;
