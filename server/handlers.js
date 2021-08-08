@@ -135,6 +135,59 @@ const updateUserScore = async (req, res) => {
   }
 };
 
+const CreateGame = async (req, res) => {
+  try {
+    const {name, description, pic, locations} = req.body;
+
+    let _id = uuidv4();
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+    const result = await db
+      .collection("Game_Modes")
+      .insertOne({_id, name, description, pic, locations});
+
+    res.status(200).json({status: 200, _id, result});
+  } catch (err) {
+    res.status(404).json({err});
+    console.log(err);
+  }
+};
+
+const AddGameToUser = async (req, res) => {
+  try {
+    const {gameid, user} = req.body;
+    console.log(req.body, "a");
+    let _id = user;
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    const newGame = {$push: {games: gameid}};
+
+    const result = await db.collection("Users").updateOne({_id}, newGame);
+
+    res.status(200).json({status: 200, result});
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getGames = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    const result = await db.collection("Game_Modes").find().toArray();
+
+    res.status(200).json({status: 200, result});
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const searchOpponent = (req, res) => {};
 
 module.exports = {
@@ -144,4 +197,7 @@ module.exports = {
   updateUserScore,
   getRandomLocations,
   searchOpponent,
+  CreateGame,
+  getGames,
+  AddGameToUser,
 };

@@ -3,6 +3,14 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 const Homepage = () => {
+  const [games, setGames] = useState(null);
+
+  fetch("/getGames")
+    .then((res) => res.json())
+    .then((res) => {
+      console.log("this thing", res);
+    });
+
   return (
     <div style={{marginLeft: "20px"}}>
       <div>Home</div>

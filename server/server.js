@@ -8,6 +8,9 @@ const {
   updateUserScore,
   getRandomLocations,
   searchOpponent,
+  CreateGame,
+  AddGameToUser,
+  getGames,
 } = require("./handlers");
 
 const bodyParser = require("body-parser");
@@ -20,10 +23,13 @@ express()
 
   .post("/users", addUser)
   .post("/checkusers", checkForUser)
+  .get("/getGames", getGames)
   .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
   .get("/RandomLocations/:_id", getRandomLocations)
   .get("/searchOpponent", searchOpponent)
+  .post("/CreateGame", CreateGame)
+  .put("/addGameToUser", AddGameToUser)
 
   .get("*", (req, res) => {
     res.status(404).json({

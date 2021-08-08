@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import Geocode from "react-geocode";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
@@ -9,6 +9,7 @@ import {
   useLoadScript,
   StreetViewPanorama,
 } from "@react-google-maps/api";
+import {MapCreationContext} from "./MapCreationContext";
 
 const streetViewStyle = {
   width: "200px",
@@ -32,9 +33,12 @@ const CreateMap = () => {
   const [position, setPosition] = useState(null);
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState(false);
+  const [created, setCreated] = useState(false);
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
+
+  const {addLocations} = useContext(MapCreationContext);
 
   const {isLoaded, loadError} = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -218,7 +222,17 @@ const CreateMap = () => {
         index={4}
         getCoords={getCoords}
       />
-      {complete && <button>Create Game</button>}
+      {complete && (
+        <button
+          onClick={() => {
+            addLocations(locations);
+            setCreated(true);
+          }}
+          disabled={created}
+        >
+          Create Game
+        </button>
+      )}
       {position && (
         <GoogleMap
           mapContainerStyle={streetViewStyle}

@@ -1,16 +1,14 @@
 import {MapCreationContext} from "./MapCreationContext";
-import Link from "react-router-dom";
+import {Link} from "react-router-dom";
 import React, {useContext, useState} from "react";
 import styled from "styled-components";
-const CreateMap1 = () => {
+const CreateMapForm = () => {
   const {handleSubmit, mapData} = useContext(MapCreationContext);
   const [pic, setPic] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
-
-  console.log(mapData);
 
   return (
     <Container>
@@ -62,7 +60,7 @@ const CreateMap1 = () => {
         >
           {submitted ? "Edit" : "Submit"}
         </Submit>
-        <Next>Next</Next>
+        {submitted && <Link to="/CreateMap">Next</Link>}
         {submitted && <Pic src={pic}></Pic>}
       </FormWrapper>
     </Container>
@@ -92,4 +90,4 @@ const Pic = styled.img`
   width: 100px;
 `;
 
-export default CreateMap1;
+export default CreateMapForm;
