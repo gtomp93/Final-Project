@@ -62,7 +62,7 @@ const LocationInput = ({
         disabled={disabled}
       ></input>
 
-      {status === null && (
+      {(status === null || status === "error") && (
         <Search onClick={() => searchLocation(locationsList[index])}>
           Search
         </Search>
@@ -92,6 +92,8 @@ const LocationInput = ({
           Remove
         </Remove>
       )}
+      {status === "error" && <Error>Location not found</Error>}
+      {status === "added" && <Added>Location added!</Added>}
     </div>
   );
 };
@@ -100,6 +102,14 @@ const Search = styled.button``;
 
 const Add = styled.button``;
 
+const Error = styled.span`
+  color: red;
+`;
+
 const Remove = styled.button``;
+
+const Added = styled.span`
+  color: green;
+`;
 
 export default LocationInput;

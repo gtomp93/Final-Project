@@ -148,7 +148,7 @@ const CreateMap = () => {
           </button>
           <button
             onClick={() => {
-              addLocations(locations);
+              addLocations(locationsList);
               setCreated(true);
             }}
             disabled={created}

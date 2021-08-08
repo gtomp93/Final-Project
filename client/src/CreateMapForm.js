@@ -27,13 +27,13 @@ const CreateMapForm = () => {
         </InputWrapper>
         <InputWrapper>
           <label>Description</label>
-          <Input
-            placeholder="description"
+          <TextArea
+            placeholder="Description"
             onChange={(ev) => {
               setDescription(ev.target.value);
             }}
             disabled={submitted}
-          ></Input>
+          ></TextArea>
           {required && description.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
@@ -77,6 +77,10 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input``;
+
+const TextArea = styled.textarea`
+  width: 250px;
+`;
 
 const Required = styled.p`
   color: red;
