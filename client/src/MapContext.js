@@ -7,7 +7,7 @@ export const MapContext = createContext(null);
 
 export const MapContextProvider = ({children}) => {
   const {currentUser} = useContext(UserContext);
-  console.log(currentUser, "user in map context");
+  // console.log(currentUser, "user in map context");
   const {zoom, setZoom, setCenter, setGuessed} = useContext(GameContext);
   // const [center, setCenter] = useState({lat: 0, lng: 0});
   // const [zoom, setZoom] = useState(2);

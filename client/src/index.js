@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import {UserContextProvider} from "./UserContext";
 import {MapContextProvider} from "./MapContext";
 import {GameContextProvider} from "./GameContext";
+import {MapCreationContextProvider} from "./MapCreationContext";
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -19,9 +20,11 @@ ReactDOM.render(
   >
     <UserContextProvider>
       <GameContextProvider>
-        <MapContextProvider>
-          <App />
-        </MapContextProvider>
+        <MapCreationContextProvider>
+          <MapContextProvider>
+            <App />
+          </MapContextProvider>
+        </MapCreationContextProvider>
       </GameContextProvider>
     </UserContextProvider>
   </Auth0Provider>,

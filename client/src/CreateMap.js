@@ -37,7 +37,7 @@ const CreateMap = () => {
   const [found, setFound] = useState();
 
   const {isLoaded, loadError} = useLoadScript({
-    googleMapsApiKey: "AIzaSyBNbM3IAXNfPYnA-6hkhnxvjjX4CEp1fZg",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 

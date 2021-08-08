@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import CreateMap1 from "./CreateMap1";
 import Map from "./Map";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -32,6 +33,9 @@ function App() {
         </Route>
         <Route exact path="/map/:id">
           <Map />
+        </Route>
+        <Route exact path="/CreateMap1">
+          <CreateMap1 />
         </Route>
         <Route exact path="/CreateMap">
           <CreateMap />
