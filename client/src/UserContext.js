@@ -8,16 +8,15 @@ export const UserContextProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState("idle");
 
+  console.log(currentUser);
+
   let userInfo = null;
 
   useEffect(() => {
     const addUser = async () => {
-      // console.log(user);
-      // console.log("somewhere");
       let doesNotExist = false;
       if (isAuthenticated) {
         let email = user.email;
-        // console.log("here");
         await fetch("/checkusers", {
           method: "POST",
           body: JSON.stringify({email}),
@@ -33,7 +32,6 @@ export const UserContextProvider = ({children}) => {
           });
 
         if (doesNotExist) {
-          // console.log("there");
           setCurrentUser({
             email,
             givenName: user.given_name,

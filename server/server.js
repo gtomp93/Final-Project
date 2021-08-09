@@ -6,9 +6,10 @@ const {
   checkForUser,
   getLocations,
   updateUserScore,
-  getRandomLocations,
+  // getRandomLocations,
   searchOpponent,
   CreateGame,
+  getGame,
   AddGameToUser,
   getGames,
   likeGame,
@@ -26,9 +27,10 @@ express()
   .post("/users", addUser)
   .post("/checkusers", checkForUser)
   .get("/getGames", getGames)
+  .get("/getGame/:_id", getGame)
   .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
-  .get("/RandomLocations/:_id", getRandomLocations)
+  // .get("/RandomLocations/:_id", getRandomLocations)
   .get("/searchOpponent", searchOpponent)
   .post("/CreateGame", CreateGame)
   .put("/addGameToUser", AddGameToUser)

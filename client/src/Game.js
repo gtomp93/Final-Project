@@ -7,7 +7,7 @@ import {UserContext} from "./UserContext";
 const Game = ({game, isLiked}) => {
   const [liked, setLiked] = useState(isLiked);
   const {currentUser} = useContext(UserContext);
-
+  const [numLikes, setNumLikes] = useState(game.likes);
   console.log(game._id);
 
   const likeGame = async () => {
@@ -33,7 +33,13 @@ const Game = ({game, isLiked}) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log("HEERE");
         setLiked(!liked);
+        if (!liked) {
+          setNumLikes(numLikes + 1);
+        } else {
+          setNumLikes(numLikes - 1);
+        }
       });
   };
 
@@ -47,10 +53,10 @@ const Game = ({game, isLiked}) => {
           likeGame();
         }}
       >
-        <FiHeart style={isLiked ? {fill: "red"} : {fill: "none"}} />
+        <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
       </LikeButton>
 
-      <Likes>{game.likes ? game.likes : null}</Likes>
+      <Likes>{numLikes ? numLikes : null}</Likes>
     </GameContainer>
   );
 };

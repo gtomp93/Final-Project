@@ -94,23 +94,27 @@ const getLocations = async (req, res) => {
   }
 };
 
-const getRandomLocations = async (req, res) => {
-  const {_id} = req.params;
+const getGame = async (req, res) => {
+  try {
+    const {_id} = req.params;
 
-  const client = new MongoClient(MONGO_URI, options);
-  await client.connect();
-  const db = client.db("Final_Project");
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
 
-  const Game_Modes = db.collection;
+    // const Game_Modes = db.collection;
 
-  const result = await db.collection("Game_Modes").findOne({_id});
+    const result = await db.collection("Game_Modes").findOne({_id});
 
-  // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
-  console.log("result", result);
-  console.log(result[0]);
+    // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
+    console.log("result", result);
+    // console.log(result[0]);
 
-  res.status(200).json({status: 200, result});
-  client.close();
+    res.status(200).json({status: 200, result});
+    client.close();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const updateUserScore = async (req, res) => {
@@ -257,9 +261,10 @@ module.exports = {
   checkForUser,
   getLocations,
   updateUserScore,
-  getRandomLocations,
+  // getRandomLocations,
   searchOpponent,
   CreateGame,
+  getGame,
   getGames,
   AddGameToUser,
   likeGame,
