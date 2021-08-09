@@ -12,12 +12,17 @@ const LocationInput = ({
   setPosition,
   removeLocation,
   item,
+  recordError,
+  names,
+  disabled,
 }) => {
   const [inputValue, setInputValue] = useState("");
-  const [disabled, setDisabled] = useState(false);
+  // const [disabled, setDisabled] = useState(false);
   const [status, setStatus] = useState(null);
   const [location, setLocation] = useState(null);
   const [deleted, setDeleted] = useState(false);
+
+  console.log(index, disabled);
 
   let latitude = null;
   let longitude = null;
@@ -25,7 +30,7 @@ const LocationInput = ({
   console.log("status", status);
 
   const searchLocation = (input, index) => {
-    console.log("index", index);
+    console.log("indexInHere", index);
 
     Geocode.fromAddress(input)
       .then(
@@ -37,13 +42,13 @@ const LocationInput = ({
         },
         (error) => {
           console.error(error);
-          setStatus("error");
+          recordError(index);
         }
       )
       .then((res) => {
         console.log(latitude, longitude);
         if (latitude && longitude) {
-          getCoords(latitude, longitude, inputValue);
+          getCoords(latitude, longitude, locationsList[index], index);
           setLocation({lat: latitude, lng: longitude});
           setStatus("found");
         }
@@ -58,7 +63,7 @@ const LocationInput = ({
       <div>
         <label>Enter Address</label>
         <input
-          value={inputValue}
+          value={typeof item === "object" ? names[index] : inputValue}
           onChange={(ev) => {
             let copy = locationsList;
             copy[index] = ev.target.value;
@@ -66,48 +71,52 @@ const LocationInput = ({
             setInputValue(ev.target.value);
           }}
           placeholder="Enter Address"
-          disabled={disabled}
+          disabled={disabled[index]}
         ></input>
 
-        {(status === null || status === "error") && (
+        {!disabled[index] && (
           <Search
             onClick={() => {
-              searchLocation(locationsList[index]);
-              setDisabled(false);
+              searchLocation(locationsList[index], index);
+              // setDisabled(false);
             }}
           >
             Search
           </Search>
         )}
 
-        {status === "found" && (
+        {disabled[index] && typeof item !== "object" && (
           <>
             <Add
               onClick={() => {
                 addLocation(location, index);
-                setDisabled(true);
-                setStatus("added");
+                // setDisabled(true);
+                // setStatus("added");
               }}
             >
               Add
-            </Add>
-            <Edit
-              onClick={() => {
-                setStatus(null);
-                setPosition(null);
-                setDisabled(false);
-              }}
-            >
-              Edit
-            </Edit>
+            </Add>{" "}
           </>
         )}
-        {(status === "added" || typeof item === "object") && (
+        {disabled[index] && (
+          <Edit
+            onClick={() => {
+              setStatus(null);
+              setPosition(null);
+              editLocation(index);
+              setInputValue("");
+            }}
+          >
+            Edit
+          </Edit>
+        )}
+
+        {/* {typeof item === "object" && (
           <Edit
             onClick={(ev) => {
               editLocation(index);
               setInputValue("");
-              setDisabled(false);
+              // setDisabled(false);
               setStatus(null);
             }}
             type="reset"
@@ -115,19 +124,21 @@ const LocationInput = ({
           >
             Edit
           </Edit>
-        )}
+        )} */}
         {index > 4 && (
           <button
             onClick={() => {
               removeLocation(index);
-              setStatus("deleted");
+              setInputValue("");
             }}
           >
             Remove
           </button>
         )}
-        {status === "error" && <Error>Location not found</Error>}
-        {status === "added" && <Added>Location added!</Added>}
+        {item === "error" && <Error>Location not found</Error>}
+        {(status === "added" || typeof item === "object") && (
+          <Added>Location added!</Added>
+        )}
       </div>
     </>
   );

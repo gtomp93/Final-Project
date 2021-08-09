@@ -34,8 +34,10 @@ const CreateMap = () => {
   const [error, setError] = useState(false);
   const [created, setCreated] = useState(false);
   const [inputValues, setInputValues] = useState(["", "", "", "", ""]);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState([false, false, false, false, false]);
   const [title, setTitle] = useState("");
+  const [names, setNames] = useState(["", "", "", ""]);
+  const [searched, setSearched] = useState([false, false, false, false, false]);
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
@@ -65,18 +67,25 @@ const CreateMap = () => {
     console.log(answer);
   }
 
-  const getCoords = (latitude, longitude, placeName) => {
+  const getCoords = (latitude, longitude, placeName, index) => {
     setPosition({lat: latitude, lng: longitude});
     setTitle(placeName);
+    let copy = [...disabled];
+    copy[index] = true;
+    setDisabled(copy);
     // let copy = locationsList;
     // copy[index] = {latitude, longitude};
     // setLocationsList(copy);
   };
 
   const addLocation = (coords, index) => {
-    let copy = [...locationsList];
+    let copy = [...names];
+    copy[index] = locationsList[index];
+    setNames(copy);
+    copy = [...locationsList];
     copy[index] = coords;
     setLocationsList(copy);
+
     if (
       copy.every((item) => {
         return typeof item === "object";
@@ -91,6 +100,13 @@ const CreateMap = () => {
     let copy = [...locationsList];
     copy[index] = "";
     setLocationsList(copy);
+    copy = [...names];
+    copy[index] = "";
+    setNames(copy);
+    copy = [...disabled];
+    copy[index] = false;
+    setDisabled(copy);
+
     if (complete) {
       setComplete(false);
     }
@@ -101,15 +117,42 @@ const CreateMap = () => {
     let copy = [...locationsList];
     copy.push("");
     setLocationsList(copy);
+    copy = [...names];
+    copy.push("");
+    setNames(copy);
+    copy = [...disabled];
+    copy.push(false);
+    setDisabled(copy);
+  };
+
+  const recordError = (index) => {
+    let copy = [...locationsList];
+    copy[index] = "error";
+    setLocationsList(copy);
   };
 
   const removeLocation = (index) => {
-    let copy = [...locationsList];
-    copy.splice(index, 1);
-    console.log(copy);
-    setLocationsList(copy);
+    let copy1 = [...names];
+    copy1.splice(index, 1);
+    setNames(copy1);
+    let copy2 = [...disabled];
+    copy2.splice(index, 1);
+    setDisabled(copy2);
+    let copy3 = [...locationsList];
+    copy3.splice(index, 1);
+    // console.log(copy, "copyhere");
+    let finalCopy = copy3.map((item, index) => {
+      if (!copy2[index]) {
+        return "";
+      } else {
+        return item;
+      }
+    });
+    console.log("finalCopy", finalCopy);
+    setLocationsList(finalCopy);
+
     if (
-      copy.every((item) => {
+      finalCopy.every((item) => {
         return typeof item === "object";
       })
     ) {
@@ -119,7 +162,7 @@ const CreateMap = () => {
   //   console.log("location1", location1);
 
   console.log("locationsList", locationsList);
-  console.log("inputValues", inputValues);
+  // console.log("inputValues", inputValues);
 
   return (
     <>
@@ -139,6 +182,9 @@ const CreateMap = () => {
                 editLocation={editLocation}
                 setPosition={setPosition}
                 removeLocation={removeLocation}
+                recordError={recordError}
+                names={names}
+                disabled={disabled}
               />
             </div>
           );
