@@ -49,11 +49,11 @@ const addUser = async (req, res) => {
     await client.connect();
     const db = client.db("Final_Project");
 
-    const result = await db
+    await db
       .collection("Users")
       .insertOne({_id, email, givenName, lastName, picture, score: 0});
     console.log("result", result);
-    res.status(200).json({status: 200, result});
+    res.status(200).json({status: 200, updated: _id});
     client.close();
   } catch (err) {
     console.log(err);
@@ -121,13 +121,11 @@ const updateUserScore = async (req, res) => {
     await client.connect();
     const db = client.db("Final_Project");
 
-    const result = await db
-      .collection("Users")
-      .updateOne({_id}, {$inc: {score: score}});
+    await db.collection("Users").updateOne({_id}, {$inc: {score: score}});
 
     console.log(result);
 
-    res.status(400).json({status: 200, result});
+    res.status(400).json({status: 200, updated: _id});
 
     client.close();
   } catch (err) {
@@ -169,7 +167,7 @@ const AddGameToUser = async (req, res) => {
 
     const result = await db.collection("Users").updateOne({_id}, newGame);
 
-    res.status(200).json({status: 200, result});
+    res.status(200).json({status: 200, updated: _id});
     client.close();
   } catch (err) {
     console.log(err);
@@ -207,19 +205,16 @@ const likeGame = async (req, res) => {
     const result = null;
 
     if (liked) {
-      result = await db
-        .collection("Game_Modes")
-        .updateOne({_id}, {$inc: {likes: 1}});
+      await db.collection("Game_Modes").updateOne({_id}, {$inc: {likes: 1}});
     } else {
-      result = await db
-        .collection("Game_Modes")
-        .updateOne({_id}, {$inc: {likes: -1}});
+      await db.collection("Game_Modes").updateOne({_id}, {$inc: {likes: -1}});
     }
 
     res.status(200).json({status: 200, result});
     client.close();
   } catch (err) {
     res.status(404).json({status: 404, message: "not found"});
+    console.log(err);
   }
 };
 
@@ -237,11 +232,11 @@ const addToLikes = async (req, res) => {
     const db = client.db("Final_Project");
     const result = null;
     if (liked) {
-      result = await db
+      await db
         .collection("Users")
         .updateOne({_id}, {$push: {likes: likedGame}});
     } else if (!liked) {
-      result = await db
+      await db
         .collection("Users")
         .updateOne({_id}, {$pull: {likes: likedGame}});
     }
@@ -251,6 +246,7 @@ const addToLikes = async (req, res) => {
     client.close();
   } catch (err) {
     res.status(404).json({status: 404, message: "Not Found"});
+    console.log(err);
   }
 };
 

@@ -11,7 +11,7 @@ const Game = ({game, isLiked}) => {
   console.log(game._id);
 
   const likeGame = async () => {
-    await fetch(`/likeGame/${game._id}`, {
+    fetch(`/likeGame/${game._id}`, {
       method: "PATCH",
       body: JSON.stringify({
         liked: !liked,
@@ -44,7 +44,6 @@ const Game = ({game, isLiked}) => {
       <div>{game.description}</div>
       <LikeButton
         onClick={() => {
-          setLiked(true);
           likeGame();
         }}
       >

@@ -26,7 +26,7 @@ const Homepage = () => {
 
   console.log(games);
 
-  if (!games || !currentUser) {
+  if (!currentUser) {
     return "loading";
   }
 
@@ -50,11 +50,7 @@ const Homepage = () => {
           isLiked = true;
         }
         return (
-          <Game
-            game={game}
-            isLiked={isLiked}
-            key={Math.ceil(Math.random() * 100) * index}
-          />
+          <Game game={game} isLiked={isLiked} key={index} />
           // <GameContainer key={Math.ceil(Math.random() * 100) * index}>
           //   <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
           //   <GamePic src={game.pic}></GamePic>
