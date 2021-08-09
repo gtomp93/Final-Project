@@ -22,12 +22,14 @@ const Profile = () => {
     });
 
     await currentUser.likes.map((game) => {
-      fetch(`/getGame/${game}`)
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          setLikedGames((arr) => [...arr, res.result]);
-        });
+      if (game) {
+        fetch(`/getGame/${game}`)
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            setLikedGames((arr) => [...arr, res.result]);
+          });
+      }
     });
   }, []);
 
@@ -37,11 +39,9 @@ const Profile = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    });
 
-    await fetch("/removeFromUser", {
+    fetch("/removeFromUser", {
       method: "PUT",
       body: JSON.stringify({gameid: _id, user: currentUser._id}),
       headers: {
@@ -71,26 +71,32 @@ const Profile = () => {
         </div>
         <div>Created Games</div>
         {games.map((game) => {
-          let isLiked = currentUser.likes.includes(game._id);
-          console.log(isLiked);
-          return (
-            <div key={Math.random() * 9999}>
-              <Game game={game} isLiked={isLiked} />
-              <button
-                onClick={() => {
-                  deleteGame(game._id);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          );
+          if (game) {
+            let isLiked = currentUser.likes.includes(game._id);
+            console.log(isLiked);
+            return (
+              <div key={Math.random() * 9999}>
+                <Game game={game} isLiked={isLiked} />
+                <button
+                  onClick={() => {
+                    deleteGame(game._id);
+                  }}
+                >
+                  Delete {game.name}
+                </button>
+              </div>
+            );
+          }
         })}
         <div>Liked Games</div>
         {likedGames.map((game) => {
-          let isLiked = currentUser.likes.includes(game._id);
-          console.log(isLiked);
-          return <Game game={game} isLiked={isLiked} />;
+          if (game) {
+            let isLiked = currentUser.likes.includes(game._id);
+            console.log(isLiked);
+            return (
+              <Game game={game} isLiked={isLiked} key={Math.random() * 9999} />
+            );
+          }
         })}
       </>
     )
