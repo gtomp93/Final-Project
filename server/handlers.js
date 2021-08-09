@@ -193,10 +193,12 @@ const getGames = async (req, res) => {
 
 // const liked = false;
 
-const likeGame = (req, res) => {
+const likeGame = async (req, res) => {
   try {
-    const _id = req.params;
-    const liked = req.body;
+    const {_id} = req.params;
+    const {liked} = req.body;
+
+    console.log(_id, liked);
 
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
@@ -223,23 +225,26 @@ const likeGame = (req, res) => {
 
 const addToLikes = async (req, res) => {
   try {
-    const _id = req.params;
+    const {_id} = req.params;
     const {likedGame, liked} = req.body;
-    const like = null;
+
+    console.log(_id, likedGame, liked);
     // const newGame = {$push: {games: gameid}};
     // { $pull: { <field1>: <value|condition>
 
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db("Final_Project");
-
+    const result = null;
     if (liked) {
-      like = {$push: {likes: likedGame}};
+      result = await db
+        .collection("Users")
+        .updateOne({_id}, {$push: {likes: likedGame}});
     } else if (!liked) {
-      like = {$pull: {likes: likedGame}};
+      result = await db
+        .collection("Users")
+        .updateOne({_id}, {$pull: {likes: likedGame}});
     }
-
-    const result = await db.collection("Users").updateOne({_id}, like);
 
     res.status(200).json({status: 200, result});
 

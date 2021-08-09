@@ -1,10 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import styled from "styled-components";
 import {FiHeart} from "react-icons/fi";
 import {Link} from "react-router-dom";
+import {UserContext} from "./UserContext";
 
 const Game = ({game, isLiked}) => {
   const [liked, setLiked] = useState(isLiked);
+  const {currentUser} = useContext(UserContext);
+
+  console.log(game._id);
 
   const likeGame = async () => {
     await fetch(`/likeGame/${game._id}`, {
@@ -15,16 +19,23 @@ const Game = ({game, isLiked}) => {
       headers: {
         "Content-Type": "application/json",
       },
+    }).then((res) => res.json());
+
+    await fetch(`/addLikeToUser/${currentUser._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        likedGame: game._id,
+        liked: !liked,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((res) => {
         setLiked(!liked);
       });
-
-    // await fetch(``)
   };
-
-  const addToLikes = () => {};
 
   return (
     <GameContainer>
