@@ -43,6 +43,7 @@ const streetViewOptions = {
   disableDefaultUI: true,
   enableCloseButton: false,
   showRoadLabels: false,
+  streetViewControl: true,
 };
 
 const libraries = ["geometry"];

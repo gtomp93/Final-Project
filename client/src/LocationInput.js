@@ -9,6 +9,7 @@ const LocationInput = ({
   setLocationsList,
   removeLocation,
   locationsList,
+  setPosition,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -63,20 +64,37 @@ const LocationInput = ({
       ></input>
 
       {(status === null || status === "error") && (
-        <Search onClick={() => searchLocation(locationsList[index])}>
+        <Search
+          onClick={() => {
+            searchLocation(locationsList[index]);
+            setDisabled(true);
+          }}
+        >
           Search
         </Search>
       )}
+
       {status === "found" && (
-        <Add
-          onClick={() => {
-            addLocation(location, index);
-            setDisabled(true);
-            setStatus("added");
-          }}
-        >
-          Add
-        </Add>
+        <>
+          <Add
+            onClick={() => {
+              addLocation(location, index);
+              setDisabled(true);
+              setStatus("added");
+            }}
+          >
+            Add
+          </Add>
+          <Edit
+            onClick={() => {
+              setStatus(null);
+              setPosition(null);
+              setDisabled(false);
+            }}
+          >
+            Edit
+          </Edit>
+        </>
       )}
       {status === "added" && (
         <Remove
@@ -101,6 +119,7 @@ const LocationInput = ({
 const Search = styled.button``;
 
 const Add = styled.button``;
+const Edit = styled.button``;
 
 const Error = styled.span`
   color: red;

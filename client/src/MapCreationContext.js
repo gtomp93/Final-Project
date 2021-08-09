@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {UserContext} from "./UserContext";
+import {useHistory} from "react-router-dom";
 
 export const MapCreationContext = createContext(null);
 
@@ -10,6 +11,7 @@ export const MapCreationContextProvider = ({children}) => {
   const [description, setDescription] = useState(null);
   const {currentUser} = useContext(UserContext);
   const [mapData, setMapData] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     setMapData(

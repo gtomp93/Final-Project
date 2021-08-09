@@ -2,6 +2,8 @@ import React, {useContext, useState} from "react";
 import Geocode from "react-geocode";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
+import {useHistory} from "react-router-dom";
+
 /*global google*/
 
 import {
@@ -12,12 +14,13 @@ import {
 import {MapCreationContext} from "./MapCreationContext";
 
 const streetViewStyle = {
-  width: "200px",
+  width: "400px",
   height: "150px",
 };
 
 const streetViewOptions = {
-  disableDefaultUI: true,
+  //   disableDefaultUI: true,
+  streetViewControl: true,
   enableCloseButton: false,
   showRoadLabels: false,
 };
@@ -26,11 +29,6 @@ const libraries = ["geometry"];
 
 const CreateMap = () => {
   const [locationsList, setLocationsList] = useState(["", "", "", "", ""]);
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
-  const [location3, setLocation3] = useState("");
-  const [location4, setLocation4] = useState("");
-  const [location5, setLocation5] = useState("");
   const [position, setPosition] = useState(null);
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState(false);
@@ -40,6 +38,8 @@ const CreateMap = () => {
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
+
+  const history = useHistory();
 
   const {addLocations} = useContext(MapCreationContext);
 
@@ -121,6 +121,7 @@ const CreateMap = () => {
                 setLocationsList={setLocationsList}
                 addLocation={addLocation}
                 removeLocation={removeLocation}
+                setPosition={setPosition}
               />
             </div>
           );
@@ -142,6 +143,7 @@ const CreateMap = () => {
           <button
             onClick={() => {
               addAnotherLocation();
+              disabled = {created};
             }}
           >
             Add another location

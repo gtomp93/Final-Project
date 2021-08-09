@@ -33,11 +33,11 @@ const Homepage = () => {
         <Link to={"/gameOptions/worldTour"}>Cities</Link>
       </div>
       <Link to={"/CreateMapForm"}>Create Map</Link>
-      {games.map((game) => {
+      {games.map((game, index) => {
         console.log(game.pic);
         return (
-          <GameContainer>
-            <div>{game.name}</div>
+          <GameContainer key={Math.ceil(Math.random() * 100) * index}>
+            <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
             <GamePic src={game.pic}></GamePic>
             <div>{game.description}</div>
           </GameContainer>
