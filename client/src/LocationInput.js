@@ -7,17 +7,22 @@ const LocationInput = ({
   addLocation,
   index,
   setLocationsList,
-  removeLocation,
+  editLocation,
   locationsList,
   setPosition,
+  removeLocation,
+  item,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [status, setStatus] = useState(null);
   const [location, setLocation] = useState(null);
+  const [deleted, setDeleted] = useState(false);
 
   let latitude = null;
   let longitude = null;
+
+  console.log("status", status);
 
   const searchLocation = (input, index) => {
     console.log("index", index);
@@ -38,7 +43,7 @@ const LocationInput = ({
       .then((res) => {
         console.log(latitude, longitude);
         if (latitude && longitude) {
-          getCoords(latitude, longitude, index);
+          getCoords(latitude, longitude, inputValue);
           setLocation({lat: latitude, lng: longitude});
           setStatus("found");
         }
@@ -49,70 +54,82 @@ const LocationInput = ({
   console.log("locationsList", locationsList);
 
   return (
-    <div>
-      <label>Enter Address</label>
-      <input
-        value={inputValue}
-        onChange={(ev) => {
-          let copy = locationsList;
-          copy[index] = ev.target.value;
-          setLocationsList(copy);
-          setInputValue(ev.target.value);
-        }}
-        placeholder="Enter Address"
-        disabled={disabled}
-      ></input>
-
-      {(status === null || status === "error") && (
-        <Search
-          onClick={() => {
-            searchLocation(locationsList[index]);
-            setDisabled(true);
+    <>
+      <div>
+        <label>Enter Address</label>
+        <input
+          value={inputValue}
+          onChange={(ev) => {
+            let copy = locationsList;
+            copy[index] = ev.target.value;
+            setLocationsList(copy);
+            setInputValue(ev.target.value);
           }}
-        >
-          Search
-        </Search>
-      )}
+          placeholder="Enter Address"
+          disabled={disabled}
+        ></input>
 
-      {status === "found" && (
-        <>
-          <Add
+        {(status === null || status === "error") && (
+          <Search
             onClick={() => {
-              addLocation(location, index);
-              setDisabled(true);
-              setStatus("added");
-            }}
-          >
-            Add
-          </Add>
-          <Edit
-            onClick={() => {
-              setStatus(null);
-              setPosition(null);
+              searchLocation(locationsList[index]);
               setDisabled(false);
             }}
           >
+            Search
+          </Search>
+        )}
+
+        {status === "found" && (
+          <>
+            <Add
+              onClick={() => {
+                addLocation(location, index);
+                setDisabled(true);
+                setStatus("added");
+              }}
+            >
+              Add
+            </Add>
+            <Edit
+              onClick={() => {
+                setStatus(null);
+                setPosition(null);
+                setDisabled(false);
+              }}
+            >
+              Edit
+            </Edit>
+          </>
+        )}
+        {(status === "added" || typeof item === "object") && (
+          <Edit
+            onClick={(ev) => {
+              editLocation(index);
+              setInputValue("");
+              setDisabled(false);
+              setStatus(null);
+            }}
+            type="reset"
+            defaultValue="Reset"
+          >
             Edit
           </Edit>
-        </>
-      )}
-      {status === "added" && (
-        <Remove
-          onClick={(ev) => {
-            removeLocation(index);
-            setInputValue("");
-            setDisabled(false);
-            setStatus(null);
-          }}
-          type="reset"
-          defaultValue="Reset"
-        >
-          Remove
-        </Remove>
-      )}
-      {status === "error" && <Error>Location not found</Error>}
-      {status === "added" && <Added>Location added!</Added>}
-    </div>
+        )}
+        {index > 4 && (
+          <button
+            onClick={() => {
+              removeLocation(index);
+              setStatus("deleted");
+            }}
+          >
+            Remove
+          </button>
+        )}
+        {status === "error" && <Error>Location not found</Error>}
+        {status === "added" && <Added>Location added!</Added>}
+      </div>
+    </>
   );
 };
 
@@ -124,8 +141,6 @@ const Edit = styled.button``;
 const Error = styled.span`
   color: red;
 `;
-
-const Remove = styled.button``;
 
 const Added = styled.span`
   color: green;

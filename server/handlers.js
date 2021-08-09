@@ -107,7 +107,7 @@ const getGame = async (req, res) => {
     const result = await db.collection("Game_Modes").findOne({_id});
 
     // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
-    console.log("result", result);
+    // console.log("result", result);
     // console.log(result[0]);
 
     res.status(200).json({status: 200, result});
@@ -158,6 +158,28 @@ const CreateGame = async (req, res) => {
   }
 };
 
+const deleteGame = async (req, res) => {
+  try {
+    const {_id} = req.params;
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    // const Game_Modes = db.collection;
+
+    await db.collection("Game_Modes").deleteOne({_id});
+    // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
+    // console.log("result", result);
+    // console.log(result[0]);
+
+    res.status(204).json({status: 200, deleted: _id});
+    client.close();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const AddGameToUser = async (req, res) => {
   try {
     const {gameid, user} = req.body;
@@ -168,6 +190,26 @@ const AddGameToUser = async (req, res) => {
     const db = client.db("Final_Project");
 
     const newGame = {$push: {games: gameid}};
+
+    const result = await db.collection("Users").updateOne({_id}, newGame);
+
+    res.status(200).json({status: 200, updated: _id});
+    client.close();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const removeGameFromUser = async (req, res) => {
+  try {
+    const {gameid, user} = req.body;
+    console.log(req.body, "a");
+    let _id = user;
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    const newGame = {$pull: {games: gameid}};
 
     const result = await db.collection("Users").updateOne({_id}, newGame);
 
@@ -263,6 +305,8 @@ module.exports = {
   updateUserScore,
   // getRandomLocations,
   searchOpponent,
+  removeGameFromUser,
+  deleteGame,
   CreateGame,
   getGame,
   getGames,

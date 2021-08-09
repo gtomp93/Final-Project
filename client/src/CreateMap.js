@@ -15,7 +15,7 @@ import {MapCreationContext} from "./MapCreationContext";
 
 const streetViewStyle = {
   width: "400px",
-  height: "150px",
+  height: "250px",
 };
 
 const streetViewOptions = {
@@ -35,6 +35,7 @@ const CreateMap = () => {
   const [created, setCreated] = useState(false);
   const [inputValues, setInputValues] = useState(["", "", "", "", ""]);
   const [disabled, setDisabled] = useState(false);
+  const [title, setTitle] = useState("");
 
   const [locations, setLocations] = useState(["", "", "", "", ""]);
   const [found, setFound] = useState();
@@ -64,15 +65,16 @@ const CreateMap = () => {
     console.log(answer);
   }
 
-  const getCoords = (latitude, longitude, index) => {
+  const getCoords = (latitude, longitude, placeName) => {
     setPosition({lat: latitude, lng: longitude});
+    setTitle(placeName);
     // let copy = locationsList;
     // copy[index] = {latitude, longitude};
     // setLocationsList(copy);
   };
 
   const addLocation = (coords, index) => {
-    let copy = locationsList;
+    let copy = [...locationsList];
     copy[index] = coords;
     setLocationsList(copy);
     if (
@@ -85,10 +87,10 @@ const CreateMap = () => {
     // setClicked(true);
   };
 
-  const removeLocation = (index) => {
-    let copy = locationsList;
+  const editLocation = (index) => {
+    let copy = [...locationsList];
     copy[index] = "";
-    setLocations(copy);
+    setLocationsList(copy);
     if (complete) {
       setComplete(false);
     }
@@ -96,11 +98,24 @@ const CreateMap = () => {
 
   const addAnotherLocation = () => {
     setComplete(false);
-    let copy = locationsList;
+    let copy = [...locationsList];
     copy.push("");
     setLocationsList(copy);
   };
 
+  const removeLocation = (index) => {
+    let copy = [...locationsList];
+    copy.splice(index, 1);
+    console.log(copy);
+    setLocationsList(copy);
+    if (
+      copy.every((item) => {
+        return typeof item === "object";
+      })
+    ) {
+      setComplete(true);
+    }
+  };
   //   console.log("location1", location1);
 
   console.log("locationsList", locationsList);
@@ -115,13 +130,15 @@ const CreateMap = () => {
           return (
             <div key={index}>
               <LocationInput
+                item={item}
                 index={index}
                 getCoords={getCoords}
                 locationsList={locationsList}
                 setLocationsList={setLocationsList}
                 addLocation={addLocation}
-                removeLocation={removeLocation}
+                editLocation={editLocation}
                 setPosition={setPosition}
+                removeLocation={removeLocation}
               />
             </div>
           );
@@ -143,7 +160,8 @@ const CreateMap = () => {
           <button
             onClick={() => {
               addAnotherLocation();
-              disabled = {created};
+              setComplete(false);
+              // setCreated(false);
             }}
           >
             Add another location
@@ -160,17 +178,20 @@ const CreateMap = () => {
         </>
       )}
       {position && (
-        <GoogleMap
-          mapContainerStyle={streetViewStyle}
-          options={streetViewOptions}
-          linksControl={false}
-        >
-          <StreetViewPanorama
-            position={position}
-            visible={true}
+        <>
+          <div>Street view of {title}</div>
+          <GoogleMap
+            mapContainerStyle={streetViewStyle}
             options={streetViewOptions}
-          />
-        </GoogleMap>
+            linksControl={false}
+          >
+            <StreetViewPanorama
+              position={position}
+              visible={true}
+              options={streetViewOptions}
+            />
+          </GoogleMap>
+        </>
       )}
     </>
   );

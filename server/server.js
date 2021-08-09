@@ -14,6 +14,8 @@ const {
   getGames,
   likeGame,
   addToLikes,
+  removeGameFromUser,
+  deleteGame,
 } = require("./handlers");
 
 const bodyParser = require("body-parser");
@@ -33,7 +35,9 @@ express()
   // .get("/RandomLocations/:_id", getRandomLocations)
   .get("/searchOpponent", searchOpponent)
   .post("/CreateGame", CreateGame)
+  .delete("/deleteGame/:_id", deleteGame)
   .put("/addGameToUser", AddGameToUser)
+  .put("/removeFromUser", removeGameFromUser)
   .put("/addLikeToUser/:_id", addToLikes)
   .patch("/likeGame/:_id", likeGame)
 

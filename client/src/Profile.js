@@ -12,8 +12,6 @@ const Profile = () => {
   console.log("games", games);
 
   useEffect(async () => {
-    let arr = [];
-
     await currentUser.games.map((game, index) => {
       fetch(`/getGame/${game}`)
         .then((res) => res.json())
@@ -31,11 +29,35 @@ const Profile = () => {
           setLikedGames((arr) => [...arr, res.result]);
         });
     });
-
-    // setGames(arr);
   }, []);
 
-  if (isLoading || !currentUser || !games.length) {
+  const deleteGame = async (_id) => {
+    await fetch(`/deleteGame/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
+
+    await fetch("/removeFromUser", {
+      method: "PUT",
+      body: JSON.stringify({gameid: _id, user: currentUser._id}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
+  };
+
+  if (
+    isLoading ||
+    !currentUser ||
+    games.length < currentUser.games.length ||
+    likedGames.length < currentUser.likes.length
+  ) {
     return <div>Loading ...</div>;
   }
 
@@ -51,7 +73,18 @@ const Profile = () => {
         {games.map((game) => {
           let isLiked = currentUser.likes.includes(game._id);
           console.log(isLiked);
-          return <Game game={game} isLiked={isLiked} />;
+          return (
+            <div key={Math.random() * 9999}>
+              <Game game={game} isLiked={isLiked} />
+              <button
+                onClick={() => {
+                  deleteGame(game._id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          );
         })}
         <div>Liked Games</div>
         {likedGames.map((game) => {
