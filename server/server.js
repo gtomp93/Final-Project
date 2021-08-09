@@ -11,6 +11,7 @@ const {
   CreateGame,
   AddGameToUser,
   getGames,
+  likeGame,
 } = require("./handlers");
 
 const bodyParser = require("body-parser");
@@ -30,6 +31,7 @@ express()
   .get("/searchOpponent", searchOpponent)
   .post("/CreateGame", CreateGame)
   .put("/addGameToUser", AddGameToUser)
+  .patch("/likeGame/:id", likeGame)
 
   .get("*", (req, res) => {
     res.status(404).json({

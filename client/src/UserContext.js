@@ -39,6 +39,8 @@ export const UserContextProvider = ({children}) => {
             givenName: user.given_name,
             lastName: user.family_name,
             picture: user.picture,
+            likes: 0,
+            score: 0,
           });
           await fetch("/users", {
             method: "POST",
@@ -47,6 +49,8 @@ export const UserContextProvider = ({children}) => {
               givenName: user.given_name,
               lastName: user.family_name,
               picture: user.picture,
+              likes: 0,
+              score: 0,
             }),
             headers: {
               "Content-Type": "application/json",

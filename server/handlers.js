@@ -149,6 +149,7 @@ const CreateGame = async (req, res) => {
       .insertOne({_id, name, description, pic, locations});
 
     res.status(200).json({status: 200, _id, result});
+    client.close();
   } catch (err) {
     res.status(404).json({err});
     console.log(err);
@@ -169,6 +170,7 @@ const AddGameToUser = async (req, res) => {
     const result = await db.collection("Users").updateOne({_id}, newGame);
 
     res.status(200).json({status: 200, result});
+    client.close();
   } catch (err) {
     console.log(err);
   }
@@ -183,8 +185,67 @@ const getGames = async (req, res) => {
     const result = await db.collection("Game_Modes").find().toArray();
 
     res.status(200).json({status: 200, result});
+    client.close();
   } catch (err) {
     console.log(err);
+  }
+};
+
+// const liked = false;
+
+const likeGame = (req, res) => {
+  try {
+    const _id = req.params;
+    const liked = req.body;
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    const result = null;
+
+    if (liked) {
+      result = await db
+        .collection("Game_Modes")
+        .updateOne({_id}, {$inc: {likes: 1}});
+    } else {
+      result = await db
+        .collection("Game_Modes")
+        .updateOne({_id}, {$inc: {likes: -1}});
+    }
+
+    res.status(200).json({status: 200, result});
+    client.close();
+  } catch (err) {
+    res.status(404).json({status: 404, message: "not found"});
+  }
+};
+
+const addToLikes = async (req, res) => {
+  try {
+    const _id = req.params;
+    const {likedGame, liked} = req.body;
+    const like = null;
+    // const newGame = {$push: {games: gameid}};
+    // { $pull: { <field1>: <value|condition>
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    if (liked) {
+      like = {$push: {likes: likedGame}};
+    } else if (!liked) {
+      like = {$pull: {likes: likedGame}};
+    }
+
+    const result = await db.collection("Users").updateOne({_id}, like);
+
+    res.status(200).json({status: 200, result});
+
+    client.close();
+  } catch (err) {
+    res.status(404).json({status: 404, message: "Not Found"});
   }
 };
 
@@ -200,4 +261,6 @@ module.exports = {
   CreateGame,
   getGames,
   AddGameToUser,
+  likeGame,
+  addToLikes,
 };
