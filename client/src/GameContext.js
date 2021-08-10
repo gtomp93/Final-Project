@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useState, useEffect} from "react";
+import {clearInterval} from "timers";
 import {UserContext} from "./UserContext";
 
 export const GameContext = createContext(null);
@@ -17,6 +18,10 @@ export const GameContextProvider = ({children}) => {
   const [opponent, setOpponent] = useState(null);
   const [error, setError] = useState(false);
   const [endGame, setEndGame] = useState(false);
+  const [stop, setStop] = useState(false);
+  const [timer, setTimer] = useState(10);
+
+  // const [counter, setCounter] = useState(100);
 
   //   useEffect(() => {
   //     setLocations(
@@ -25,6 +30,29 @@ export const GameContextProvider = ({children}) => {
   //         : null
   //     );
   //   }, []);
+
+  // const timer = setInterval(() => {
+  //   setCounter(counter - 1);
+
+  //   if (counter === 1) {
+  //     clearInterval(timer);
+  //     setGuessed(true);
+  //   }
+  // }, 1000);
+
+  // useEffect(() => {
+  //   timer1 = setInterval(() => {
+  //     setCounter((counter) => counter - 1);
+  // if (counter < 1) {
+  //   clearInterval(timerRef.current);
+  //   setGuessed(true);
+  // }
+  //   }, 1000);
+
+  //   return () => {
+  //     clearInterval(timer1);
+  //   };
+  // }, [guessed]);
 
   const loadGame = (id) => {
     console.log("LOADING");
@@ -61,6 +89,7 @@ export const GameContextProvider = ({children}) => {
   };
 
   const submitGuess = (lat, lng, distance, clickspotLat) => {
+    setStop(true);
     setCenter({lat, lng});
     let score = 0;
     if (distance > 3000000) {
@@ -144,6 +173,8 @@ export const GameContextProvider = ({children}) => {
   };
 
   const resetMap = () => {
+    setStop(false);
+    setTimer(10);
     setGuessed(false);
     setLocationIndex(locationIndex + 1);
     setZoom(2);
@@ -174,6 +205,10 @@ export const GameContextProvider = ({children}) => {
         setError,
         endGame,
         setEndGame,
+        stop,
+        setStop,
+        timer,
+        setTimer,
       }}
     >
       {children}

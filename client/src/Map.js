@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext, useEffect, useRef} from "react";
 import {MapContext} from "./MapContext";
 import {GameContext} from "./GameContext";
 import styled, {css} from "styled-components";
@@ -13,6 +13,7 @@ import {
   StreetViewPanorama,
 } from "@react-google-maps/api";
 import {UserContext} from "./UserContext";
+import {clearInterval} from "timers";
 /* eslint-disable no-undef */
 
 const mapContainerStyle = {
@@ -73,6 +74,11 @@ const Map = () => {
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
+  const [counter, setCounter] = useState(10);
+  const [timer1, setTimer1] = useState(null);
+  const timerRef = useRef(null);
+  // const [timer, setTimer] = useState(10);
+
   // const [locations, setLocations] = useState(null);
   // const [guessed, setGuessed] = useState(false);
   // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
@@ -91,18 +97,44 @@ const Map = () => {
     points,
     gameScore,
     endGame,
+    stop,
+    setStop,
+    timer,
+    setTimer,
   } = useContext(GameContext);
 
-  //   <script
-  //     async
-  //     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATC6dYyiirhaZ_DRtNvLfOMQpaxcObMw0&libraries=geometry&callback=initMap"
-  //   ></script>;
+  // let timer1 = null;
+
   // useEffect(() => {
-  //   fetch(`/locations/${id}`)
-  //     .then((res) => res.json())
-  //     .then((res) => setLocations(res.randomLocations))
-  //     .catch(setStatus("error"));
-  // }, []);
+  //   setTimer1(
+  //     setInterval(() => {
+  //       setCounter((counter) => counter - 1);
+  //       if (counter < 1) {
+  //         clearInterval(timerRef.current);
+  //         setGuessed(true);
+  //       }
+  //     }, 1000)
+  //   );
+
+  //   return () => {
+  //     setTimer1(clearInterval(timer1));
+  //   };
+  // }, [guessed]);
+
+  // if (guessed) {
+  //   setStop(true);
+  // }
+
+  // useEffect(() => {
+  //   timer > 0 && setTimeout(() => setTimer(timer - 1), 1000);
+  // }, [timer]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      setGuessed(true);
+    }
+    timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+  }, [timer]);
 
   const {isLoaded, loadError} = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -193,6 +225,7 @@ const Map = () => {
     <>
       <PageContainer>
         <BigWrapper guessed={guessed}>
+          <div>{timer}</div>
           <MapsWrapper guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
