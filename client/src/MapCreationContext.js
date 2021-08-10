@@ -35,6 +35,9 @@ export const MapCreationContextProvider = ({children}) => {
     let gameid = null;
     let copy = mapData;
     copy.locations = locations;
+    copy.likes = 0;
+    copy.creator = currentUser._id;
+    copy.comments = [];
     console.log(copy);
 
     await fetch("/CreateGame", {

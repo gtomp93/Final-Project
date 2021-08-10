@@ -248,19 +248,36 @@ const likeGame = async (req, res) => {
     await client.connect();
     const db = client.db("Final_Project");
 
-    const result = null;
-
     if (liked) {
       await db.collection("Game_Modes").updateOne({_id}, {$inc: {likes: 1}});
     } else {
       await db.collection("Game_Modes").updateOne({_id}, {$inc: {likes: -1}});
     }
 
-    res.status(200).json({status: 200, result});
+    res.status(200).json({status: 200, updated: _id});
     client.close();
   } catch (err) {
     res.status(404).json({status: 404, message: "not found"});
     console.log(err);
+  }
+};
+
+const comment = async (req, res) => {
+  try {
+    const {_id} = req.params;
+    const {comment, commentBy} = req.body;
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db("Final_Project");
+
+    await db
+      .collection("Game_Modes")
+      .updateOne({_id}, {$push: {comments: {comment, commentBy}}});
+
+    client.close();
+  } catch (err) {
+    res.status(200).json({err});
   }
 };
 
@@ -312,5 +329,6 @@ module.exports = {
   getGames,
   AddGameToUser,
   likeGame,
+  comment,
   addToLikes,
 };

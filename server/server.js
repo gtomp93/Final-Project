@@ -16,6 +16,7 @@ const {
   addToLikes,
   removeGameFromUser,
   deleteGame,
+  comment,
 } = require("./handlers");
 
 const bodyParser = require("body-parser");
@@ -40,6 +41,7 @@ express()
   .put("/removeFromUser", removeGameFromUser)
   .put("/addLikeToUser/:_id", addToLikes)
   .patch("/likeGame/:_id", likeGame)
+  .put("/comment/:_id", comment)
 
   .get("*", (req, res) => {
     res.status(404).json({

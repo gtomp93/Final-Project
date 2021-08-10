@@ -8,7 +8,18 @@ const Game = ({game, isLiked}) => {
   const [liked, setLiked] = useState(isLiked);
   const {currentUser} = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
-  console.log(game._id);
+  const [comment, setComment] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
+  console.log(game);
+
+  if (!currentUser) {
+    return "loading";
+  }
+
+  // if (game.comments.length) {
+  //   comments = game.comments;
+  // }
 
   const likeGame = async () => {
     fetch(`/likeGame/${game._id}`, {
@@ -43,6 +54,19 @@ const Game = ({game, isLiked}) => {
       });
   };
 
+  const submitComment = (comment) => {
+    fetch(`/comment/${game._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        comment: comment,
+        commentBy: currentUser._id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json().then((res) => console.log(res)));
+  };
+
   return (
     <GameContainer>
       <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
@@ -55,8 +79,27 @@ const Game = ({game, isLiked}) => {
       >
         <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
       </LikeButton>
-
       <Likes>{numLikes ? numLikes : null}</Likes>
+      <CommentInput
+        placeholder="comment"
+        onChange={(ev) => {
+          setComment(ev.target.value);
+          setInputValue(ev.target.value);
+        }}
+      ></CommentInput>
+      <Submit
+        onClick={() => {
+          submitComment(comment);
+          setInputValue("");
+        }}
+      >
+        Submit
+      </Submit>
+      {game.comments.map((item) => {
+        return <div key={Math.random() * 9999}>{item.comment}</div>;
+      })}
+      {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
+      {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
     </GameContainer>
   );
 };
@@ -74,5 +117,9 @@ const LikeButton = styled.button`
 `;
 
 const Likes = styled.span``;
+
+const CommentInput = styled.input``;
+
+const Submit = styled.button``;
 
 export default Game;

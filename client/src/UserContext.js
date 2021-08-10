@@ -38,6 +38,7 @@ export const UserContextProvider = ({children}) => {
             lastName: user.family_name,
             picture: user.picture,
             likes: 0,
+            games: 0,
             score: 0,
           });
           await fetch("/users", {
