@@ -63,7 +63,9 @@ const GameOptions = () => {
       >
         No Time Limits
       </Untimed>
-      {locations && <Link to={`/map/${id}`}>Start</Link>}
+      {locations && (timed === "timed" || timed === "untimed") && (
+        <Link to={`/map/${id}`}>Start</Link>
+      )}
     </div>
   );
 };

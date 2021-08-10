@@ -75,7 +75,6 @@ const Map = () => {
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
   const [counter, setCounter] = useState(60);
-  const [timer1, setTimer1] = useState(null);
   const timerRef = useRef(null);
   // const [timer, setTimer] = useState(10);
 
@@ -101,6 +100,8 @@ const Map = () => {
     setStop,
     timer,
     setTimer,
+    timed,
+    setTimed,
   } = useContext(GameContext);
 
   // let timer1 = null;
@@ -130,10 +131,12 @@ const Map = () => {
   // }, [timer]);
 
   useEffect(() => {
-    if (timer === 0) {
-      setGuessed(true);
+    if (timed === "timed") {
+      if (timer === 0) {
+        setGuessed(true);
+      }
+      timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
     }
-    timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
   }, [timer]);
 
   const {isLoaded, loadError} = useLoadScript({
@@ -225,7 +228,7 @@ const Map = () => {
     <>
       <PageContainer>
         <BigWrapper guessed={guessed}>
-          <div>{timer}</div>
+          {timed === "timed" && <div>{timer}</div>}{" "}
           <MapsWrapper guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap

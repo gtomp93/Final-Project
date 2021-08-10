@@ -10,6 +10,8 @@ export const UserContextProvider = ({children}) => {
 
   console.log(currentUser);
 
+  console.log("user", user);
+
   let userInfo = null;
 
   useEffect(() => {

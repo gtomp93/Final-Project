@@ -20,7 +20,7 @@ export const GameContextProvider = ({children}) => {
   const [endGame, setEndGame] = useState(false);
   const [stop, setStop] = useState(false);
   const [timer, setTimer] = useState(60);
-  const [timed, setTimed] = useState(false);
+  const [timed, setTimed] = useState(null);
 
   const loadGame = (id) => {
     console.log("LOADING");
@@ -58,6 +58,8 @@ export const GameContextProvider = ({children}) => {
         }
       });
   };
+
+  console.log("timed", timed);
 
   const submitGuess = (lat, lng, distance, clickspotLat) => {
     setStop(true);
