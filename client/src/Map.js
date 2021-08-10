@@ -74,7 +74,7 @@ const Map = () => {
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
-  const [counter, setCounter] = useState(10);
+  const [counter, setCounter] = useState(60);
   const [timer1, setTimer1] = useState(null);
   const timerRef = useRef(null);
   // const [timer, setTimer] = useState(10);

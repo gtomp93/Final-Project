@@ -7,7 +7,7 @@ export const GameContext = createContext(null);
 export const GameContextProvider = ({children}) => {
   const {currentUser, status, setStatus} = useContext(UserContext);
   const [selected, setSelected] = useState(null);
-  const [locations, setLocations] = useState();
+  const [locations, setLocations] = useState(null);
   const [center, setCenter] = useState({lat: 0, lng: 0});
   const [zoom, setZoom] = useState(2);
   const [guessed, setGuessed] = useState(false);
@@ -19,40 +19,8 @@ export const GameContextProvider = ({children}) => {
   const [error, setError] = useState(false);
   const [endGame, setEndGame] = useState(false);
   const [stop, setStop] = useState(false);
-  const [timer, setTimer] = useState(10);
-
-  // const [counter, setCounter] = useState(100);
-
-  //   useEffect(() => {
-  //     setLocations(
-  //       JSON.parse(localStorage.getItem("locations"))
-  //         ? JSON.parse(localStorage.getItem("cart"))
-  //         : null
-  //     );
-  //   }, []);
-
-  // const timer = setInterval(() => {
-  //   setCounter(counter - 1);
-
-  //   if (counter === 1) {
-  //     clearInterval(timer);
-  //     setGuessed(true);
-  //   }
-  // }, 1000);
-
-  // useEffect(() => {
-  //   timer1 = setInterval(() => {
-  //     setCounter((counter) => counter - 1);
-  // if (counter < 1) {
-  //   clearInterval(timerRef.current);
-  //   setGuessed(true);
-  // }
-  //   }, 1000);
-
-  //   return () => {
-  //     clearInterval(timer1);
-  //   };
-  // }, [guessed]);
+  const [timer, setTimer] = useState(60);
+  const [timed, setTimed] = useState(false);
 
   const loadGame = (id) => {
     console.log("LOADING");
@@ -67,6 +35,9 @@ export const GameContextProvider = ({children}) => {
 
   if (selected === "multi") {
   }
+
+  console.log(locations);
+  console.log(locationIndex);
 
   const searchOpponent = (email) => {
     fetch("/checkusers", {
@@ -174,7 +145,7 @@ export const GameContextProvider = ({children}) => {
 
   const resetMap = () => {
     setStop(false);
-    setTimer(10);
+    setTimer(60);
     setGuessed(false);
     setLocationIndex(locationIndex + 1);
     setZoom(2);
@@ -209,6 +180,8 @@ export const GameContextProvider = ({children}) => {
         setStop,
         timer,
         setTimer,
+        timed,
+        setTimed,
       }}
     >
       {children}

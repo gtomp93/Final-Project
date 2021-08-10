@@ -18,6 +18,8 @@ const GameOptions = () => {
     opponent,
     setOpponent,
     searchOpponent,
+    timed,
+    setTimed,
   } = useContext(GameContext);
 
   return (
@@ -47,6 +49,20 @@ const GameOptions = () => {
           </div>
         )}
       </Multiplayer>
+      <Timed
+        onClick={() => {
+          setTimed("timed");
+        }}
+      >
+        Timed
+      </Timed>
+      <Untimed
+        onClick={() => {
+          setTimed("untimed");
+        }}
+      >
+        No Time Limits
+      </Untimed>
       {locations && <Link to={`/map/${id}`}>Start</Link>}
     </div>
   );
@@ -54,7 +70,7 @@ const GameOptions = () => {
 
 const Multiplayer = styled.div`
   width: 280px;
-  height: 200px;
+  height: 150px;
   border: solid black 1px;
 `;
 
@@ -62,6 +78,10 @@ const Search = styled.button`
   width: 80px;
   height: 20px;
 `;
+
+const Timed = styled.button``;
+
+const Untimed = styled.button``;
 {
   /* <button
           onClick={() => {
