@@ -38,7 +38,7 @@ const Homepage = () => {
   console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
 
   return (
-    <div>
+    <Container>
       <div>Home</div>
 
       <Link to={"/CreateMapForm"}>Create Map</Link>
@@ -60,11 +60,17 @@ const Homepage = () => {
           </>
         );
       })}
-    </div>
+    </Container>
   );
 };
 
-const GameContainer = styled.div``;
+const Container = styled.div`
+  background: linear-gradient(
+    90deg,
+    rgba(23, 56, 156, 1) 0%,
+    rgba(12, 20, 42, 1) 100%
+  );
+`;
 
 const GamePic = styled.img`
   width: 50px;

@@ -81,6 +81,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 
   return (
     <GameContainer>
+      <BackgroundDiv></BackgroundDiv>
       <GameBox>
         <GameWrapper>
           <PicWrapper>
@@ -112,13 +113,11 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
               {game.comments.length ? game.comments.length : null}
             </NumComments>
           </CommentBox>
-          <Play>
-            <StartGame to={`/gameOptions/${game._id}`}>
-              <FiPlay />
+          <StartGame to={`/gameOptions/${game._id}`}>
+            <FiPlay style={{fill: "green"}} />
 
-              <span>Play</span>
-            </StartGame>
-          </Play>
+            <Play>Play</Play>
+          </StartGame>
         </ActionBar>
       </GameBox>
       <CommentsSection>
@@ -140,7 +139,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
               setInputValue("");
             }}
           >
-            Submit
+            Comment
           </Submit>
         </CreateComment>
       </CommentsSection>
@@ -153,7 +152,11 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 const GameContainer = styled.div`
   width: 100vw;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
   /* height: 30vh; */
+  /* background-color: rgb(255, 255, 255, 0.3); */
+
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -162,9 +165,20 @@ const GameContainer = styled.div`
   }
 `;
 
+const BackgroundDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+`;
+
 const GameBox = styled.div`
   width: 100vw;
-
+  background-color: rgb(255, 255, 255, 0.32);
+  border-radius: 7px 7px 0 0;
+  padding: 8px 0 0;
   @media (min-width: 700px) {
     width: 80%;
   }
@@ -174,6 +188,7 @@ const GameWrapper = styled.div`
   display: flex;
   justify-content: left;
   width: 100%;
+  margin-left: 5px;
 `;
 
 const GamePic = styled.img`
@@ -217,24 +232,30 @@ const LikeBox = styled.div``;
 
 const CommentsSection = styled.div`
   width: 100vw;
-
+  background-color: rgb(255, 255, 255, 0.32);
+  border-radius: 0 0 7px 7px;
   @media (min-width: 700px) {
     width: 80%;
   }
 `;
 
-const Play = styled.button`
-  background: inherit;
-  border: 1 px solid grey;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-`;
+// const Play = styled.div`
+//   background: inherit;
+//   border: 1 px solid green;
+//   border-radius: 5px;
+//   border: none;
+//   display: flex;
+//   align-items: center;
+//   box-shadow: none;
+// `;
 
 const CommentBox = styled.div``;
 
 const CreateComment = styled.div`
   margin-top: 7px;
+  display: flex;
+  align-items: center;
+  padding: 0 0 5px;
 `;
 
 const NumComments = styled.span``;
@@ -256,7 +277,14 @@ const LikeButton = styled.button`
 
 const StartGame = styled(Link)`
   text-decoration: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
   color: black;
+`;
+
+const Play = styled.span`
+  font-weight: bolder;
 `;
 
 const Likes = styled.span``;
