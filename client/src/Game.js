@@ -168,6 +168,7 @@ const GameWrapper = styled.div`
 const GamePic = styled.img`
   width: 100%;
   height: 100%;
+  border-radius: 8px;
 `;
 
 const PicWrapper = styled.div`
@@ -175,14 +176,22 @@ const PicWrapper = styled.div`
 `;
 
 const Name = styled.h2`
-  margin: 2px 2px 0;
+  margin: 0px 2px 0;
   font-size: 20px;
+  /* font-weight: lighter; */
+  @media (min-width: 769px) {
+    font-size: 25px;
+  }
 `;
 
 const Description = styled.h3`
-  margin: 2px 2px 0;
+  font-weight: lighter;
 
+  margin: 2px 2px 0;
   font-size: 15px;
+  @media (min-width: 769px) {
+    font-size: 19px;
+  }
 `;
 
 const Creator = styled.h4`
