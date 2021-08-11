@@ -5,12 +5,13 @@ import {Link} from "react-router-dom";
 import {UserContext} from "./UserContext";
 import Comment from "./Comment";
 
-const Game = ({game, isLiked}) => {
+const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
   const [liked, setLiked] = useState(isLiked);
   const {currentUser} = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
   const [comment, setComment] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [addComment, setAddComment] = useState(false);
 
   console.log(game);
 
@@ -55,8 +56,9 @@ const Game = ({game, isLiked}) => {
       });
   };
 
-  const submitComment = (comment) => {
-    fetch(`/comment/${game._id}`, {
+  const submitComment = async (comment) => {
+    setUpdatePage(!updatePage);
+    await fetch(`/comment/${game._id}`, {
       method: "PUT",
       body: JSON.stringify({
         comment: comment,
@@ -66,7 +68,15 @@ const Game = ({game, isLiked}) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => res.json().then((res) => console.log(res)));
+    })
+      .then((res) => {
+        console.log("Gotten here");
+
+        res.json();
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (
@@ -113,7 +123,7 @@ const Game = ({game, isLiked}) => {
       </GameBox>
       <CommentsSection>
         {game.comments.map((comment) => {
-          return <Comment key={Math.random() * 9999} comment={comment} />;
+          return <Comment key={Math.random() * 999999} comment={comment} />;
         })}
         <CreateComment>
           <CommentInput
@@ -122,6 +132,7 @@ const Game = ({game, isLiked}) => {
               setComment(ev.target.value);
               setInputValue(ev.target.value);
             }}
+            value={inputValue}
           ></CommentInput>
           <Submit
             onClick={() => {
@@ -180,7 +191,7 @@ const Name = styled.h2`
   font-size: 20px;
   /* font-weight: lighter; */
   @media (min-width: 769px) {
-    font-size: 25px;
+    font-size: 30px;
   }
 `;
 
@@ -190,13 +201,16 @@ const Description = styled.h3`
   margin: 2px 2px 0;
   font-size: 15px;
   @media (min-width: 769px) {
-    font-size: 19px;
+    font-size: 23px;
   }
 `;
 
 const Creator = styled.h4`
   font-size: 10px;
   margin: 2px 2px 0;
+  @media (min-width: 769px) {
+    font-size: 18px;
+  }
 `;
 
 const LikeBox = styled.div``;

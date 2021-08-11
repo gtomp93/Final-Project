@@ -11,6 +11,7 @@ import LoginButton from "./LoginButton";
 const Homepage = () => {
   const [games, setGames] = useState(null);
   const [liked, setLiked] = useState(null);
+  const [updatePage, setUpdatePage] = useState(false);
   const {currentUser, isAuthenticated} = useContext(UserContext);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const Homepage = () => {
         console.log("this thing", res);
         setGames(res.result);
       });
-  }, [currentUser]);
+  }, [currentUser, updatePage]);
 
   // const likeGame = () =>{
   //   fetch(`/likeGame/${_id}`)
@@ -31,14 +32,6 @@ const Homepage = () => {
   if (!currentUser) {
     return "loading";
   }
-  // else if (currentUser === "loggedOut") {
-  //   return (
-  //     <>
-  //       <LoginButton />
-  //       <div>Logged out</div>
-  //     </>
-  //   );
-  // }
 
   console.log("currentUser.pic", currentUser.picture);
 
@@ -57,22 +50,13 @@ const Homepage = () => {
         }
         return (
           <>
-            <Game game={game} isLiked={isLiked} key={index} />
-
-            {/* <GameContainer key={Math.ceil(Math.random() * 100) * index}>
-              <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
-              <GamePic src={game.pic}></GamePic>
-              <div>{game.description}</div>
-              <LikeButton
-                onClick={() => {
-                  setLiked(true);
-                }}
-              >
-                <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
-              </LikeButton>
-
-              <Likes>{game.likes ? game.likes : null}</Likes>
-            </GameContainer> */}
+            <Game
+              game={game}
+              isLiked={isLiked}
+              key={index}
+              updatePage={updatePage}
+              setUpdatePage={setUpdatePage}
+            />
           </>
         );
       })}
