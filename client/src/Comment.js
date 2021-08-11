@@ -17,16 +17,18 @@ export default Comment;
 const CommentBubble = styled.div`
   display: flex;
   align-items: center;
-  /* padding: 0 10px 0; */
+  flex-wrap: wrap;
 `;
 
 const CommentText = styled.div`
-  height: 20px;
+  font-size: 15px;
   background: #f0eee9;
   border: solid lightGrey 1px;
   border-radius: 8px;
   padding: 0 10px 2px;
   margin-left: 3px;
+  flex-wrap: wrap;
+
   @media (min-width: 650px) {
     height: 25px;
   }

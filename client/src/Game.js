@@ -150,7 +150,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 };
 
 const GameContainer = styled.div`
-  width: 100vw;
+  width: 96vw;
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -175,7 +175,7 @@ const BackgroundDiv = styled.div`
 `;
 
 const GameBox = styled.div`
-  width: 100vw;
+  width: 96%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 7px 7px 0 0;
   padding: 8px 0 0;
@@ -221,7 +221,7 @@ const Description = styled.h3`
 `;
 
 const Creator = styled.h4`
-  font-size: 10px;
+  font-size: 13px;
   margin: 2px 2px 0;
   @media (min-width: 769px) {
     font-size: 18px;
@@ -231,7 +231,7 @@ const Creator = styled.h4`
 const LikeBox = styled.div``;
 
 const CommentsSection = styled.div`
-  width: 100vw;
+  width: 96%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 0 0 7px 7px;
   @media (min-width: 700px) {
