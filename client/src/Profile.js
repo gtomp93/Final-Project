@@ -22,26 +22,28 @@ const Profile = () => {
   };
 
   useEffect(async () => {
-    await currentUser.games.map((game, index) => {
-      fetch(`/getGame/${game}`)
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          setGames((arr) => [...arr, res.result]);
-        });
-    });
-
-    await currentUser.likes.map((game) => {
-      if (game) {
+    if (currentUser) {
+      await currentUser.games.map((game, index) => {
         fetch(`/getGame/${game}`)
           .then((res) => res.json())
           .then((res) => {
             console.log(res);
-            setLikedGames((arr) => [...arr, res.result]);
+            setGames((arr) => [...arr, res.result]);
           });
-      }
-    });
-  }, []);
+      });
+
+      await currentUser.likes.map((game) => {
+        if (game) {
+          fetch(`/getGame/${game}`)
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res);
+              setLikedGames((arr) => [...arr, res.result]);
+            });
+        }
+      });
+    }
+  }, [currentUser]);
 
   const deleteGame = async (_id) => {
     await fetch(`/deleteGame/${_id}`, {
@@ -109,7 +111,11 @@ const Profile = () => {
                     onClick={() => {
                       deleteGame(game._id);
                     }}
-                    style={{width: "200px", alignSelf: "center"}}
+                    style={{
+                      width: "200px",
+                      alignSelf: "center",
+                      marginTop: "3px",
+                    }}
                   >
                     Delete {game.name}
                   </button>

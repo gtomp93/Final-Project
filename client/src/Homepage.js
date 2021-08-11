@@ -47,15 +47,13 @@ const Homepage = () => {
           isLiked = true;
         }
         return (
-          <>
-            <Game
-              game={game}
-              isLiked={isLiked}
-              key={index}
-              updatePage={updatePage}
-              setUpdatePage={setUpdatePage}
-            />
-          </>
+          <Game
+            game={game}
+            isLiked={isLiked}
+            key={Math.random() * 99999}
+            updatePage={updatePage}
+            setUpdatePage={setUpdatePage}
+          />
         );
       })}
     </Container>
