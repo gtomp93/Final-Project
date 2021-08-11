@@ -30,7 +30,8 @@ const CommentText = styled.div`
   /* flex-wrap: wrap; */
 
   @media (min-width: 650px) {
-    height: 25px;
+    height: 22px;
+    padding-top: 2px;
   }
 `;
 

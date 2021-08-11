@@ -101,19 +101,22 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
                   likeGame();
                 }}
               >
-                <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
+                <FiHeart
+                  size="22px"
+                  style={liked ? {fill: "red"} : {fill: "none"}}
+                />
               </LikeButton>
               <Likes>{numLikes ? numLikes : null}</Likes>{" "}
             </LikeBox>
           </div>
           <CommentBox>
-            <FiMessageCircle />
+            <FiMessageCircle size="22px" />
             <NumComments>
               {game.comments.length ? game.comments.length : null}
             </NumComments>
           </CommentBox>
           <StartGame to={`/gameOptions/${game._id}`}>
-            <FiPlay style={{fill: "green"}} />
+            <FiPlay size="22px" style={{fill: "green"}} />
             <Play>Play</Play>
           </StartGame>
         </ActionBar>
@@ -205,6 +208,7 @@ const Name = styled.h2`
   /* font-weight: lighter; */
   @media (min-width: 769px) {
     font-size: 30px;
+    margin: 0 7px 5px;
   }
 `;
 
@@ -215,6 +219,7 @@ const Description = styled.h3`
   font-size: 15px;
   @media (min-width: 769px) {
     font-size: 23px;
+    margin: 0 7px 8px;
   }
 `;
 
@@ -223,10 +228,14 @@ const Creator = styled.h4`
   margin: 2px 2px 0;
   @media (min-width: 769px) {
     font-size: 18px;
+    margin: 0 7px 0;
   }
 `;
 
-const LikeBox = styled.div``;
+const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const CommentsSection = styled.div`
   width: 96%;
@@ -247,7 +256,10 @@ const CommentsSection = styled.div`
 //   box-shadow: none;
 // `;
 
-const CommentBox = styled.div``;
+const CommentBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const CreateComment = styled.div`
   margin-top: 7px;
@@ -285,7 +297,9 @@ const Play = styled.span`
   font-weight: bolder;
 `;
 
-const Likes = styled.span``;
+const Likes = styled.span`
+  margin-bottom: 4px;
+`;
 
 const CommentInput = styled.textarea`
   margin-left: 4px;
