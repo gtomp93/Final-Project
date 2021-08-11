@@ -22,12 +22,12 @@ const CommentBubble = styled.div`
 
 const CommentText = styled.div`
   font-size: 15px;
-  background: #f0eee9;
+  background: #e8e6df;
   border: solid lightGrey 1px;
   border-radius: 8px;
-  padding: 0 10px 2px;
+  padding: 1px 10px 1px;
   margin-left: 3px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 
   @media (min-width: 650px) {
     height: 25px;

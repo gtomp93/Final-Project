@@ -81,7 +81,6 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 
   return (
     <GameContainer>
-      <BackgroundDiv></BackgroundDiv>
       <GameBox>
         <GameWrapper>
           <PicWrapper>
@@ -115,7 +114,6 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
           </CommentBox>
           <StartGame to={`/gameOptions/${game._id}`}>
             <FiPlay style={{fill: "green"}} />
-
             <Play>Play</Play>
           </StartGame>
         </ActionBar>
@@ -153,7 +151,7 @@ const GameContainer = styled.div`
   width: 96vw;
   margin-bottom: 20px;
   position: relative;
-  z-index: 1;
+  z-index: 4;
   /* height: 30vh; */
   /* background-color: rgb(255, 255, 255, 0.3); */
 
@@ -290,6 +288,7 @@ const Play = styled.span`
 const Likes = styled.span``;
 
 const CommentInput = styled.textarea`
+  margin-left: 4px;
   border-radius: 7px;
   width: 70%;
   @media (min-width: 769) {

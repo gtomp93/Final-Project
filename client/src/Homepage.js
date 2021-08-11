@@ -39,8 +39,6 @@ const Homepage = () => {
 
   return (
     <Container>
-      <div>Home</div>
-
       <Link to={"/CreateMapForm"}>Create Map</Link>
       {games.map((game, index) => {
         let isLiked = false;

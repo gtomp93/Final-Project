@@ -228,7 +228,7 @@ const Map = () => {
     <>
       <PageContainer>
         <BigWrapper guessed={guessed}>
-          {timed === "timed" && <div>{timer}</div>}{" "}
+          {/* {timed === "timed" && <div>{timer}</div>} */}
           <MapsWrapper guessed={guessed}>
             <MapWrapper guessed={guessed} expand={expand} hide={hide}>
               <GoogleMap
@@ -306,6 +306,8 @@ const Map = () => {
             >
               Guess
             </button>
+            {timed === "timed" && <TimerDisplay>{timer}</TimerDisplay>}
+
             {!guessed && (
               <div style={{display: "flex"}}>
                 <HideButton
@@ -363,6 +365,7 @@ const PageContainer = styled.div`
 `;
 
 const BigWrapper = styled.div`
+  margin-top: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -507,6 +510,13 @@ const BottomContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  position: relative;
+`;
+
+const TimerDisplay = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
 `;
 
 const HideButton = styled.button``;
