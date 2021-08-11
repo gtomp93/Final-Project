@@ -5,11 +5,13 @@ import {FiHeart} from "react-icons/fi";
 // import {userInfo} from "os";
 import {UserContext} from "./UserContext";
 import Game from "./Game";
+import LogoutButton from "./LogoutButton";
+import LoginButton from "./LoginButton";
 
 const Homepage = () => {
   const [games, setGames] = useState(null);
   const [liked, setLiked] = useState(null);
-  const {currentUser} = useContext(UserContext);
+  const {currentUser, isAuthenticated} = useContext(UserContext);
 
   useEffect(() => {
     fetch("/getGames")
@@ -18,30 +20,34 @@ const Homepage = () => {
         console.log("this thing", res);
         setGames(res.result);
       });
-  }, []);
+  }, [currentUser]);
 
   // const likeGame = () =>{
   //   fetch(`/likeGame/${_id}`)
   // }
-
+  console.log("currentUser", currentUser);
   console.log(games);
 
   if (!currentUser) {
     return "loading";
   }
+  // else if (currentUser === "loggedOut") {
+  //   return (
+  //     <>
+  //       <LoginButton />
+  //       <div>Logged out</div>
+  //     </>
+  //   );
+  // }
+
+  console.log("currentUser.pic", currentUser.picture);
+
+  console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
 
   return (
-    <div style={{marginLeft: "20px"}}>
+    <div>
       <div>Home</div>
-      <div style={{width: "100px", height: "50px", border: "solid black 1px"}}>
-        <Link to={"/gameOptions/worldTour"}>World Tour</Link>
-      </div>
-      <div style={{width: "100px", height: "50px", border: "solid black 1px"}}>
-        <Link to={"/gameOptions/worldTour"}>Canada</Link>
-      </div>
-      <div style={{width: "100px", height: "50px", border: "solid black 1px"}}>
-        <Link to={"/gameOptions/worldTour"}>Cities</Link>
-      </div>
+
       <Link to={"/CreateMapForm"}>Create Map</Link>
       {games.map((game, index) => {
         let isLiked = false;
@@ -50,19 +56,24 @@ const Homepage = () => {
           isLiked = true;
         }
         return (
-          <Game game={game} isLiked={isLiked} key={index} />
-          // <GameContainer key={Math.ceil(Math.random() * 100) * index}>
-          //   <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
-          //   <GamePic src={game.pic}></GamePic>
-          //   <div>{game.description}</div>
-          //   <LikeButton onClick={()=>{setLiked(true)}}>
-          //     <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
-          //   </LikeButton>
+          <>
+            <Game game={game} isLiked={isLiked} key={index} />
 
-          //   <Likes>{game.likes ? game.likes : null}</Likes>
-          // </GameContainer>
-          //     );
-          //   })}
+            {/* <GameContainer key={Math.ceil(Math.random() * 100) * index}>
+              <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
+              <GamePic src={game.pic}></GamePic>
+              <div>{game.description}</div>
+              <LikeButton
+                onClick={() => {
+                  setLiked(true);
+                }}
+              >
+                <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
+              </LikeButton>
+
+              <Likes>{game.likes ? game.likes : null}</Likes>
+            </GameContainer> */}
+          </>
         );
       })}
     </div>

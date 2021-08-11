@@ -40,7 +40,7 @@ const checkForUser = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const {email, givenName, lastName, picture} = req.body;
+    const {email, givenName, lastName, picture, likes, games, score} = req.body;
     // console.log(req.oidc);
     // let user = req.oidc.user;
     let _id = uuidv4();
@@ -49,9 +49,16 @@ const addUser = async (req, res) => {
     await client.connect();
     const db = client.db("Final_Project");
 
-    await db
-      .collection("Users")
-      .insertOne({_id, email, givenName, lastName, picture, score: 0});
+    result = await db.collection("Users").insertOne({
+      _id,
+      email,
+      givenName,
+      lastName,
+      picture,
+      likes,
+      games,
+      score,
+    });
     console.log("result", result);
     res.status(200).json({status: 200, updated: _id});
     client.close();
@@ -139,7 +146,7 @@ const updateUserScore = async (req, res) => {
 
 const CreateGame = async (req, res) => {
   try {
-    const {name, description, pic, locations} = req.body;
+    const {name, description, pic, locations, creator, comments} = req.body;
 
     let _id = uuidv4();
 
@@ -148,7 +155,7 @@ const CreateGame = async (req, res) => {
     const db = client.db("Final_Project");
     const result = await db
       .collection("Game_Modes")
-      .insertOne({_id, name, description, pic, locations});
+      .insertOne({_id, name, description, pic, locations, creator, comments});
 
     res.status(200).json({status: 200, _id, result});
     client.close();
@@ -265,7 +272,7 @@ const likeGame = async (req, res) => {
 const comment = async (req, res) => {
   try {
     const {_id} = req.params;
-    const {comment, commentBy} = req.body;
+    const {comment, commentBy, pic} = req.body;
 
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
@@ -273,7 +280,7 @@ const comment = async (req, res) => {
 
     await db
       .collection("Game_Modes")
-      .updateOne({_id}, {$push: {comments: {comment, commentBy}}});
+      .updateOne({_id}, {$push: {comments: {comment, commentBy, pic}}});
 
     client.close();
   } catch (err) {

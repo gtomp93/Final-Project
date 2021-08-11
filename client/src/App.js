@@ -10,15 +10,15 @@ import GameOptions from "./GameOptions";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Profile from "./Profile";
 import Homepage from "./Homepage";
-import {useAuth0} from "@auth0/auth0-react";
+// import {useAuth0} from "@auth0/auth0-react";
 import CreateMap from "./CreateMap";
 
-import {Auth0Provider} from "@auth0/auth0-react";
-import LoginButton from "./LoginButton";
+// import {Auth0Provider} from "@auth0/auth0-react";
+// import LoginButton from "./LoginButton";
 
 function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
-  const {user, isAuthenticated, isLoading} = useAuth0();
+  // const {user, isAuthenticated, isLoading} = useAuth0();
 
   return (
     <>
@@ -43,7 +43,7 @@ function App() {
         <Route exact path="/login">
           <Login />
         </Route>
-        <Route exact path="/logout">
+        <Route exact path="/logoutPage">
           <Logout />
         </Route>
         <Route exact path="/profile">

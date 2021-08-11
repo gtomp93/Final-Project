@@ -1,10 +1,7 @@
 import React from "react";
 
 const Logout = () => {
-  <>
-    <div>HELLO?</div>
-    <div>Logout</div>;
-  </>;
+  <div>HELLO?</div>;
 };
 
 export default Logout;

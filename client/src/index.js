@@ -11,12 +11,17 @@ import {MapCreationContextProvider} from "./MapCreationContext";
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+//window.location.origin
 
+console.log(window.location.origin, "window");
 ReactDOM.render(
   <Auth0Provider
     domain="dev-rgqyv6wo.us.auth0.com"
-    clientId="WajTUaJ4qinBeSFvoUuzoLadtaB7eFYb"
+    clientId="6GQJ2r01PH7RZmFndEDkGIEKKv0A7569"
     redirectUri={window.location.origin}
+    // redirectUri={
+    // "https://dev-rgqyv6wo.us.auth0.com/api/v2/clients/6GQJ2r01PH7RZmFndEDkGIEKKv0A7569"
+    // }
   >
     <UserContextProvider>
       <GameContextProvider>

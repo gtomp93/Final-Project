@@ -36,7 +36,7 @@ export const MapCreationContextProvider = ({children}) => {
     let copy = mapData;
     copy.locations = locations;
     copy.likes = 0;
-    copy.creator = currentUser._id;
+    copy.creator = currentUser.givenName + " " + currentUser.lastName;
     copy.comments = [];
     console.log(copy);
 

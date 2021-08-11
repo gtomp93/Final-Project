@@ -1,8 +1,9 @@
 import React, {useContext, useState} from "react";
 import styled from "styled-components";
-import {FiHeart} from "react-icons/fi";
+import {FiHeart, FiMessageCircle, FiPlay} from "react-icons/fi";
 import {Link} from "react-router-dom";
 import {UserContext} from "./UserContext";
+import Comment from "./Comment";
 
 const Game = ({game, isLiked}) => {
   const [liked, setLiked] = useState(isLiked);
@@ -13,9 +14,9 @@ const Game = ({game, isLiked}) => {
 
   console.log(game);
 
-  if (!currentUser) {
-    return "loading";
-  }
+  // if (!currentUser) {
+  //   return "loading";
+  // }
 
   // if (game.comments.length) {
   //   comments = game.comments;
@@ -60,6 +61,7 @@ const Game = ({game, isLiked}) => {
       body: JSON.stringify({
         comment: comment,
         commentBy: currentUser._id,
+        pic: currentUser.picture,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -69,17 +71,47 @@ const Game = ({game, isLiked}) => {
 
   return (
     <GameContainer>
-      <Link to={`/gameOptions/${game._id}`}>{game.name}</Link>
-      <GamePic src={game.pic}></GamePic>
-      <div>{game.description}</div>
-      <LikeButton
-        onClick={() => {
-          likeGame();
-        }}
-      >
-        <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
-      </LikeButton>
-      <Likes>{numLikes ? numLikes : null}</Likes>
+      <GameWrapper>
+        <PicWrapper>
+          <GamePic src={game.pic} />
+        </PicWrapper>
+        <DescriptionWrapper>
+          <div>{game.name}</div>
+          <div>{game.description}</div>
+        </DescriptionWrapper>
+      </GameWrapper>
+
+      <ActionBar>
+        <div>
+          <LikeBox>
+            <LikeButton
+              onClick={() => {
+                likeGame();
+              }}
+            >
+              <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
+            </LikeButton>
+            <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+          </LikeBox>
+        </div>
+        <CommentBox>
+          <FiMessageCircle />
+          <NumComments>
+            {game.comments.length ? game.comments.length : null}
+          </NumComments>
+        </CommentBox>
+        <Play>
+          <StartGame to={`/gameOptions/${game._id}`}>
+            <FiPlay />
+
+            <span>Play</span>
+          </StartGame>
+        </Play>
+      </ActionBar>
+      {game.comments.map((comment) => {
+        return <Comment key={Math.random() * 9999} comment={comment} />;
+      })}
+
       <CommentInput
         placeholder="comment"
         onChange={(ev) => {
@@ -95,25 +127,66 @@ const Game = ({game, isLiked}) => {
       >
         Submit
       </Submit>
-      {game.comments.map((item) => {
-        return <div key={Math.random() * 9999}>{item.comment}</div>;
-      })}
+
       {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
     </GameContainer>
   );
 };
 
-const GameContainer = styled.div``;
+const GameContainer = styled.div`
+  width: 100vw;
+  /* margin-bottom: 20px; */
+  height: 30vh;
+  @media (min-width: 700px) {
+    height: 600px;
+  }
+`;
+
+const GameWrapper = styled.div`
+  display: flex;
+  justify-content: left;
+  width: 100%;
+`;
 
 const GamePic = styled.img`
-  width: 50px;
-  display: block;
+  width: 100%;
+`;
+
+const CommentBox = styled.div``;
+
+const LikeBox = styled.div``;
+
+const Play = styled.button`
+  background: inherit;
+  border: 1 px solid grey;
+  border-radius: 5px;
+`;
+
+const NumComments = styled.span``;
+
+const PicWrapper = styled.div`
+  width: 50%;
+`;
+
+const DescriptionWrapper = styled.div`
+  width: 100%;
+`;
+
+const ActionBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 66%;
 `;
 
 const LikeButton = styled.button`
   background: inherit;
   border: none;
+`;
+
+const StartGame = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
 
 const Likes = styled.span``;
