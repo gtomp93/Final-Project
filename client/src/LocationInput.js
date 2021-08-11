@@ -61,7 +61,7 @@ const LocationInput = ({
   return (
     <>
       <Container>
-        <label>Enter Address</label>
+        <label style={{marginRight: "2px"}}>Enter Address</label>
         <Input
           value={typeof item === "object" ? names[index] : inputValue}
           onChange={(ev) => {
@@ -111,20 +111,6 @@ const LocationInput = ({
           </Edit>
         )}
 
-        {/* {typeof item === "object" && (
-          <Edit
-            onClick={(ev) => {
-              editLocation(index);
-              setInputValue("");
-              // setDisabled(false);
-              setStatus(null);
-            }}
-            type="reset"
-            defaultValue="Reset"
-          >
-            Edit
-          </Edit>
-        )} */}
         {index > 4 && (
           <button
             onClick={() => {
@@ -163,6 +149,7 @@ const Error = styled.span`
 
 const Added = styled.span`
   color: green;
+  font-weight: bolder;
 `;
 
 export default LocationInput;

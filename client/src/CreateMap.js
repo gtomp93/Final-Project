@@ -19,7 +19,7 @@ const streetViewStyle = {
 };
 
 const streetViewOptions = {
-  //   disableDefaultUI: true,
+  disableDefaultUI: true,
   streetViewControl: true,
   enableCloseButton: false,
   showRoadLabels: false,
@@ -209,6 +209,7 @@ const CreateMap = () => {
               setComplete(false);
               // setCreated(false);
             }}
+            style={{marginRight: "15px"}}
           >
             Add another location
           </button>
@@ -225,7 +226,7 @@ const CreateMap = () => {
       )}
       {position && (
         <>
-          <div>Street view of {title}</div>
+          <ViewLabel>Street view of {title}</ViewLabel>
           <GoogleMap
             mapContainerStyle={streetViewStyle}
             options={streetViewOptions}
@@ -254,5 +255,10 @@ const Container = styled.div`
 `;
 
 const LocationsListContainer = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 10px;
+`;
+
+const ViewLabel = styled.h3`
+  margin: 0 0 6px;
+  color: black;
 `;
