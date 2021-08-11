@@ -29,7 +29,7 @@ const Homepage = () => {
   console.log("currentUser", currentUser);
   console.log(games);
 
-  if (!currentUser) {
+  if (!currentUser || !games) {
     return "loading";
   }
 

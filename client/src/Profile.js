@@ -2,14 +2,24 @@ import React, {useContext, useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {UserContext} from "./UserContext";
 import Game from "./Game";
+import styled from "styled-components";
 
 const Profile = () => {
   const {user, isAuthenticated, isLoading} = useAuth0();
   const {currentUser} = useContext(UserContext);
   const [games, setGames] = useState([]);
   const [likedGames, setLikedGames] = useState([]);
+  const [created, setCreated] = useState(true);
   console.log(currentUser);
   console.log("games", games);
+
+  const toggleCreate = () => {
+    setCreated(true);
+  };
+
+  const toggleLike = () => {
+    setCreated(false);
+  };
 
   useEffect(async () => {
     await currentUser.games.map((game, index) => {
@@ -63,44 +73,96 @@ const Profile = () => {
 
   return (
     isAuthenticated && (
-      <>
-        <div>
+      <Container>
+        <div style={{margin: "10px 8px 5px"}}>
           <img src={user.picture} alt={user.name} />
           <h2>{user.name}</h2>
           <p>{user.email}</p>
         </div>
-        <div>Created Games</div>
-        {games.map((game) => {
-          if (game) {
-            let isLiked = currentUser.likes.includes(game._id);
-            console.log(isLiked);
-            return (
-              <div key={Math.random() * 9999}>
-                <Game game={game} isLiked={isLiked} />
-                <button
-                  onClick={() => {
-                    deleteGame(game._id);
-                  }}
+        <Choose>
+          <GamesOption
+            onClick={toggleCreate}
+            style={created ? {fontWeight: "bolder"} : null}
+          >
+            Created Games
+          </GamesOption>
+          <span style={{fontSize: "30px"}}>|</span>
+          <GamesOption
+            onClick={toggleLike}
+            style={created ? null : {fontWeight: "bolder"}}
+          >
+            Liked Games
+          </GamesOption>
+        </Choose>
+        <Created created={created}>
+          {games.map((game) => {
+            if (game) {
+              let isLiked = currentUser.likes.includes(game._id);
+              console.log(isLiked);
+              return (
+                <div
+                  key={Math.random() * 9999}
+                  style={{display: "flex", flexDirection: "column"}}
                 >
-                  Delete {game.name}
-                </button>
-              </div>
-            );
-          }
-        })}
-        <div>Liked Games</div>
-        {likedGames.map((game) => {
-          if (game) {
-            let isLiked = currentUser.likes.includes(game._id);
-            console.log(isLiked);
-            return (
-              <Game game={game} isLiked={isLiked} key={Math.random() * 9999} />
-            );
-          }
-        })}
-      </>
+                  <Game game={game} isLiked={isLiked} />
+                  <button
+                    onClick={() => {
+                      deleteGame(game._id);
+                    }}
+                    style={{width: "200px", alignSelf: "center"}}
+                  >
+                    Delete {game.name}
+                  </button>
+                </div>
+              );
+            }
+          })}
+        </Created>
+        <Liked created={created}>
+          {likedGames.map((game) => {
+            if (game) {
+              let isLiked = currentUser.likes.includes(game._id);
+              console.log(isLiked);
+              return (
+                <Game
+                  game={game}
+                  isLiked={isLiked}
+                  key={Math.random() * 9999}
+                />
+              );
+            }
+          })}
+        </Liked>
+      </Container>
     )
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Choose = styled.div`
+  display: flex;
+  align-self: center;
+`;
+
+const GamesOption = styled.button`
+  background: inherit;
+  font-size: 24px;
+  border: none;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Created = styled.div`
+  display: ${(props) => (props.created ? "block" : "none")};
+`;
+
+const Liked = styled.div`
+  display: ${(props) => (props.created ? "none" : "block")};
+`;
 
 export default Profile;

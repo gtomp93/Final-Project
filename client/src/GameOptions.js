@@ -24,6 +24,7 @@ const GameOptions = () => {
 
   return (
     <div style={{marginLeft: "20px", marginTop: "25px"}}>
+      <h1>Choose Game Mode</h1>
       <button
         onClick={() => {
           setSelected("single");
@@ -64,7 +65,7 @@ const GameOptions = () => {
         No Time Limits
       </Untimed>
       {locations && (timed === "timed" || timed === "untimed") && (
-        <Link to={`/map/${id}`}>Start</Link>
+        <StartGame to={`/map/${id}`}>Start</StartGame>
       )}
     </div>
   );
@@ -72,8 +73,19 @@ const GameOptions = () => {
 
 const Multiplayer = styled.div`
   width: 280px;
-  height: 150px;
+  height: 75px;
   border: solid black 1px;
+  margin: 5px 0 5px;
+`;
+
+const StartGame = styled(Link)`
+  font-size: 16px;
+  background-color: #b9bec7;
+  text-decoration: none;
+  color: black;
+  padding: 1px 4px 1px;
+  margin-left: 8px;
+  border-radius: 2px;
 `;
 
 const Search = styled.button`

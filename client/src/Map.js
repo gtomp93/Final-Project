@@ -283,12 +283,12 @@ const Map = () => {
             </GoogleMap>
           </MapsWrapper>
           {guessed && (
-            <div>
+            <Message>
               Your guess was {(distance / 1000).toFixed(2)} km away! You scored
               {points} points!
-            </div>
+            </Message>
           )}
-          {endGame && <div>Game Over. Your score is {gameScore}</div>}
+          {endGame && <GameOver>Game Over. Your score is {gameScore}</GameOver>}
           <BottomContainer>
             <button
               onClick={() => {
@@ -362,7 +362,7 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 95vh;
+  height: 90vh;
 `;
 
 const BigWrapper = styled.div`
@@ -393,6 +393,11 @@ const BigWrapper = styled.div`
     `};
 `;
 
+const GameOver = styled.div`
+  color: #afb4bd;
+  font-weight: bolder;
+`;
+
 const MapsWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -406,6 +411,10 @@ const MapsWrapper = styled.div`
     `};
 `;
 
+const Message = styled.div`
+  color: #afb4bd;
+  font-weight: bolder;
+`;
 // const StreetViewWrapper = styled.div`
 //   position: absolute;
 //   top: 0;
@@ -515,6 +524,7 @@ const BottomContainer = styled.div`
 `;
 
 const TimerDisplay = styled.div`
+  font-weight: bolder;
   position: absolute;
   left: 50%;
   transform: translateX(50%);
