@@ -77,9 +77,9 @@ const Game = ({game, isLiked}) => {
             <GamePic src={game.pic} />
           </PicWrapper>
           <DescriptionWrapper>
-            <h2>{game.name}</h2>
-            <h3>{game.description}</h3>
-            <h4>Created by {game.creator}</h4>
+            <Name>{game.name}</Name>
+            <Description>{game.description}</Description>
+            <Creator>Created by {game.creator}</Creator>
           </DescriptionWrapper>
         </GameWrapper>
 
@@ -115,22 +115,23 @@ const Game = ({game, isLiked}) => {
         {game.comments.map((comment) => {
           return <Comment key={Math.random() * 9999} comment={comment} />;
         })}
-
-        <CommentInput
-          placeholder="comment"
-          onChange={(ev) => {
-            setComment(ev.target.value);
-            setInputValue(ev.target.value);
-          }}
-        ></CommentInput>
-        <Submit
-          onClick={() => {
-            submitComment(comment);
-            setInputValue("");
-          }}
-        >
-          Submit
-        </Submit>
+        <CreateComment>
+          <CommentInput
+            placeholder="comment"
+            onChange={(ev) => {
+              setComment(ev.target.value);
+              setInputValue(ev.target.value);
+            }}
+          ></CommentInput>
+          <Submit
+            onClick={() => {
+              submitComment(comment);
+              setInputValue("");
+            }}
+          >
+            Submit
+          </Submit>
+        </CreateComment>
       </CommentsSection>
       {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
@@ -164,6 +165,33 @@ const GameWrapper = styled.div`
   width: 100%;
 `;
 
+const GamePic = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+const PicWrapper = styled.div`
+  width: 50%;
+`;
+
+const Name = styled.h2`
+  margin: 2px 2px 0;
+  font-size: 20px;
+`;
+
+const Description = styled.h3`
+  margin: 2px 2px 0;
+
+  font-size: 15px;
+`;
+
+const Creator = styled.h4`
+  font-size: 10px;
+  margin: 2px 2px 0;
+`;
+
+const LikeBox = styled.div``;
+
 const CommentsSection = styled.div`
   width: 100vw;
 
@@ -171,14 +199,6 @@ const CommentsSection = styled.div`
     width: 80%;
   }
 `;
-
-const GamePic = styled.img`
-  width: 100%;
-`;
-
-const CommentBox = styled.div``;
-
-const LikeBox = styled.div``;
 
 const Play = styled.button`
   background: inherit;
@@ -188,11 +208,13 @@ const Play = styled.button`
   align-items: center;
 `;
 
-const NumComments = styled.span``;
+const CommentBox = styled.div``;
 
-const PicWrapper = styled.div`
-  width: 50%;
+const CreateComment = styled.div`
+  margin-top: 7px;
 `;
+
+const NumComments = styled.span``;
 
 const DescriptionWrapper = styled.div`
   width: 100%;
@@ -216,7 +238,13 @@ const StartGame = styled(Link)`
 
 const Likes = styled.span``;
 
-const CommentInput = styled.input``;
+const CommentInput = styled.textarea`
+  border-radius: 7px;
+  width: 70%;
+  @media (min-width: 769) {
+    width: 50%;
+  }
+`;
 
 const Submit = styled.button``;
 

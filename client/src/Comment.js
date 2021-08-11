@@ -23,6 +23,7 @@ const Container = styled.div`
   width: 80%;
   display: flex;
   height: 6%;
+  margin-top: 4px;
 `;
 
 const Pic = styled.img`
