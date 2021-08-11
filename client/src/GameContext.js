@@ -96,36 +96,40 @@ export const GameContextProvider = ({children}) => {
 
     if (distance <= 100) {
       score = 2000;
-    } else if (distance <= 200) {
-      score = 1900;
+    } else if (distance <= 500) {
+      score = 1950;
     } else if (distance <= 1000) {
-      score = 1800;
+      score = 1900;
     } else if (distance <= 2000) {
-      score = 1700;
+      score = 1850;
     } else if (distance <= 20000) {
-      score = 1600;
+      score = 1800;
     } else if (distance <= 50000) {
-      score = 1400;
+      score = 1750;
     } else if (distance <= 100000) {
-      score = 1400;
+      score = 1700;
+    } else if (distance <= 150000) {
+      score = 16000;
     } else if (distance <= 200000) {
-      score = 1200;
+      score = 1500;
+    } else if (distance <= 300000) {
+      score = 1400;
     } else if (distance <= 400000) {
-      score = 1000;
+      score = 1200;
     } else if (distance <= 700000) {
-      score = 800;
+      score = 1000;
     } else if (distance <= 1200000) {
-      score = 600;
+      score = 800;
     } else if (distance <= 1600000) {
-      score = 500;
+      score = 600;
     } else if (distance <= 2000000) {
-      score = 300;
-    } else if (distance < 4000000) {
+      score = 500;
+    } else if (distance <= 4000000) {
+      score = 400;
+    } else if (distance <= 5000000) {
       score = 200;
-    } else if (distance < 5000000) {
+    } else if (distance <= 6000000) {
       score = 100;
-    } else if (distance < 6000000) {
-      score = 50;
     }
     setPoints(score);
     setGameScore(gameScore + score);
