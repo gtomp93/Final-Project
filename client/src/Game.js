@@ -71,63 +71,67 @@ const Game = ({game, isLiked}) => {
 
   return (
     <GameContainer>
-      <GameWrapper>
-        <PicWrapper>
-          <GamePic src={game.pic} />
-        </PicWrapper>
-        <DescriptionWrapper>
-          <div>{game.name}</div>
-          <div>{game.description}</div>
-        </DescriptionWrapper>
-      </GameWrapper>
+      <GameBox>
+        <GameWrapper>
+          <PicWrapper>
+            <GamePic src={game.pic} />
+          </PicWrapper>
+          <DescriptionWrapper>
+            <h2>{game.name}</h2>
+            <h3>{game.description}</h3>
+            <h4>Created by {game.creator}</h4>
+          </DescriptionWrapper>
+        </GameWrapper>
 
-      <ActionBar>
-        <div>
-          <LikeBox>
-            <LikeButton
-              onClick={() => {
-                likeGame();
-              }}
-            >
-              <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
-            </LikeButton>
-            <Likes>{numLikes ? numLikes : null}</Likes>{" "}
-          </LikeBox>
-        </div>
-        <CommentBox>
-          <FiMessageCircle />
-          <NumComments>
-            {game.comments.length ? game.comments.length : null}
-          </NumComments>
-        </CommentBox>
-        <Play>
-          <StartGame to={`/gameOptions/${game._id}`}>
-            <FiPlay />
+        <ActionBar>
+          <div>
+            <LikeBox>
+              <LikeButton
+                onClick={() => {
+                  likeGame();
+                }}
+              >
+                <FiHeart style={liked ? {fill: "red"} : {fill: "none"}} />
+              </LikeButton>
+              <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+            </LikeBox>
+          </div>
+          <CommentBox>
+            <FiMessageCircle />
+            <NumComments>
+              {game.comments.length ? game.comments.length : null}
+            </NumComments>
+          </CommentBox>
+          <Play>
+            <StartGame to={`/gameOptions/${game._id}`}>
+              <FiPlay />
 
-            <span>Play</span>
-          </StartGame>
-        </Play>
-      </ActionBar>
-      {game.comments.map((comment) => {
-        return <Comment key={Math.random() * 9999} comment={comment} />;
-      })}
+              <span>Play</span>
+            </StartGame>
+          </Play>
+        </ActionBar>
+      </GameBox>
+      <CommentsSection>
+        {game.comments.map((comment) => {
+          return <Comment key={Math.random() * 9999} comment={comment} />;
+        })}
 
-      <CommentInput
-        placeholder="comment"
-        onChange={(ev) => {
-          setComment(ev.target.value);
-          setInputValue(ev.target.value);
-        }}
-      ></CommentInput>
-      <Submit
-        onClick={() => {
-          submitComment(comment);
-          setInputValue("");
-        }}
-      >
-        Submit
-      </Submit>
-
+        <CommentInput
+          placeholder="comment"
+          onChange={(ev) => {
+            setComment(ev.target.value);
+            setInputValue(ev.target.value);
+          }}
+        ></CommentInput>
+        <Submit
+          onClick={() => {
+            submitComment(comment);
+            setInputValue("");
+          }}
+        >
+          Submit
+        </Submit>
+      </CommentsSection>
       {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
     </GameContainer>
@@ -136,10 +140,21 @@ const Game = ({game, isLiked}) => {
 
 const GameContainer = styled.div`
   width: 100vw;
-  /* margin-bottom: 20px; */
-  height: 30vh;
+  margin-bottom: 20px;
+  /* height: 30vh; */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   @media (min-width: 700px) {
-    height: 600px;
+    /* height: 600px; */
+  }
+`;
+
+const GameBox = styled.div`
+  width: 100vw;
+
+  @media (min-width: 700px) {
+    width: 80%;
   }
 `;
 
@@ -147,6 +162,14 @@ const GameWrapper = styled.div`
   display: flex;
   justify-content: left;
   width: 100%;
+`;
+
+const CommentsSection = styled.div`
+  width: 100vw;
+
+  @media (min-width: 700px) {
+    width: 80%;
+  }
 `;
 
 const GamePic = styled.img`
@@ -161,6 +184,8 @@ const Play = styled.button`
   background: inherit;
   border: 1 px solid grey;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
 `;
 
 const NumComments = styled.span``;
