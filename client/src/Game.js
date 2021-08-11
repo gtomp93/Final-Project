@@ -151,32 +151,21 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 };
 
 const GameContainer = styled.div`
-  width: 96vw;
+  width: 100vw;
   margin-top: 20px;
   position: relative;
   z-index: 4;
-  /* height: 30vh; */
-  /* background-color: rgb(255, 255, 255, 0.3); */
 
   display: flex;
   align-items: center;
   flex-direction: column;
   @media (min-width: 700px) {
-    /* height: 600px; */
+    width: 98vw;
   }
 `;
 
-const BackgroundDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-`;
-
 const GameBox = styled.div`
-  width: 96%;
+  width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 7px 7px 0 0;
   padding: 8px 0 0;
@@ -238,7 +227,7 @@ const LikeBox = styled.div`
 `;
 
 const CommentsSection = styled.div`
-  width: 96%;
+  width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 0 0 7px 7px;
   @media (min-width: 700px) {
