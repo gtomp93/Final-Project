@@ -10,6 +10,7 @@ import GameOptions from "./GameOptions";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Profile from "./Profile";
 import Homepage from "./Homepage";
+import GlobalStyle from "./GlobalStyle";
 // import {useAuth0} from "@auth0/auth0-react";
 import CreateMap from "./CreateMap";
 
@@ -23,6 +24,7 @@ function App() {
   return (
     <>
       <Router>
+        <GlobalStyle />
         <Header></Header>
         <Switch />
         <Route exact path="/">

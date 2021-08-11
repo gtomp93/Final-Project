@@ -346,6 +346,7 @@ const Map = () => {
                 Next
               </button>
             )}
+            {endGame && <Link to={"/"}>Home</Link>}
           </BottomContainer>
         </BigWrapper>
       </PageContainer>

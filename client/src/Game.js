@@ -149,7 +149,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage}) => {
 
 const GameContainer = styled.div`
   width: 96vw;
-  margin-bottom: 20px;
+  margin-top: 20px;
   position: relative;
   z-index: 4;
   /* height: 30vh; */
@@ -296,6 +296,13 @@ const CommentInput = styled.textarea`
   }
 `;
 
-const Submit = styled.button``;
+const Submit = styled.button`
+  margin-left: 6px;
+  border-radius: 6px;
+  background: #e8e6df;
+  border: none;
+  height: 30px;
+  font-weight: bolder;
+`;
 
 export default Game;

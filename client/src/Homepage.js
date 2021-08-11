@@ -39,7 +39,7 @@ const Homepage = () => {
 
   return (
     <Container>
-      <Link to={"/CreateMapForm"}>Create Map</Link>
+      {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
       {games.map((game, index) => {
         let isLiked = false;
         console.log(game.pic);
@@ -63,10 +63,16 @@ const Homepage = () => {
 };
 
 const Container = styled.div`
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(23, 56, 156, 1) 0%,
     rgba(12, 20, 42, 1) 100%
+  ); */
+  /* background: #17389c; */
+  background: linear-gradient(
+    90deg,
+    rgba(23, 56, 156, 1) 0%,
+    rgba(24, 30, 87, 1) 100%
   );
 `;
 
