@@ -165,8 +165,8 @@ const CreateMap = () => {
   // console.log("inputValues", inputValues);
 
   return (
-    <>
-      <div>Create Map</div>
+    <Container>
+      <h2>Create Map</h2>
 
       <LocationsListContainer>
         {locationsList.map((item, index) => {
@@ -239,7 +239,7 @@ const CreateMap = () => {
           </GoogleMap>
         </>
       )}
-    </>
+    </Container>
   );
 };
 
@@ -248,6 +248,10 @@ export default CreateMap;
 const Search = styled.button``;
 
 const Add = styled.button``;
+
+const Container = styled.div`
+  margin-left: 8px;
+`;
 
 const LocationsListContainer = styled.div`
   margin-bottom: 40px;

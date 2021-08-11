@@ -60,9 +60,9 @@ const LocationInput = ({
 
   return (
     <>
-      <div>
+      <Container>
         <label>Enter Address</label>
-        <input
+        <Input
           value={typeof item === "object" ? names[index] : inputValue}
           onChange={(ev) => {
             let copy = locationsList;
@@ -72,7 +72,7 @@ const LocationInput = ({
           }}
           placeholder="Enter Address"
           disabled={disabled[index]}
-        ></input>
+        ></Input>
 
         {!disabled[index] && (
           <Search
@@ -139,12 +139,20 @@ const LocationInput = ({
         {(status === "added" || typeof item === "object") && (
           <Added>Location added!</Added>
         )}
-      </div>
+      </Container>
     </>
   );
 };
 
 const Search = styled.button``;
+
+const Container = styled.div`
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  width: 200px;
+`;
 
 const Add = styled.button``;
 const Edit = styled.button``;

@@ -15,18 +15,19 @@ const CreateMapForm = () => {
       <FormWrapper>
         <h1>Map Creator- Part 1</h1>
         <InputWrapper>
-          <label>Name</label>
+          <label>Map Name</label>
           <Input
             placeholder="name"
             onChange={(ev) => {
               setName(ev.target.value);
             }}
             disabled={submitted}
+            style={{marginLeft: "8px"}}
           ></Input>
           {required && name.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
-          <label>Description</label>
+          <label style={{marginRight: "1px"}}>Description</label>
           <TextArea
             placeholder="Description"
             onChange={(ev) => {
@@ -60,20 +61,28 @@ const CreateMapForm = () => {
         >
           {submitted ? "Edit" : "Submit"}
         </Submit>
-        {submitted && <Link to="/CreateMap">Next</Link>}
-        {submitted && <Pic src={pic}></Pic>}
+        {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
+      {submitted && <Pic src={pic}></Pic>}
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-left: 7px;
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 769px) {
+    flex-direction: row;
+  }
+`;
 
 const FormWrapper = styled.div``;
 
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 `;
 
 const Input = styled.input``;
@@ -86,12 +95,31 @@ const Required = styled.p`
   color: red;
 `;
 
-const Submit = styled.button``;
+const Submit = styled.button`
+  background: #b9bec7;
+  border: none;
+  font-size: 16px;
+  border-radius: 4px;
+`;
 
-const Next = styled.button``;
+const Next = styled(Link)`
+  font-size: 16px;
+  background-color: #b9bec7;
+  text-decoration: none;
+  color: black;
+  padding: 1px 4px 1px;
+  margin-left: 8px;
+  border-radius: 4px;
+`;
 
 const Pic = styled.img`
-  width: 100px;
+  width: 300px;
+  height: auto;
+  margin: 10px 0 0;
+  @media (min-width: 769px) {
+    flex-direction: row;
+    margin: 20px 10px 0;
+  }
 `;
 
 export default CreateMapForm;

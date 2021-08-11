@@ -21,12 +21,20 @@ const Logout = styled.button`
   background-color: inherit;
   color: #5a7bb0;
   border: none;
-  margin-right: 60px;
   display: flex;
   align-items: center;
   font-size: 20px;
+  margin-right: 10px;
+  @media (min-width: 700px) {
+    margin-right: 60px;
+  }
 `;
 
 const LogoutIcon = styled(FiLogOut)``;
 
-const LogoutLabel = styled.span``;
+const LogoutLabel = styled.span`
+  display: none;
+  @media (min-width: 700px) {
+    display: block;
+  }
+`;
