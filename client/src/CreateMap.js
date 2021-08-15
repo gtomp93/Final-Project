@@ -207,7 +207,7 @@ const CreateMap = () => {
             onClick={() => {
               addAnotherLocation();
               setComplete(false);
-              // setCreated(false);
+              disabled = {created};
             }}
             style={{marginRight: "15px"}}
           >

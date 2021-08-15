@@ -3,13 +3,15 @@ import {Link} from "react-router-dom";
 import React, {useContext, useState} from "react";
 import styled from "styled-components";
 const CreateMapForm = () => {
-  const {handleSubmit, mapData} = useContext(MapCreationContext);
+  const {handleSubmit, mapData, imageSRC} = useContext(MapCreationContext);
   const [pic, setPic] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
   const [imageFile, setImageFile] = useState({file: null});
+
+  console.log("imageSRC", imageSRC);
 
   return (
     <Container>
@@ -74,7 +76,7 @@ const CreateMapForm = () => {
         {/* <button onClick={()=>{}}>test</button> */}
         {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
-      {submitted && <Pic src={imageFile.file}></Pic>}
+      {imageSRC && <Pic src={imageSRC}></Pic>}
     </Container>
   );
 };

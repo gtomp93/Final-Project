@@ -11,6 +11,7 @@ export const MapCreationContextProvider = ({children}) => {
   const [description, setDescription] = useState(null);
   const {currentUser} = useContext(UserContext);
   const [mapData, setMapData] = useState({});
+  const [imageSRC, setImageSRC] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export const MapCreationContextProvider = ({children}) => {
     });
 
     const imageURL = url.split("?")[0];
+    setImageSRC(imageURL);
 
     console.log("imageURL", imageURL);
     let copy = mapData;
@@ -97,6 +99,7 @@ export const MapCreationContextProvider = ({children}) => {
         pic,
         setPic,
         mapData,
+        imageSRC,
       }}
     >
       {children}
