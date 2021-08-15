@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const PORT = 8000;
+const cors = require("cors");
 const {
   addUser,
   checkForUser,
@@ -17,7 +18,10 @@ const {
   removeGameFromUser,
   deleteGame,
   comment,
+  getS3url,
 } = require("./handlers");
+
+// const {getS3url} = require("./s3");
 
 const bodyParser = require("body-parser");
 
@@ -26,6 +30,7 @@ express()
   .use(express.json())
   .use(express.static("public"))
   .use(bodyParser.json())
+  .use(cors())
 
   .post("/users", addUser)
   .post("/checkusers", checkForUser)
@@ -42,6 +47,7 @@ express()
   .put("/addLikeToUser/:_id", addToLikes)
   .patch("/likeGame/:_id", likeGame)
   .put("/comment/:_id", comment)
+  .get("/s3url", getS3url)
 
   .get("*", (req, res) => {
     res.status(404).json({

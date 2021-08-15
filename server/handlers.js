@@ -2,6 +2,8 @@ const {MongoClient} = require("mongodb");
 require("dotenv").config();
 const {MONGO_URI} = process.env;
 const {v4: uuidv4} = require("uuid");
+const {s3} = require("./s3");
+const {generateUploadURL} = require("./s3");
 
 const options = {
   useNewUrlParser: true,
@@ -320,6 +322,16 @@ const addToLikes = async (req, res) => {
   }
 };
 
+const getS3url = async (req, res) => {
+  try {
+    const url = await generateUploadURL();
+    console.log("url", url);
+    res.status(200).json({status: 200, url});
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const searchOpponent = (req, res) => {};
 
 module.exports = {
@@ -338,4 +350,5 @@ module.exports = {
   likeGame,
   comment,
   addToLikes,
+  getS3url,
 };

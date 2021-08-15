@@ -9,6 +9,7 @@ const CreateMapForm = () => {
   const [description, setDescription] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
+  const [imageFile, setImageFile] = useState({file: null});
 
   return (
     <Container>
@@ -39,19 +40,28 @@ const CreateMapForm = () => {
         </InputWrapper>
         <InputWrapper>
           <label> Picture URL</label>
-          <Input
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(ev) => {
+              let copy = {...imageFile};
+              copy.file = ev.target.files[0];
+              setImageFile(copy);
+            }}
+          ></input>
+          {/* <Input
             placeholder="Image URL"
             onChange={(ev) => {
               setPic(ev.target.value);
             }}
             disabled={submitted}
-          ></Input>
+          ></Input> */}
         </InputWrapper>
         <Submit
           onClick={() => {
             if (name.length > 0 && description.length > 0) {
               setRequired(false);
-              handleSubmit(name, description, pic);
+              handleSubmit(name, description, pic, imageFile.file);
               console.log("clicked");
               setSubmitted(!submitted);
             } else {
@@ -61,9 +71,10 @@ const CreateMapForm = () => {
         >
           {submitted ? "Edit" : "Submit"}
         </Submit>
+        {/* <button onClick={()=>{}}>test</button> */}
         {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
-      {submitted && <Pic src={pic}></Pic>}
+      {submitted && <Pic src={imageFile.file}></Pic>}
     </Container>
   );
 };

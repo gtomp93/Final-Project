@@ -42,7 +42,7 @@ const Homepage = () => {
       {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
       {games.map((game, index) => {
         let isLiked = false;
-        console.log(game.pic);
+        // console.log(game.pic);
         if (currentUser.likes.includes(game._id)) {
           isLiked = true;
         }

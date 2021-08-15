@@ -21,14 +21,37 @@ export const MapCreationContextProvider = ({children}) => {
     );
   }, []);
 
-  const handleSubmit = (name, description, pic) => {
-    console.log("here");
+  const handleSubmit = async (name, description, pic, file) => {
+    let url = null;
+    await fetch("/s3url")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("HIYA");
+        console.log(res);
+        url = res.url;
+      });
+
+    console.log(url);
+
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      body: file,
+    });
+
+    const imageURL = url.split("?")[0];
+
+    console.log("imageURL", imageURL);
     let copy = mapData;
     copy.name = name;
     copy.description = description;
-    copy.pic = pic;
+    copy.pic = imageURL;
     setMapData(copy);
-    localStorage.setItem("mapFormData", JSON.stringify(copy));
+    console.log("HERE I AM");
+    console.log(copy);
+    // localStorage.setItem("mapFormData", JSON.stringify(copy));
   };
 
   const addLocations = async (locations) => {
