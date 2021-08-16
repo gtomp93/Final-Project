@@ -12,7 +12,7 @@ const Homepage = () => {
   const [games, setGames] = useState(null);
   const [liked, setLiked] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
-  const {currentUser, isAuthenticated} = useContext(UserContext);
+  const {currentUser, isAuthenticated, loggedOut} = useContext(UserContext);
 
   useEffect(() => {
     fetch("/getGames")
@@ -29,34 +29,39 @@ const Homepage = () => {
   console.log("currentUser", currentUser);
   console.log(games);
 
-  if (!currentUser || !games) {
-    return "loading";
-  }
+  // if (!currentUser || !games) {
+  //   return "loading";
+  // }
 
-  console.log("currentUser.pic", currentUser.picture);
+  // console.log("currentUser.pic", currentUser.picture);
 
-  console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
+  // console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
 
   return (
-    <Container>
-      {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
-      {games.map((game, index) => {
-        let isLiked = false;
-        // console.log(game.pic);
-        if (currentUser.likes.includes(game._id)) {
-          isLiked = true;
-        }
-        return (
-          <Game
-            game={game}
-            isLiked={isLiked}
-            key={Math.random() * 99999}
-            updatePage={updatePage}
-            setUpdatePage={setUpdatePage}
-          />
-        );
-      })}
-    </Container>
+    <>
+      {currentUser && games && (
+        <Container>
+          {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
+          {games.map((game, index) => {
+            let isLiked = false;
+            // console.log(game.pic);
+            if (currentUser.likes.includes(game._id)) {
+              isLiked = true;
+            }
+            return (
+              <Game
+                game={game}
+                isLiked={isLiked}
+                key={Math.random() * 99999}
+                updatePage={updatePage}
+                setUpdatePage={setUpdatePage}
+              />
+            );
+          })}
+        </Container>
+      )}
+      {loggedOut === "logout" && <div>Loading</div>}
+    </>
   );
 };
 

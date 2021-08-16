@@ -1,5 +1,4 @@
 import React, {createContext, useContext, useState, useEffect} from "react";
-import {clearInterval} from "timers";
 import {UserContext} from "./UserContext";
 
 export const GameContext = createContext(null);
@@ -23,6 +22,15 @@ export const GameContextProvider = ({children}) => {
   const [timed, setTimed] = useState(null);
 
   const loadGame = (id) => {
+    setLocationIndex(0);
+    setGameScore(0);
+    setTimer(60);
+    setGuessed(false);
+    setEndGame(false);
+    setStop(false);
+    let copy = {lat: 0, lng: 0};
+    setCenter(copy);
+    setZoom(2);
     console.log("LOADING");
     fetch(`/locations/${id}`)
       .then((res) => res.json())
@@ -109,7 +117,7 @@ export const GameContextProvider = ({children}) => {
     } else if (distance <= 100000) {
       score = 1700;
     } else if (distance <= 150000) {
-      score = 16000;
+      score = 1600;
     } else if (distance <= 200000) {
       score = 1500;
     } else if (distance <= 300000) {
@@ -136,6 +144,7 @@ export const GameContextProvider = ({children}) => {
 
     if (locationIndex === locations.length - 1) {
       setEndGame(true);
+      setTimed(null);
     }
 
     fetch("/updateUserScore", {

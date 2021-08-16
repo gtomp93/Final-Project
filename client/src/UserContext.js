@@ -7,6 +7,7 @@ export const UserContextProvider = ({children}) => {
   const {user, isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState("idle");
+  const [loggedOut, setLoggedOut] = useState(null);
 
   console.log("user", user);
   console.log("currentUser", currentUser);
@@ -78,6 +79,8 @@ export const UserContextProvider = ({children}) => {
           console.log("setting current user");
           setCurrentUser(userInfo);
         }
+      } else {
+        setLoggedOut("logout");
       }
     };
     addUser();
@@ -147,6 +150,7 @@ export const UserContextProvider = ({children}) => {
         setStatus,
         isAuthenticated,
         isLoading,
+        loggedOut,
       }}
     >
       {children}
