@@ -5,13 +5,21 @@ import {Link} from "react-router-dom";
 import {UserContext} from "./UserContext";
 import Comment from "./Comment";
 
-const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
+const ProfileGame = ({
+  game,
+  isLiked,
+  updatePage,
+  setUpdatePage,
+  deleteGame,
+}) => {
   const [liked, setLiked] = useState(isLiked);
   const {currentUser} = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
   const [comment, setComment] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [addComment, setAddComment] = useState(false);
+  const [toggleDelete, setToggleDelete] = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   console.log(game);
 
@@ -80,73 +88,118 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
   };
 
   return (
-    <GameContainer>
-      <GameBox>
-        <GameWrapper>
-          <PicWrapper>
-            <GamePic src={game.pic} />
-          </PicWrapper>
-          <DescriptionWrapper>
-            <Name>{game.name}</Name>
-            <Description>{game.description}</Description>
-            <Creator>Created by {game.creator}</Creator>
-          </DescriptionWrapper>
-        </GameWrapper>
+    <div style={deleted ? {display: "none"} : {display: "block"}}>
+      <GameContainer>
+        <GameBox>
+          <GameWrapper>
+            <PicWrapper>
+              <GamePic src={game.pic} />
+            </PicWrapper>
+            <DescriptionWrapper>
+              <Name>{game.name}</Name>
+              <Description>{game.description}</Description>
+              <Creator>Created by {game.creator}</Creator>
+            </DescriptionWrapper>
+          </GameWrapper>
 
-        <ActionBar>
-          <div>
-            <LikeBox>
-              <LikeButton
-                onClick={() => {
-                  likeGame();
-                }}
-              >
-                <FiHeart
-                  size="22px"
-                  style={liked ? {fill: "red"} : {fill: "none"}}
-                />
-              </LikeButton>
-              <Likes>{numLikes ? numLikes : null}</Likes>{" "}
-            </LikeBox>
-          </div>
-          <CommentBox>
-            <FiMessageCircle size="22px" />
-            <NumComments>
-              {game.comments.length ? game.comments.length : null}
-            </NumComments>
-          </CommentBox>
-          <StartGame to={`/gameOptions/${game._id}`}>
-            <FiPlay size="22px" style={{fill: "green"}} />
-            <Play>Play</Play>
-          </StartGame>
-        </ActionBar>
-      </GameBox>
-      <CommentsSection>
-        {game.comments.map((comment) => {
-          return <Comment key={Math.random() * 999999} comment={comment} />;
-        })}
-        <CreateComment>
-          <CommentInput
-            placeholder="comment"
-            onChange={(ev) => {
-              setComment(ev.target.value);
-              setInputValue(ev.target.value);
-            }}
-            value={inputValue}
-          ></CommentInput>
-          <Submit
-            onClick={() => {
-              submitComment(comment);
-              setInputValue("");
-            }}
-          >
-            Comment
-          </Submit>
-        </CreateComment>
-      </CommentsSection>
-      {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
+          <ActionBar>
+            <div>
+              <LikeBox>
+                <LikeButton
+                  onClick={() => {
+                    likeGame();
+                  }}
+                >
+                  <FiHeart
+                    size="22px"
+                    style={liked ? {fill: "red"} : {fill: "none"}}
+                  />
+                </LikeButton>
+                <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+              </LikeBox>
+            </div>
+            <CommentBox>
+              <FiMessageCircle size="22px" />
+              <NumComments>
+                {game.comments.length ? game.comments.length : null}
+              </NumComments>
+            </CommentBox>
+            <StartGame to={`/gameOptions/${game._id}`}>
+              <FiPlay size="22px" style={{fill: "green"}} />
+              <Play>Play</Play>
+            </StartGame>
+          </ActionBar>
+        </GameBox>
+        <CommentsSection>
+          {game.comments.map((comment) => {
+            return <Comment key={Math.random() * 999999} comment={comment} />;
+          })}
+          <CreateComment>
+            <CommentInput
+              placeholder="comment"
+              onChange={(ev) => {
+                setComment(ev.target.value);
+                setInputValue(ev.target.value);
+              }}
+              value={inputValue}
+            ></CommentInput>
+            <Submit
+              onClick={() => {
+                submitComment(comment);
+                setInputValue("");
+              }}
+            >
+              Comment
+            </Submit>
+          </CreateComment>
+        </CommentsSection>
+        {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
-    </GameContainer>
+      </GameContainer>
+      <div style={{display: "flex", flexDirection: "column"}}>
+        <button
+          style={{
+            width: "200px",
+            alignSelf: "center",
+            marginTop: "3px",
+          }}
+          onClick={() => {
+            setToggleDelete(true);
+          }}
+        >
+          Delete {game.name}
+        </button>
+      </div>
+      {toggleDelete && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div style={{display: "flex"}}>
+            {" "}
+            <div>Are you sure you want to delete this map?</div>
+            <DeleteChoice
+              onClick={() => {
+                deleteGame(game._id);
+                setDeleted(true);
+              }}
+            >
+              Yes
+            </DeleteChoice>
+            <DeleteChoice
+              onClick={() => {
+                setToggleDelete(false);
+              }}
+            >
+              No
+            </DeleteChoice>{" "}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -247,6 +300,10 @@ const CommentsSection = styled.div`
 //   box-shadow: none;
 // `;
 
+const DeleteChoice = styled.button`
+  width: 30px;
+`;
+
 const CommentBox = styled.div`
   display: flex;
   align-items: center;
@@ -310,4 +367,4 @@ const Submit = styled.button`
   font-weight: bolder;
 `;
 
-export default Game;
+export default ProfileGame;

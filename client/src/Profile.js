@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {UserContext} from "./UserContext";
+import ProfileGame from "./ProfileGame";
 import Game from "./Game";
 import styled from "styled-components";
 
@@ -10,6 +11,7 @@ const Profile = () => {
   const [games, setGames] = useState([]);
   const [likedGames, setLikedGames] = useState([]);
   const [created, setCreated] = useState(true);
+
   console.log(currentUser);
   console.log("games", games);
 
@@ -106,19 +108,11 @@ const Profile = () => {
                   key={Math.random() * 9999}
                   style={{display: "flex", flexDirection: "column"}}
                 >
-                  <Game game={game} isLiked={isLiked} />
-                  <button
-                    onClick={() => {
-                      deleteGame(game._id);
-                    }}
-                    style={{
-                      width: "200px",
-                      alignSelf: "center",
-                      marginTop: "3px",
-                    }}
-                  >
-                    Delete {game.name}
-                  </button>
+                  <ProfileGame
+                    game={game}
+                    isLiked={isLiked}
+                    deleteGame={deleteGame}
+                  />
                 </div>
               );
             }
