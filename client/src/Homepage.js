@@ -7,12 +7,14 @@ import {UserContext} from "./UserContext";
 import Game from "./Game";
 import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
+import {GameContext} from "./GameContext";
 
 const Homepage = () => {
   const [games, setGames] = useState(null);
   const [liked, setLiked] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
   const {currentUser, isAuthenticated, loggedOut} = useContext(UserContext);
+  const {setSelected, setTimed} = useContext(GameContext);
 
   useEffect(() => {
     fetch("/getGames")
@@ -21,6 +23,8 @@ const Homepage = () => {
         console.log("this thing", res);
         setGames(res.result);
       });
+    setSelected(null);
+    setTimed(null);
   }, [currentUser, updatePage]);
 
   // const likeGame = () =>{
@@ -29,11 +33,9 @@ const Homepage = () => {
   console.log("currentUser", currentUser);
   console.log(games);
 
-  // if (!currentUser || !games) {
-  //   return "loading";
-  // }
-
-  // console.log("currentUser.pic", currentUser.picture);
+  if (!currentUser || !games) {
+    return "loading";
+  }
 
   // console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
 
@@ -60,7 +62,6 @@ const Homepage = () => {
           })}
         </Container>
       )}
-      {loggedOut === "logout" && <div>Loading</div>}
     </>
   );
 };

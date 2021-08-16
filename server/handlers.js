@@ -136,7 +136,7 @@ const updateUserScore = async (req, res) => {
 
     await db.collection("Users").updateOne({_id}, {$inc: {score: score}});
 
-    res.status(400).json({status: 200, updated: _id});
+    res.status(200).json({status: 200, updated: _id});
 
     client.close();
   } catch (err) {

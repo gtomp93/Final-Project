@@ -13,6 +13,7 @@ const GameOptions = () => {
   const {
     error,
     setSelected,
+    selected,
     loadGame,
     locations,
     setLocations,
@@ -65,9 +66,11 @@ const GameOptions = () => {
       >
         No Time Limits
       </Untimed>
-      {locations && (timed === "timed" || timed === "untimed") && (
-        <StartGame to={`/map/${id}`}>Start</StartGame>
-      )}
+      {locations &&
+        (timed === "timed" || timed === "untimed") &&
+        (selected === "single" || selected === "multi") && (
+          <StartGame to={`/map/${id}`}>Start</StartGame>
+        )}
     </div>
   );
 };
