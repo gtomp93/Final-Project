@@ -347,7 +347,7 @@ const Map = () => {
                 Next
               </button>
             )}
-            {endGame && <Link to={"/"}>Home</Link>}
+            {endGame && <Home to={"/"}>Home</Home>}
           </BottomContainer>
         </BigWrapper>
       </PageContainer>
@@ -460,6 +460,22 @@ const MapWrapper = styled.div`
   }
 `;
 
+const Home = styled(Link)`
+  display: grid;
+  align-items: center;
+  width: 39px;
+  font-size: 18px;
+  background-color: #b9bec7;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  padding: 1px 10px 1px;
+  /* border: solid black 1px; */
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  border-radius: 4px;
+  /* font-weight: bolder; */
+  margin-top: 16px;
+`;
 // const Container = styled.div`
 //   display: flex;
 //   flex-direction: column;

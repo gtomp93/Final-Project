@@ -3,6 +3,7 @@ import Geocode from "react-geocode";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
 import {useHistory} from "react-router-dom";
+import {BiMap} from "react-icons/bi";
 
 /*global google*/
 
@@ -166,7 +167,10 @@ const CreateMap = () => {
 
   return (
     <Container>
-      <h2>Create Map</h2>
+      <div style={{display: "flex", alignItems: "center"}}>
+        <BiMap size={"26px"} />
+        <h2>Create Map</h2>
+      </div>
 
       <LocationsListContainer>
         {locationsList.map((item, index) => {
@@ -207,9 +211,9 @@ const CreateMap = () => {
             onClick={() => {
               addAnotherLocation();
               setComplete(false);
-              disabled = {created};
             }}
             style={{marginRight: "15px"}}
+            disabled={created}
           >
             Add another location
           </button>

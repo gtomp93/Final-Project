@@ -9,6 +9,7 @@ import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
 import {GameContext} from "./GameContext";
 import {Loading} from "./Loading";
+import {BiWorld} from "react-icons/bi";
 
 const Homepage = () => {
   const [games, setGames] = useState(null);
@@ -44,6 +45,16 @@ const Homepage = () => {
     <>
       {currentUser && games && (
         <Container>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              color: "rgba(0, 0, 0, 0.87)",
+            }}
+          >
+            <BiWorld size={"50px"} style={{marginTop: "18px"}} />
+            <h1 style={{marginBottom: "0"}}> MapGuesser</h1>
+          </div>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
           {games.map((game, index) => {
             let isLiked = false;
@@ -68,17 +79,9 @@ const Homepage = () => {
 };
 
 const Container = styled.div`
-  /* background: linear-gradient(
-    90deg,
-    rgba(23, 56, 156, 1) 0%,
-    rgba(12, 20, 42, 1) 100%
-  ); */
-  /* background: #17389c; */
-  /* background: linear-gradient(
-    90deg,
-    rgba(23, 56, 156, 1) 0%,
-    rgba(24, 30, 87, 1) 100%
-  ); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const GamePic = styled.img`

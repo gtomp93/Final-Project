@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import Geocode from "react-geocode";
+import {BiTrash} from "react-icons/bi";
 
 const LocationInput = ({
   getCoords,
@@ -61,79 +62,96 @@ const LocationInput = ({
   return (
     <>
       <Container>
-        <label style={{marginRight: "2px"}}>Enter Address</label>
-        <Input
-          value={typeof item === "object" ? names[index] : inputValue}
-          onChange={(ev) => {
-            let copy = locationsList;
-            copy[index] = ev.target.value;
-            setLocationsList(copy);
-            setInputValue(ev.target.value);
-          }}
-          placeholder="Enter Address"
-          disabled={disabled[index]}
-        ></Input>
-
-        {!disabled[index] && (
-          <Search
-            onClick={() => {
-              searchLocation(locationsList[index], index);
-              // setDisabled(false);
+        <div>
+          <label style={{marginRight: "2px"}}>Enter Address</label>
+          <Input
+            value={typeof item === "object" ? names[index] : inputValue}
+            onChange={(ev) => {
+              let copy = locationsList;
+              copy[index] = ev.target.value;
+              setLocationsList(copy);
+              setInputValue(ev.target.value);
             }}
-          >
-            Search
-          </Search>
-        )}
+            placeholder="Enter Address"
+            disabled={disabled[index]}
+          ></Input>
 
-        {disabled[index] && typeof item !== "object" && (
-          <>
-            <Add
+          {!disabled[index] && (
+            <Search
               onClick={() => {
-                addLocation(location, index);
-                // setDisabled(true);
-                // setStatus("added");
+                searchLocation(locationsList[index], index);
+                // setDisabled(false);
               }}
             >
-              Add
-            </Add>{" "}
-          </>
-        )}
-        {disabled[index] && (
-          <Edit
-            onClick={() => {
-              setStatus(null);
-              setPosition(null);
-              editLocation(index);
-              setInputValue("");
-            }}
-          >
-            Edit
-          </Edit>
-        )}
+              Search
+            </Search>
+          )}
 
-        {index > 4 && (
-          <button
-            onClick={() => {
-              removeLocation(index);
-              setInputValue("");
-            }}
-          >
-            Remove
-          </button>
-        )}
-        {item === "error" && <Error>Location not found</Error>}
-        {(status === "added" || typeof item === "object") && (
-          <Added>Location added!</Added>
-        )}
+          {disabled[index] && typeof item !== "object" && (
+            <>
+              <Add
+                onClick={() => {
+                  addLocation(location, index);
+                  // setDisabled(true);
+                  // setStatus("added");
+                }}
+              >
+                Add
+              </Add>{" "}
+            </>
+          )}
+          {disabled[index] && (
+            <Edit
+              onClick={() => {
+                setStatus(null);
+                setPosition(null);
+                editLocation(index);
+                setInputValue("");
+              }}
+            >
+              Edit
+            </Edit>
+          )}
+
+          {index > 4 && (
+            <span>
+              <button
+                onClick={() => {
+                  removeLocation(index);
+                  setInputValue("");
+                }}
+              >
+                <BiTrash
+                  style={{
+                    marginBottom: "-2px",
+                    paddingTop: "0px",
+                  }}
+                />
+              </button>
+            </span>
+          )}
+        </div>
+        <div>
+          {item === "error" && <Error>Location not found</Error>}
+          {(status === "added" || typeof item === "object") && (
+            <Added>Location added!</Added>
+          )}
+        </div>
       </Container>
     </>
   );
 };
 
-const Search = styled.button``;
+const Search = styled.button`
+  display: inline;
+`;
 
 const Container = styled.div`
   margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
 `;
 
 const Input = styled.input`
@@ -150,6 +168,7 @@ const Error = styled.span`
 const Added = styled.span`
   color: green;
   font-weight: bolder;
+  align-self: center;
 `;
 
 export default LocationInput;
