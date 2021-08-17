@@ -12,6 +12,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
   const [comment, setComment] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [addComment, setAddComment] = useState(false);
+  const [viewMore, setViewMore] = useState(false);
 
   console.log(game);
 
@@ -81,69 +82,84 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
 
   return (
     <GameContainer>
-      <GameBox>
-        <GameWrapper>
-          <PicWrapper>
-            <GamePic src={game.pic} />
-          </PicWrapper>
-          <DescriptionWrapper>
-            <Name>{game.name}</Name>
-            <Description>{game.description}</Description>
-            <Creator>Created by {game.creator}</Creator>
-          </DescriptionWrapper>
-        </GameWrapper>
+      <Box>
+        <GameBox>
+          <GameWrapper>
+            <PicWrapper>
+              <GamePic src={game.pic} />
+            </PicWrapper>
+            <DescriptionWrapper>
+              <Name>{game.name}</Name>
+              <Description>{game.description}</Description>
+              <Creator>Created by {game.creator}</Creator>
+            </DescriptionWrapper>
+          </GameWrapper>
 
-        <ActionBar>
-          <div>
-            <LikeBox>
-              <LikeButton
-                onClick={() => {
-                  likeGame();
-                }}
-              >
-                <FiHeart
-                  size="22px"
-                  style={liked ? {fill: "red"} : {fill: "none"}}
-                />
-              </LikeButton>
-              <Likes>{numLikes ? numLikes : null}</Likes>{" "}
-            </LikeBox>
-          </div>
-          <CommentBox>
-            <FiMessageCircle size="22px" />
-            <NumComments>
-              {game.comments.length ? game.comments.length : null}
-            </NumComments>
-          </CommentBox>
-          <StartGame to={`/gameOptions/${game._id}`}>
-            <FiPlay size="22px" style={{fill: "green"}} />
-            <Play>Play</Play>
-          </StartGame>
-        </ActionBar>
-      </GameBox>
-      <CommentsSection>
-        {game.comments.map((comment) => {
-          return <Comment key={Math.random() * 999999} comment={comment} />;
-        })}
-        <CreateComment>
-          <CommentInput
-            placeholder="comment"
-            onChange={(ev) => {
-              setComment(ev.target.value);
-              setInputValue(ev.target.value);
-            }}
-            value={inputValue}
-          ></CommentInput>
-          <Submit
-            onClick={() => {
-              submitComment(comment);
-              setInputValue("");
-            }}
-          >
-            Comment
-          </Submit>
-        </CreateComment>
-      </CommentsSection>
+          <ActionBar>
+            <div>
+              <LikeBox>
+                <LikeButton
+                  onClick={() => {
+                    likeGame();
+                  }}
+                >
+                  <FiHeart
+                    size="22px"
+                    style={liked ? {fill: "red"} : {fill: "none"}}
+                  />
+                </LikeButton>
+                <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+              </LikeBox>
+            </div>
+            <CommentBox>
+              <FiMessageCircle size="22px" />
+              <NumComments>
+                {game.comments.length ? game.comments.length : null}
+              </NumComments>
+            </CommentBox>
+            <StartGame to={`/gameOptions/${game._id}`}>
+              <FiPlay size="22px" style={{fill: "green"}} />
+              <Play>Play</Play>
+            </StartGame>
+          </ActionBar>
+        </GameBox>
+        <CommentsSection>
+          {game.comments.length > 2 && (
+            <View
+              onClick={() => {
+                setViewMore(!viewMore);
+              }}
+            >
+              {viewMore ? "View Less Comments" : "View More Comments"}
+            </View>
+          )}
+          {game.comments.map((comment, index) => {
+            if (index >= game.comments.length - 2 && !viewMore) {
+              return <Comment key={Math.random() * 999999} comment={comment} />;
+            } else if (viewMore) {
+              return <Comment key={Math.random() * 999999} comment={comment} />;
+            }
+          })}
+          <CreateComment>
+            <CommentInput
+              placeholder="comment"
+              onChange={(ev) => {
+                setComment(ev.target.value);
+                setInputValue(ev.target.value);
+              }}
+              value={inputValue}
+            ></CommentInput>
+            <Submit
+              onClick={() => {
+                submitComment(comment);
+                setInputValue("");
+              }}
+            >
+              Comment
+            </Submit>
+          </CreateComment>
+        </CommentsSection>
+      </Box>
       {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
     </GameContainer>
@@ -166,7 +182,7 @@ const GameContainer = styled.div`
   }
 `;
 
-const GameBox = styled.div`
+const Box = styled.div`
   width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 7px 7px 0 0;
@@ -174,6 +190,16 @@ const GameBox = styled.div`
   @media (min-width: 700px) {
     width: 80%;
   }
+`;
+
+const GameBox = styled.div`
+  /* width: 95%;
+  background-color: rgb(255, 255, 255, 0.32);
+  border-radius: 7px 7px 0 0;
+  padding: 8px 0 0;
+  @media (min-width: 700px) {
+    width: 80%;
+  } */
 `;
 
 const GameWrapper = styled.div`
@@ -223,18 +249,29 @@ const Creator = styled.h4`
   }
 `;
 
+const View = styled.button`
+  color: #e8e6df;
+  background-color: none;
+  background: none;
+  border: none;
+  font-size: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const LikeBox = styled.div`
   display: flex;
   align-items: center;
 `;
 
 const CommentsSection = styled.div`
-  width: 95%;
+  /* width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 0 0 7px 7px;
   @media (min-width: 700px) {
     width: 80%;
-  }
+  } */
 `;
 
 // const Play = styled.div`

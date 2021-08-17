@@ -8,6 +8,7 @@ import Game from "./Game";
 import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
 import {GameContext} from "./GameContext";
+import {Loading} from "./Loading";
 
 const Homepage = () => {
   const [games, setGames] = useState(null);
@@ -34,7 +35,7 @@ const Homepage = () => {
   console.log(games);
 
   if (!currentUser || !games) {
-    return "loading";
+    return <Loading />;
   }
 
   // console.log("thingy", currentUser.givenName + " " + currentUser.lastName);

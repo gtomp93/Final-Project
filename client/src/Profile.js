@@ -4,6 +4,7 @@ import {UserContext} from "./UserContext";
 import ProfileGame from "./ProfileGame";
 import Game from "./Game";
 import styled from "styled-components";
+import {Loading} from "./Loading";
 
 const Profile = () => {
   const {user, isAuthenticated, isLoading} = useAuth0();
@@ -72,7 +73,7 @@ const Profile = () => {
     games.length < currentUser.games.length ||
     likedGames.length < currentUser.likes.length
   ) {
-    return <div>Loading ...</div>;
+    return <Loading />;
   }
 
   return (

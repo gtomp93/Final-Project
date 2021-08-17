@@ -14,6 +14,7 @@ import {
 } from "@react-google-maps/api";
 import {UserContext} from "./UserContext";
 import {clearInterval} from "timers";
+import {Loading} from "./Loading";
 /* eslint-disable no-undef */
 
 const mapContainerStyle = {
@@ -148,7 +149,7 @@ const Map = () => {
     return "error loading maps";
   }
   if (!isLoaded) {
-    return "loading maps";
+    return <Loading />;
   }
 
   // if (!locations) {
