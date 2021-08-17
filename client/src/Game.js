@@ -112,7 +112,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
               </LikeBox>
             </div>
             <CommentBox>
-              <FiMessageCircle size="22px" />
+              <FiMessageCircle size="22px" style={{fill: "#c4c4cc"}} />
               <NumComments>
                 {game.comments.length ? game.comments.length : null}
               </NumComments>
@@ -184,8 +184,9 @@ const GameContainer = styled.div`
 
 const Box = styled.div`
   width: 95%;
+
   background-color: rgb(255, 255, 255, 0.32);
-  border-radius: 7px 7px 0 0;
+  border-radius: 7px 7px 7px 7px;
   padding: 8px 0 0;
   @media (min-width: 700px) {
     width: 80%;
@@ -213,6 +214,7 @@ const GamePic = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 8px;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
 `;
 
 const PicWrapper = styled.div`
@@ -243,6 +245,9 @@ const Description = styled.h3`
 const Creator = styled.h4`
   font-size: 13px;
   margin: 2px 2px 0;
+  color: #0b064f;
+  font-weight: bolder;
+
   @media (min-width: 769px) {
     font-size: 18px;
     margin: 0 7px 0;
@@ -254,9 +259,13 @@ const View = styled.button`
   background-color: none;
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 14px;
+
   &:hover {
     cursor: pointer;
+  }
+  @media (min-width: 650px) {
+    font-size: 16px;
   }
 `;
 
@@ -333,6 +342,7 @@ const CommentInput = styled.textarea`
   margin-left: 4px;
   border-radius: 7px;
   width: 70%;
+  resize: none;
   @media (min-width: 769) {
     width: 50%;
   }
