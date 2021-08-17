@@ -21,7 +21,7 @@ const Header = ({handleTest}) => {
         </Home>
         <Create to={"/CreateMapForm"}>
           <BiWorld size={"25px"} />
-          <NavName>Create Map</NavName>
+          <NavName>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName>
         </Create>
         {isAuthenticated && (
           <ProfileLink to="/profile">
@@ -41,8 +41,8 @@ export default Header;
 
 const HeaderContainer = styled.div`
   height: 44px;
-  background: #7a7280;
-  background: #87a1c4;
+  /* background: #7a7280; */
+  /* background: #87a1c4; */
   background-color: rgba(0, 0, 0, 0.87);
   display: flex;
   justify-content: space-between;
@@ -52,6 +52,7 @@ const HeaderContainer = styled.div`
 `;
 const NavName = styled.span`
   color: #5a7bb0;
+  font-weight: bolder;
   font-size: 20px;
   display: none;
   @media (min-width: 700px) {

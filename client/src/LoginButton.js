@@ -19,14 +19,19 @@ const LoginButton = () => {
 export default LoginButton;
 
 const Login = styled.button`
-  background: inherit;
-  background-color: inherit;
+  background: none;
+  background-color: none;
   color: #5a7bb0;
   border: none;
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-right: 10px;
+  font-weight: bolder;
+  &:hover {
+    cursor: pointer;
+  }
+
   @media (min-width: 700px) {
     margin-right: 60px;
   }

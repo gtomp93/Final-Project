@@ -17,14 +17,17 @@ const LogoutButton = () => {
 export default LogoutButton;
 
 const Logout = styled.button`
-  background: inherit;
-  background-color: inherit;
+  background: none;
+  background-color: none;
   color: #5a7bb0;
   border: none;
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
   @media (min-width: 700px) {
     margin-right: 60px;
   }
