@@ -24,6 +24,7 @@ const Logout = styled.button`
   display: flex;
   align-items: center;
   font-size: 20px;
+  font-weight: bolder;
   margin-right: 10px;
   &:hover {
     cursor: pointer;
