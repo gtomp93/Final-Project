@@ -112,7 +112,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
               </LikeBox>
             </div>
             <CommentBox>
-              <FiMessageCircle size="22px" style={{fill: "#c4c4cc"}} />
+              <FiMessageCircle size="22px" style={{fill: "#d3d2d9"}} />
               <NumComments>
                 {game.comments.length ? game.comments.length : null}
               </NumComments>

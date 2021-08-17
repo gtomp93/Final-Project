@@ -15,8 +15,9 @@ export default createGlobalStyle`
     background: linear-gradient(
     90deg,
     rgba(23, 56, 156, 1) 0%,
-    rgba(24, 30, 87, 1) 100%
+    rgba(24, 30, 87, 1) 150%
   );
+  /* background: rgba(23, 56, 156, 1) 0%; */
   }
   
 `;

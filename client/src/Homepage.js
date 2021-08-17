@@ -74,11 +74,11 @@ const Container = styled.div`
     rgba(12, 20, 42, 1) 100%
   ); */
   /* background: #17389c; */
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(23, 56, 156, 1) 0%,
     rgba(24, 30, 87, 1) 100%
-  );
+  ); */
 `;
 
 const GamePic = styled.img`
