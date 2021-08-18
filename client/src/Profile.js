@@ -80,23 +80,35 @@ const Profile = () => {
     isAuthenticated && (
       <Container>
         <div style={{margin: "10px 8px 5px"}}>
-          <img src={user.picture} alt={user.name} />
-          <h2>{user.name}</h2>
+          <img
+            src={user.picture}
+            alt={user.name}
+            style={{borderRadius: "20%"}}
+          />
+          <h2 style={{marginBottom: "0px"}}>{user.name}</h2>
           <p>{user.email}</p>
         </div>
         <Choose>
           <GamesOption
             onClick={toggleCreate}
-            style={created ? {fontWeight: "bolder"} : null}
+            style={
+              created
+                ? {fontWeight: "bolder", color: "#e8e6df"}
+                : {color: "#9897a1"}
+            }
           >
-            Created Games
+            Created Maps
           </GamesOption>
           <span style={{fontSize: "30px"}}>|</span>
           <GamesOption
             onClick={toggleLike}
-            style={created ? null : {fontWeight: "bolder"}}
+            style={
+              created
+                ? {color: "#9897a1"}
+                : {fontWeight: "bolder", color: "#e8e6df"}
+            }
           >
-            Liked Games
+            Liked Maps
           </GamesOption>
         </Choose>
         <Created created={created}>

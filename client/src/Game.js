@@ -283,16 +283,6 @@ const CommentsSection = styled.div`
   } */
 `;
 
-// const Play = styled.div`
-//   background: inherit;
-//   border: 1 px solid green;
-//   border-radius: 5px;
-//   border: none;
-//   display: flex;
-//   align-items: center;
-//   box-shadow: none;
-// `;
-
 const CommentBox = styled.div`
   display: flex;
   align-items: center;

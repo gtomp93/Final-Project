@@ -4,6 +4,7 @@ import {FiHeart, FiMessageCircle, FiPlay} from "react-icons/fi";
 import {Link} from "react-router-dom";
 import {UserContext} from "./UserContext";
 import Comment from "./Comment";
+import {BiTrash} from "react-icons/bi";
 
 const ProfileGame = ({
   game,
@@ -20,6 +21,7 @@ const ProfileGame = ({
   const [addComment, setAddComment] = useState(false);
   const [toggleDelete, setToggleDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [viewMore, setViewMore] = useState(false);
 
   console.log(game);
 
@@ -90,115 +92,154 @@ const ProfileGame = ({
   return (
     <div style={deleted ? {display: "none"} : {display: "block"}}>
       <GameContainer>
-        <GameBox>
-          <GameWrapper>
-            <PicWrapper>
-              <GamePic src={game.pic} />
-            </PicWrapper>
-            <DescriptionWrapper>
-              <Name>{game.name}</Name>
-              <Description>{game.description}</Description>
-              <Creator>Created by {game.creator}</Creator>
-            </DescriptionWrapper>
-          </GameWrapper>
+        <Box>
+          <GameBox>
+            <GameWrapper>
+              <PicWrapper>
+                <GamePic src={game.pic} />
+              </PicWrapper>
+              <DescriptionWrapper>
+                <Name>{game.name}</Name>
+                <Description>{game.description}</Description>
+                <Creator>Created by {game.creator}</Creator>
+              </DescriptionWrapper>
+            </GameWrapper>
 
-          <ActionBar>
-            <div>
-              <LikeBox>
-                <LikeButton
-                  onClick={() => {
-                    likeGame();
-                  }}
-                >
-                  <FiHeart
-                    size="22px"
-                    style={liked ? {fill: "red"} : {fill: "none"}}
-                  />
-                </LikeButton>
-                <Likes>{numLikes ? numLikes : null}</Likes>{" "}
-              </LikeBox>
-            </div>
-            <CommentBox>
-              <FiMessageCircle size="22px" />
-              <NumComments>
-                {game.comments.length ? game.comments.length : null}
-              </NumComments>
-            </CommentBox>
-            <StartGame to={`/gameOptions/${game._id}`}>
-              <FiPlay size="22px" style={{fill: "green"}} />
-              <Play>Play</Play>
-            </StartGame>
-          </ActionBar>
-        </GameBox>
-        <CommentsSection>
-          {game.comments.map((comment) => {
-            return <Comment key={Math.random() * 999999} comment={comment} />;
-          })}
-          <CreateComment>
-            <CommentInput
-              placeholder="comment"
-              onChange={(ev) => {
-                setComment(ev.target.value);
-                setInputValue(ev.target.value);
-              }}
-              value={inputValue}
-            ></CommentInput>
-            <Submit
-              onClick={() => {
-                submitComment(comment);
-                setInputValue("");
-              }}
-            >
-              Comment
-            </Submit>
-          </CreateComment>
-        </CommentsSection>
-        {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
+            <ActionBar>
+              <div>
+                <LikeBox>
+                  <LikeButton
+                    onClick={() => {
+                      likeGame();
+                    }}
+                  >
+                    <FiHeart
+                      size="22px"
+                      style={liked ? {fill: "red"} : {fill: "none"}}
+                    />
+                  </LikeButton>
+                  <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+                </LikeBox>
+              </div>
+              <CommentBox>
+                <FiMessageCircle size="22px" />
+                <NumComments>
+                  {game.comments.length ? game.comments.length : null}
+                </NumComments>
+              </CommentBox>
+              <StartGame to={`/gameOptions/${game._id}`}>
+                <FiPlay size="22px" style={{fill: "green"}} />
+                <Play>Play</Play>
+              </StartGame>
+            </ActionBar>
+          </GameBox>
+          <CommentsSection>
+            {game.comments.length > 2 && (
+              <View
+                onClick={() => {
+                  setViewMore(!viewMore);
+                }}
+              >
+                {viewMore ? "View Less Comments" : "View More Comments"}
+              </View>
+            )}
+            {game.comments.map((comment, index) => {
+              if (index >= game.comments.length - 2 && !viewMore) {
+                return (
+                  <Comment key={Math.random() * 999999} comment={comment} />
+                );
+              } else if (viewMore) {
+                return (
+                  <Comment key={Math.random() * 999999} comment={comment} />
+                );
+              }
+            })}
+            <CreateComment>
+              <CommentInput
+                placeholder="comment"
+                onChange={(ev) => {
+                  setComment(ev.target.value);
+                  setInputValue(ev.target.value);
+                }}
+                value={inputValue}
+              ></CommentInput>
+              <Submit
+                onClick={() => {
+                  submitComment(comment);
+                  setInputValue("");
+                }}
+              >
+                Comment
+              </Submit>
+            </CreateComment>
+          </CommentsSection>
+          {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
-      </GameContainer>
-      <div style={{display: "flex", flexDirection: "column"}}>
-        <button
-          style={{
-            width: "200px",
-            alignSelf: "center",
-            marginTop: "3px",
-          }}
-          onClick={() => {
-            setToggleDelete(true);
-          }}
-        >
-          Delete {game.name}
-        </button>
-      </div>
-      {toggleDelete && (
+        </Box>
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            width: "80%",
+            // flexDirection: "column",
             alignItems: "center",
+            justifyContent: "flex-start",
           }}
         >
-          <div style={{display: "flex"}}>
-            {" "}
-            <div>Are you sure you want to delete this map?</div>
-            <DeleteChoice
-              onClick={() => {
-                deleteGame(game._id);
-                setDeleted(true);
-              }}
-            >
-              Yes
-            </DeleteChoice>
-            <DeleteChoice
-              onClick={() => {
-                setToggleDelete(false);
-              }}
-            >
-              No
-            </DeleteChoice>{" "}
-          </div>
+          <StyledButton
+            style={{
+              alignSelf: "flex-start",
+              marginTop: "3px",
+              marginBottom: "3px",
+              display: "flex",
+              alignItems: "center",
+            }}
+            onClick={() => {
+              setToggleDelete(true);
+            }}
+          >
+            <BiTrash style={{marginRight: "3px"}} />
+            Delete Map
+          </StyledButton>
         </div>
-      )}
+        {toggleDelete && (
+          <div
+            style={{
+              display: "flex",
+              width: "80%",
+              // flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "5px",
+              }}
+            >
+              {" "}
+              <div>Are you sure you want to delete this map?</div>
+              <DeleteChoice
+                onClick={() => {
+                  deleteGame(game._id);
+                  setDeleted(true);
+                }}
+                style={{marginLeft: "4px"}}
+              >
+                Yes
+              </DeleteChoice>
+              <DeleteChoice
+                onClick={() => {
+                  setToggleDelete(false);
+                }}
+                style={{marginLeft: "4px"}}
+              >
+                No
+              </DeleteChoice>{" "}
+            </div>
+          </div>
+        )}
+      </GameContainer>
     </div>
   );
 };
@@ -219,14 +260,25 @@ const GameContainer = styled.div`
   }
 `;
 
-const GameBox = styled.div`
+const Box = styled.div`
   width: 95%;
+
+  background-color: rgb(255, 255, 255, 0.32);
+  border-radius: 7px 7px 7px 7px;
+  padding: 8px 0 0;
+  @media (min-width: 700px) {
+    width: 80%;
+  }
+`;
+
+const GameBox = styled.div`
+  /* width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 7px 7px 0 0;
   padding: 8px 0 0;
   @media (min-width: 700px) {
     width: 80%;
-  }
+  } */
 `;
 
 const GameWrapper = styled.div`
@@ -282,11 +334,26 @@ const LikeBox = styled.div`
 `;
 
 const CommentsSection = styled.div`
-  width: 95%;
+  /* width: 95%;
   background-color: rgb(255, 255, 255, 0.32);
   border-radius: 0 0 7px 7px;
   @media (min-width: 700px) {
     width: 80%;
+  } */
+`;
+
+const View = styled.button`
+  color: #e8e6df;
+  background-color: none;
+  background: none;
+  border: none;
+  font-size: 14px;
+
+  &:hover {
+    cursor: pointer;
+  }
+  @media (min-width: 650px) {
+    font-size: 16px;
   }
 `;
 
@@ -302,6 +369,41 @@ const CommentsSection = styled.div`
 
 const DeleteChoice = styled.button`
   width: 30px;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #e8e6df;
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  /* color: #5a7bb0; */
+  color: #2c2c30;
+  /* box-shadow: 0 0 10px rgb(255 255 255 / 10%); */
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CommentBox = styled.div`
@@ -331,6 +433,9 @@ const ActionBar = styled.div`
 const LikeButton = styled.button`
   background: inherit;
   border: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const StartGame = styled(Link)`
@@ -350,6 +455,7 @@ const Likes = styled.span`
 `;
 
 const CommentInput = styled.textarea`
+  resize: none;
   margin-left: 4px;
   border-radius: 7px;
   width: 70%;
@@ -365,6 +471,9 @@ const Submit = styled.button`
   border: none;
   height: 30px;
   font-weight: bolder;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default ProfileGame;

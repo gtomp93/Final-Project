@@ -65,7 +65,7 @@ const Home = styled(NavLink)`
   text-decoration: none;
   display: flex;
   align-items: center;
-  /* margin: 0 10px 0; */
+  margin: 0 0 0 10px;
   @media (min-width: 700px) {
     margin: 0 0 0 60px;
     display: flex;
