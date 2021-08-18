@@ -28,7 +28,16 @@ const GameOptions = () => {
   } = useContext(GameContext);
 
   return (
-    <div style={{marginLeft: "20px", marginTop: "25px"}}>
+    <div
+      style={{
+        width: "100vw",
+        marginLeft: "20px",
+        marginTop: "25px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <h1>Choose Game Mode</h1>
       <h2 style={{color: "white", marginBottom: "5px"}}>Select One</h2>
       <Mode>

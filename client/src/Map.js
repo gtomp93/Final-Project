@@ -441,7 +441,8 @@ const MapWrapper = styled.div`
       transition: 250ms ease-in-out;
 
       @media (min-width: 500px) {
-        &:hover {
+        &:hover,
+        :active {
           width: 65%;
           height: 65%;
           opacity: 1;
