@@ -15,18 +15,21 @@ const Header = ({handleTest}) => {
   return (
     <>
       <HeaderContainer>
-        <Home to={"/"}>
-          <HomeIcon size={"25px"} />
-          <NavName>Home</NavName>
+        <Home to={"/"} activeStyle={{color: "#e8e6df"}}>
+          <HomeIcon
+            size={"25px"}
+            style={{marginBottom: "2px", marginRight: "2px"}}
+          />
+          <NavName2>Home</NavName2>
         </Home>
         <Create to={"/CreateMapForm"}>
           <BiMap size={"25px"} />
-          <NavName>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName>
+          <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
         </Create>
         {isAuthenticated && (
           <ProfileLink to="/profile">
             <ProfileIcon size={"25px"} />
-            <NavName>Profile</NavName>
+            <NavName2>Profile</NavName2>
           </ProfileLink>
         )}
 
@@ -60,6 +63,13 @@ const NavName = styled.span`
   }
 `;
 
+const NavName2 = styled.span`
+  color: #5a7bb0;
+  font-weight: bolder;
+  font-size: 20px;
+  display: block;
+`;
+
 const Home = styled(NavLink)`
   color: #5a7bb0;
   text-decoration: none;
@@ -88,6 +98,10 @@ const ProfileLink = styled(NavLink)`
   color: #5a7bb0;
   display: flex;
   align-items: center;
+  margin: 0 10px 0 0;
+  @media (min-width: 700px) {
+    margin: 0;
+  }
 `;
 
 const ProfileIcon = styled(FiUser)``;

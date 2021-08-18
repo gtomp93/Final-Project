@@ -5,6 +5,8 @@ import ProfileGame from "./ProfileGame";
 import Game from "./Game";
 import styled from "styled-components";
 import {Loading} from "./Loading";
+import LogoutButton from "./LogoutButton";
+import {FiLogOut} from "react-icons/fi";
 
 const Profile = () => {
   const {user, isAuthenticated, isLoading} = useAuth0();
@@ -12,6 +14,7 @@ const Profile = () => {
   const [games, setGames] = useState([]);
   const [likedGames, setLikedGames] = useState([]);
   const [created, setCreated] = useState(true);
+  const {logout} = useAuth0();
 
   console.log(currentUser);
   console.log("games", games);
@@ -85,10 +88,14 @@ const Profile = () => {
             alt={user.name}
             style={{borderRadius: "20%"}}
           />
-          <h2 style={{marginBottom: "0px"}}>{user.name}</h2>
-          <p>{user.email}</p>
+          <h2 style={{marginBottom: "0px", marginTop: "5px"}}>{user.name}</h2>
+          <p style={{margin: "3px 0 6px"}}>{user.email}</p>
+          <Logout onClick={() => logout({returnTo: window.location.origin})}>
+            <FiLogOut />
+            Sign Out
+          </Logout>
         </div>
-        <Choose>
+        <Choose style={{marginTop: "10px", marginBottom: "0"}}>
           <GamesOption
             onClick={toggleCreate}
             style={
@@ -176,6 +183,17 @@ const Created = styled.div`
 
 const Liked = styled.div`
   display: ${(props) => (props.created ? "none" : "block")};
+`;
+
+const Logout = styled.button`
+  font-weight: bold;
+  border-radius: 5px;
+  border: solid black 1px;
+  background: none;
+  display: flex;
+  align-items: center;
+  /* color: #9897a1; */
+  color: black;
 `;
 
 export default Profile;

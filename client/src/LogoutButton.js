@@ -26,10 +26,12 @@ const Logout = styled.button`
   font-size: 20px;
   font-weight: bolder;
   margin-right: 10px;
+  display: none;
   &:hover {
     cursor: pointer;
   }
   @media (min-width: 700px) {
+    display: flex;
     margin-right: 60px;
   }
 `;

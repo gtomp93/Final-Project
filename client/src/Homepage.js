@@ -52,8 +52,11 @@ const Homepage = () => {
               color: "rgba(0, 0, 0, 0.87)",
             }}
           >
-            <BiWorld size={"50px"} style={{marginTop: "18px"}} />
-            <h1 style={{marginBottom: "0"}}> MapGuesser</h1>
+            <BiWorld
+              size={"50px"}
+              style={{marginTop: "18px", color: "black"}}
+            />
+            <h1 style={{marginBottom: "0", color: "#d3d2d9"}}> MapGuesser</h1>
           </div>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
           {games.map((game, index) => {

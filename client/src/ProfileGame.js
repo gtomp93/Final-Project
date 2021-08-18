@@ -176,10 +176,10 @@ const ProfileGame = ({
           {/* {game.comments[0].comment && <div>{game.comments[0]}</div>}{" "}
       {game.comments[1].comment && <div>{game.comments[1]}</div>} */}
         </Box>
-        <div
+        <DeleteBox
           style={{
             display: "flex",
-            width: "80%",
+            // width: "80%",
             // flexDirection: "column",
             alignItems: "center",
             justifyContent: "flex-start",
@@ -200,14 +200,16 @@ const ProfileGame = ({
             <BiTrash style={{marginRight: "3px"}} />
             Delete Map
           </StyledButton>
-        </div>
+        </DeleteBox>
         {toggleDelete && (
-          <div
+          <DeleteBox
             style={{
               display: "flex",
-              width: "80%",
+              // width: "80%",
               // flexDirection: "column",
+              // alignSelf: "flex-start",
               alignItems: "center",
+              justifyContent: "flex-start",
             }}
           >
             <div
@@ -215,6 +217,7 @@ const ProfileGame = ({
                 display: "flex",
                 alignItems: "center",
                 marginBottom: "5px",
+                alignSelf: "flex-start",
               }}
             >
               {" "}
@@ -237,7 +240,7 @@ const ProfileGame = ({
                 No
               </DeleteChoice>{" "}
             </div>
-          </div>
+          </DeleteBox>
         )}
       </GameContainer>
     </div>
@@ -357,6 +360,12 @@ const View = styled.button`
   }
 `;
 
+const DeleteBox = styled.div`
+  width: 95%;
+  @media (min-width: 700px) {
+    width: 80%;
+  }
+`;
 // const Play = styled.div`
 //   background: inherit;
 //   border: 1 px solid green;

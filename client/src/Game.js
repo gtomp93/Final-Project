@@ -245,7 +245,8 @@ const Description = styled.h3`
 const Creator = styled.h4`
   font-size: 13px;
   margin: 2px 2px 0;
-  color: #0b064f;
+  /* color: #0b064f; */
+  color: #030129;
   font-weight: bolder;
 
   @media (min-width: 769px) {
