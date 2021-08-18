@@ -31,7 +31,6 @@ const GameOptions = () => {
     <div
       style={{
         width: "100vw",
-        marginLeft: "20px",
         marginTop: "25px",
         display: "flex",
         flexDirection: "column",
@@ -148,6 +147,7 @@ const Search = styled.button`
 const ModeButton = styled.button`
   width: 80px;
   font-weight: bolder;
+  border-radius: 6px;
 `;
 
 const Timed = styled.button`
@@ -158,6 +158,7 @@ const Timed = styled.button`
 const Untimed = styled.button`
   width: 80px;
   font-weight: bolder;
+  border-radius: 6px;
 `;
 {
   /* <button

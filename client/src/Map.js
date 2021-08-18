@@ -107,30 +107,6 @@ const Map = () => {
 
   // let timer1 = null;
 
-  // useEffect(() => {
-  //   setTimer1(
-  //     setInterval(() => {
-  //       setCounter((counter) => counter - 1);
-  //       if (counter < 1) {
-  //         clearInterval(timerRef.current);
-  //         setGuessed(true);
-  //       }
-  //     }, 1000)
-  //   );
-
-  //   return () => {
-  //     setTimer1(clearInterval(timer1));
-  //   };
-  // }, [guessed]);
-
-  // if (guessed) {
-  //   setStop(true);
-  // }
-
-  // useEffect(() => {
-  //   timer > 0 && setTimeout(() => setTimer(timer - 1), 1000);
-  // }, [timer]);
-
   useEffect(() => {
     if (timed === "timed") {
       if (timer === 0) {
@@ -231,8 +207,14 @@ const Map = () => {
         <BigWrapper guessed={guessed}>
           {/* {timed === "timed" && <div>{timer}</div>} */}
           <MapsWrapper guessed={guessed}>
-            <MapWrapper guessed={guessed} expand={expand} hide={hide}>
-              <GoogleMap
+            <MapWrapper
+              guessed={guessed}
+              expand={expand}
+              hide={hide}
+              role="button"
+              tabIndex="0"
+            >
+              <Testing
                 mapContainerStyle={mapContainerStyle}
                 zoom={zoom}
                 center={center}
@@ -269,7 +251,7 @@ const Map = () => {
                     options={lineOptions}
                   ></Polyline>
                 )}
-              </GoogleMap>
+              </Testing>
             </MapWrapper>
             <GoogleMap
               mapContainerStyle={streetViewStyle}
@@ -285,13 +267,13 @@ const Map = () => {
           </MapsWrapper>
           {guessed && (
             <Message>
-              Your guess was {(distance / 1000).toFixed(2)} km away! You scored
+              Your guess was {(distance / 1000).toFixed(2)} km away! You scored{" "}
               {points} points!
             </Message>
           )}
           {endGame && <GameOver>Game Over. Your score is {gameScore}</GameOver>}
           <BottomContainer>
-            <button
+            <StyledButton
               onClick={() => {
                 submitGuess(
                   midpoint.lat(),
@@ -306,19 +288,19 @@ const Map = () => {
               disabled={!clickedLat || guessed}
             >
               Guess
-            </button>
+            </StyledButton>
             {timed === "timed" && <TimerDisplay>{timer}</TimerDisplay>}
 
             {!guessed && (
               <div style={{display: "flex"}}>
-                <HideButton
+                <StyledButton
                   onClick={() => {
                     setHide(!hide);
                     setExpand(false);
                   }}
                 >
                   {hide ? "Show Map" : "Hide Map"}
-                </HideButton>
+                </StyledButton>
                 {!hide && (
                   <ExpandButton
                     onClick={() => {
@@ -335,7 +317,7 @@ const Map = () => {
               </div>
             )}
             {guessed && !endGame && (
-              <button
+              <StyledButton
                 onClick={() => {
                   resetMap();
                   setClickedLat(null);
@@ -345,7 +327,7 @@ const Map = () => {
                 }}
               >
                 Next
-              </button>
+              </StyledButton>
             )}
             {endGame && <Home to={"/"}>Home</Home>}
           </BottomContainer>
@@ -356,6 +338,44 @@ const Map = () => {
 };
 
 export default Map;
+
+const Testing = styled(GoogleMap)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 500;
+  display: block;
+
+  width: ${(props) =>
+    props.guessed || props.expand || !props.hide ? "100%" : "36%"};
+
+  ${(props) =>
+    !props.guessed &&
+    !props.expand &&
+    css`
+      transition: 250ms ease-in-out;
+
+      @media (min-width: 500px) {
+        &:hover,
+        :focus,
+        :active {
+          width: 65%;
+          height: 65%;
+          opacity: 1;
+        }
+      }
+    `};
+  display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
+
+  height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
+
+  @media (min-width: 501px) {
+    opacity: ${(props) => (props.guessed || props.expand ? "1" : "0.7")};
+    display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
+    width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
+    height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
+  }
+`;
 
 const PageContainer = styled.div`
   display: flex;
@@ -424,7 +444,7 @@ const Message = styled.div`
 //   width: 100%;
 // `;
 
-const MapWrapper = styled.div`
+const MapWrapper = styled.a`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -442,6 +462,7 @@ const MapWrapper = styled.div`
 
       @media (min-width: 500px) {
         &:hover,
+        :focus,
         :active {
           width: 65%;
           height: 65%;
@@ -466,74 +487,20 @@ const Home = styled(Link)`
   align-items: center;
   width: 39px;
   font-size: 18px;
-  background-color: #b9bec7;
+  font-weight: bold;
+  /* background-color: #b9bec7; */
   text-align: center;
   text-decoration: none;
-  color: black;
+  /* color: black; */
   padding: 1px 10px 1px;
+  background-color: rgba(0, 0, 0, 0.87);
+  color: #5a7bb0;
   /* border: solid black 1px; */
   box-shadow: 0 0 10px rgb(255 255 255 / 10%);
   border-radius: 4px;
   /* font-weight: bolder; */
   margin-top: 16px;
 `;
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   position: relative;
-//   width: 100vw;
-//   @media (min-width: 600px) {
-//     width: 100vw;
-//     margin-left: 5px;
-//     position: relative;
-//   }
-// `;
-
-// const GoogleMapsContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   position: relative;
-// `;
-
-// //BsArrowsFullscreen
-// const MapContainer = styled.div`
-//   ${(props) =>
-//     !props.guessed &&
-//     !props.expand &&
-//     css`
-//       @media (min-width: 500px) {
-//         &:hover {
-//           transition: 250ms;
-//           width: 60%;
-//         }
-//       }
-//     `};
-//   display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
-//   position: absolute;
-//   bottom: 0;
-//   right: 0;
-//   z-index: 500;
-//   width: ${(props) =>
-//     props.guessed || props.expand || !props.hide ? "100%" : "38%"};
-//   @media (min-width: 501px) {
-//     display: ${(props) => (!props.hide ? "block" : "none")};
-//     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
-//   }
-// `;
-
-// // @media (hover: none) { … }
-
-// const StreetviewContainer = styled.div`
-//   width: 80%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   @media (max-width: 768px) {
-//     width: 100%;
-//   }
-// `;
 
 const BottomContainer = styled.div`
   width: 100%;
@@ -546,14 +513,42 @@ const TimerDisplay = styled.div`
   font-weight: bolder;
   position: absolute;
   left: 50%;
+  color: white;
   transform: translateX(50%);
+`;
+
+const StyledButton = styled.button`
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
 `;
 
 const HideButton = styled.button``;
 
 const ExpandButton = styled.button`
   display: none;
-
+  background-color: rgba(0, 0, 0, 0.87);
+  color: #b9bec7;
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  margin-left: 5px;
   @media (min-width: 501px) {
     display: flex;
     align-items: center;
