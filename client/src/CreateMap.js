@@ -195,19 +195,9 @@ const CreateMap = () => {
         })}
       </LocationsListContainer>
 
-      {/* <LocationInput
-        location={location5}
-        setLocation={setLocation5}
-        setLocation={setLocation5}
-        addLocation={addLocation}
-        removeLocation={removeLocation}
-        locations={locations}
-        index={4}
-        getCoords={getCoords} 
-      />*/}
       {complete && (
         <>
-          <button
+          <StyledButton
             onClick={() => {
               addAnotherLocation();
               setComplete(false);
@@ -216,16 +206,17 @@ const CreateMap = () => {
             disabled={created}
           >
             Add another location
-          </button>
-          <button
+          </StyledButton>
+          <StyledButton
             onClick={() => {
               addLocations(locationsList);
               setCreated(true);
             }}
             disabled={created}
           >
-            Create Game
-          </button>
+            Create Map
+          </StyledButton>
+          {created && <Added>Map Created!</Added>}
         </>
       )}
       {position && (
@@ -252,7 +243,12 @@ export default CreateMap;
 
 const Search = styled.button``;
 
-const Add = styled.button``;
+const Added = styled.span`
+  color: #42f22e;
+  font-weight: bolder;
+  align-self: center;
+  margin-left: 15px;
+`;
 
 const Container = styled.div`
   margin-left: 8px;
@@ -265,4 +261,21 @@ const LocationsListContainer = styled.div`
 const ViewLabel = styled.h3`
   margin: 0 0 6px;
   color: black;
+`;
+
+const StyledButton = styled.button`
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
 `;

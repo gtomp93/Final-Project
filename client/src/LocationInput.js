@@ -63,7 +63,9 @@ const LocationInput = ({
     <>
       <Container>
         <div>
-          <label style={{marginRight: "2px"}}>Enter Address</label>
+          <label style={{marginRight: "2px", fontWeight: "bolder"}}>
+            Enter Address
+          </label>
           <Input
             value={typeof item === "object" ? names[index] : inputValue}
             onChange={(ev) => {
@@ -166,7 +168,7 @@ const Error = styled.span`
 `;
 
 const Added = styled.span`
-  color: green;
+  color: #28eb13;
   font-weight: bolder;
   align-self: center;
 `;

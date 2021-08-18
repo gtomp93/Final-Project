@@ -18,7 +18,7 @@ const CreateMapForm = () => {
       <FormWrapper>
         <h1>Map Creator- Part 1</h1>
         <InputWrapper>
-          <label>Map Name</label>
+          <Label>Map Name</Label>
           <Input
             placeholder="name"
             onChange={(ev) => {
@@ -26,11 +26,11 @@ const CreateMapForm = () => {
             }}
             disabled={submitted}
             style={{marginLeft: "8px"}}
-          ></Input>
+          />
           {required && name.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
-          <label style={{marginRight: "1px"}}>Description</label>
+          <Label style={{marginRight: "1px"}}>Description</Label>
           <TextArea
             placeholder="Description"
             onChange={(ev) => {
@@ -41,7 +41,7 @@ const CreateMapForm = () => {
           {required && description.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
-          <label> Picture URL</label>
+          <Label> Picture URL</Label>
           <input
             type="file"
             accept="image/*"
@@ -90,6 +90,10 @@ const Container = styled.div`
   }
 `;
 
+const Label = styled.label`
+  font-weight: bold;
+`;
+
 const FormWrapper = styled.div``;
 
 const InputWrapper = styled.div`
@@ -102,6 +106,7 @@ const Input = styled.input``;
 
 const TextArea = styled.textarea`
   width: 250px;
+  resize: none;
 `;
 
 const Required = styled.p`

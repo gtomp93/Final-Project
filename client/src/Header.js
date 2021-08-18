@@ -7,7 +7,7 @@ import LogoutButton from "./LogoutButton";
 import Profile from "./Profile";
 import styled from "styled-components";
 import {FiUser, FiHome} from "react-icons/fi";
-import {BiWorld} from "react-icons/bi";
+import {BiWorld, BiMap} from "react-icons/bi";
 
 const Header = ({handleTest}) => {
   const {user, isAuthenticated, isLoading} = useAuth0();
@@ -20,7 +20,7 @@ const Header = ({handleTest}) => {
           <NavName>Home</NavName>
         </Home>
         <Create to={"/CreateMapForm"}>
-          <BiWorld size={"25px"} />
+          <BiMap size={"25px"} />
           <NavName>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName>
         </Create>
         {isAuthenticated && (
@@ -65,9 +65,9 @@ const Home = styled(NavLink)`
   text-decoration: none;
   display: flex;
   align-items: center;
-  margin: 0 10px 0;
+  /* margin: 0 10px 0; */
   @media (min-width: 700px) {
-    margin: 0 60px 0;
+    margin: 0 0 0 60px;
     display: flex;
   }
 `;
