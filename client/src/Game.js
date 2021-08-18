@@ -346,6 +346,29 @@ const Submit = styled.button`
   border: none;
   height: 30px;
   font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #07024d;
+  border-radius: 9px 9px 9px 0;
+  /* color: #5a7bb0; */
+  color: #d3d2d9;
+`;
+
+const StyledButton = styled.button`
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
 `;
 
 export default Game;
