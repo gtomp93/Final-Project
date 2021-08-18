@@ -16,7 +16,10 @@ const Homepage = () => {
   const [liked, setLiked] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
   const {currentUser, isAuthenticated, loggedOut} = useContext(UserContext);
+  const [searchValue, setSearchValue] = useState("");
   const {setSelected, setTimed} = useContext(GameContext);
+  const [gamesList, setGamesList] = useState([]);
+  // let gamesList = [];
 
   useEffect(() => {
     fetch("/getGames")
@@ -33,7 +36,15 @@ const Homepage = () => {
   //   fetch(`/likeGame/${_id}`)
   // }
   console.log("currentUser", currentUser);
-  console.log(games);
+  // console.log(games);
+  console.log(gamesList);
+
+  const FilterGames = (selectedGames) => {
+    console.log(selectedGames, "selectedGames");
+    let copy = [];
+    copy.push(selectedGames);
+    setGames(copy);
+  };
 
   if (!currentUser || !games) {
     return <Loading />;
@@ -58,6 +69,40 @@ const Homepage = () => {
             />
             <h1 style={{marginBottom: "0", color: "#d3d2d9"}}> MapGuesser</h1>
           </div>
+          <Search
+            onChange={(ev) => {
+              setSearchValue(ev.target.value);
+              if (searchValue.length > 1) {
+                let arr = games.filter((game) => {
+                  return game.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase());
+                });
+                setGamesList(arr);
+              }
+            }}
+            value={searchValue}
+          ></Search>
+          <SuggestionsList>
+            {gamesList.map((game) => {
+              return (
+                <Suggestion
+                  onClick={() => {
+                    FilterGames(game);
+                  }}
+                >
+                  {game.name}
+                </Suggestion>
+              );
+            })}
+          </SuggestionsList>
+          <SearchButton
+            onClick={() => {
+              setGames(gamesList);
+            }}
+          >
+            Search
+          </SearchButton>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
           {games.map((game, index) => {
             let isLiked = false;
@@ -86,6 +131,14 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+const Search = styled.input``;
+
+const SuggestionsList = styled.div``;
+
+const Suggestion = styled.div``;
+
+const SearchButton = styled.button``;
 
 const GamePic = styled.img`
   width: 50px;

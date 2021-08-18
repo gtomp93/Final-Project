@@ -14,7 +14,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
   const [addComment, setAddComment] = useState(false);
   const [viewMore, setViewMore] = useState(false);
 
-  console.log(game);
+  // console.log(game);
 
   // if (!currentUser) {
   //   return "loading";
@@ -23,6 +23,10 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
   // if (game.comments.length) {
   //   comments = game.comments;
   // }
+
+  if (!game.comments) {
+    return "loading";
+  }
 
   const likeGame = async () => {
     fetch(`/likeGame/${game._id}`, {
@@ -114,7 +118,11 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
             <CommentBox>
               <FiMessageCircle size="22px" style={{fill: "#d3d2d9"}} />
               <NumComments>
-                {game.comments.length ? game.comments.length : null}
+                {game.comments
+                  ? game.comments.length
+                    ? game.comments.length
+                    : null
+                  : null}
               </NumComments>
             </CommentBox>
             <StartGame to={`/gameOptions/${game._id}`}>
