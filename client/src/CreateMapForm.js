@@ -41,7 +41,7 @@ const CreateMapForm = () => {
           {required && description.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
-          <Label> Picture URL</Label>
+          <Label style={{marginRight: "6px"}}>Map Image</Label>
           <input
             type="file"
             accept="image/*"
@@ -114,10 +114,37 @@ const Required = styled.p`
 `;
 
 const Submit = styled.button`
-  background: #b9bec7;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
   border: none;
-  font-size: 16px;
   border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  padding: 4px 7px 4px;
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
 `;
 
 const Next = styled(Link)`
