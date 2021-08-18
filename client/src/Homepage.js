@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import {FiHeart} from "react-icons/fi";
+import {FiSearch} from "react-icons/fi";
 // import {userInfo} from "os";
 import {UserContext} from "./UserContext";
 import Game from "./Game";
@@ -19,6 +19,8 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState("");
   const {setSelected, setTimed} = useContext(GameContext);
   const [gamesList, setGamesList] = useState([]);
+  const [searched, setSearched] = useState(false);
+
   // let gamesList = [];
 
   useEffect(() => {
@@ -69,40 +71,66 @@ const Homepage = () => {
             />
             <h1 style={{marginBottom: "0", color: "#d3d2d9"}}> MapGuesser</h1>
           </div>
-          <Search
-            onChange={(ev) => {
-              setSearchValue(ev.target.value);
-              if (searchValue.length > 1) {
-                let arr = games.filter((game) => {
-                  return game.name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase());
-                });
-                setGamesList(arr);
-              }
-            }}
-            value={searchValue}
-          ></Search>
-          <SuggestionsList>
-            {gamesList.map((game) => {
-              return (
-                <Suggestion
-                  onClick={() => {
-                    FilterGames(game);
-                  }}
-                >
-                  {game.name}
-                </Suggestion>
-              );
-            })}
-          </SuggestionsList>
-          <SearchButton
-            onClick={() => {
-              setGames(gamesList);
-            }}
-          >
-            Search
-          </SearchButton>
+          <SearchWrapper>
+            <Search
+              onChange={(ev) => {
+                setSearchValue(ev.target.value);
+                if (ev.target.value.length > 1) {
+                  let arr = games.filter((game) => {
+                    return game.name
+                      .toLowerCase()
+                      .includes(ev.target.value.toLowerCase());
+                  });
+                  setGamesList(arr);
+                } else {
+                  setGamesList([]);
+                }
+              }}
+              value={searchValue}
+              placeholder="Search Maps"
+            />
+            {searchValue.length > 1 && (
+              <SuggestionsList>
+                {gamesList.map((game) => {
+                  return (
+                    <Suggestion
+                      onClick={() => {
+                        FilterGames(game);
+                        setSearched(true);
+                      }}
+                    >
+                      {game.name}
+                    </Suggestion>
+                  );
+                })}
+              </SuggestionsList>
+            )}
+            {!searched && (
+              <SearchButton
+                onClick={() => {
+                  setGames(gamesList);
+                  setSearched(true);
+                }}
+              >
+                <FiSearch style={{color: "#5a7bb0"}} />
+              </SearchButton>
+            )}
+            {searched && (
+              <ResetButton
+                onClick={() => {
+                  fetch("/getGames")
+                    .then((res) => res.json())
+                    .then((res) => {
+                      console.log("this thing", res);
+                      setGames(res.result);
+                    });
+                  setSearched(false);
+                }}
+              >
+                Reset
+              </ResetButton>
+            )}
+          </SearchWrapper>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
           {games.map((game, index) => {
             let isLiked = false;
@@ -132,13 +160,63 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Search = styled.input``;
+const Search = styled.input`
+  width: 160px;
+  background-color: #d3d2d9;
+  border: solid black 1px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  height: 21px;
+`;
 
-const SuggestionsList = styled.div``;
+const SuggestionsList = styled.div`
+  width: 155px;
+  position: absolute;
+  left: 0;
+  top: 23px;
+  z-index: 10;
+  background-color: #d3d2d9;
+  padding: 0 4px 0;
+  border: solid grey 1px;
+  /* box-sizing: border-box; */
+`;
 
-const Suggestion = styled.div``;
+const Suggestion = styled.div`
+  font-weight: bold;
+  margin: 4px 0 4px;
+  font-size: 15px;
+  &:hover {
+    cursor: pointer;
+    color: #4e86f5;
+  }
+`;
 
-const SearchButton = styled.button``;
+const SearchWrapper = styled.div`
+  display: flex;
+  position: relative;
+  margin-left: 3px;
+  align-items: center;
+  font-weight: bold;
+`;
+
+const SearchButton = styled.button`
+  display: flex;
+  align-items: center;
+  /* padding: 0px 8px 0px; */
+  border-radius: 6px;
+  /* background: #e8e6df; */
+  border: none;
+  height: 25px;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* background-color: #07024d; */
+  border-radius: 6px;
+  /* color: #5a7bb0; */
+  margin-left: 1px;
+  color: #d3d2d9;
+`;
+
+const ResetButton = styled.button``;
 
 const GamePic = styled.img`
   width: 50px;

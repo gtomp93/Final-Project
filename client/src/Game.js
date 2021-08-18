@@ -226,7 +226,7 @@ const GamePic = styled.img`
 `;
 
 const PicWrapper = styled.div`
-  width: 53%;
+  width: 55%;
 `;
 
 const Name = styled.h2`
