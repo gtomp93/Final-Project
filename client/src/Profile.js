@@ -17,7 +17,7 @@ const Profile = () => {
   const {logout} = useAuth0();
 
   console.log(currentUser);
-  console.log("games", games);
+  console.log("score", user.score);
 
   const toggleCreate = () => {
     setCreated(true);
@@ -33,7 +33,7 @@ const Profile = () => {
         fetch(`/getGame/${game}`)
           .then((res) => res.json())
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             setGames((arr) => [...arr, res.result]);
           });
       });
@@ -43,7 +43,7 @@ const Profile = () => {
           fetch(`/getGame/${game}`)
             .then((res) => res.json())
             .then((res) => {
-              console.log(res);
+              // console.log(res);
               setLikedGames((arr) => [...arr, res.result]);
             });
         }
@@ -84,12 +84,17 @@ const Profile = () => {
       <Container>
         <div style={{margin: "10px 8px 5px"}}>
           <img
-            src={user.picture}
-            alt={user.name}
+            src={currentUser.picture}
+            alt={currentUser.name}
             style={{borderRadius: "20%"}}
           />
-          <h2 style={{marginBottom: "0px", marginTop: "5px"}}>{user.name}</h2>
-          <p style={{margin: "3px 0 6px"}}>{user.email}</p>
+          <h2 style={{marginBottom: "0px", marginTop: "5px"}}>
+            {currentUser.givenName + " " + currentUser.lastName}
+          </h2>
+          <p style={{margin: "3px 0 6px"}}>{currentUser.email}</p>
+          <p style={{margin: "3px 0 6px", fontWeight: "bolder"}}>
+            Total all-time score: {currentUser.score}
+          </p>
           <Logout onClick={() => logout({returnTo: window.location.origin})}>
             <FiLogOut />
             Sign Out
@@ -122,7 +127,7 @@ const Profile = () => {
           {games.map((game) => {
             if (game) {
               let isLiked = currentUser.likes.includes(game._id);
-              console.log(isLiked);
+              // console.log(isLiked);
               return (
                 <div
                   key={Math.random() * 9999}
@@ -142,7 +147,7 @@ const Profile = () => {
           {likedGames.map((game) => {
             if (game) {
               let isLiked = currentUser.likes.includes(game._id);
-              console.log(isLiked);
+              // console.log(isLiked);
               return (
                 <Game
                   game={game}

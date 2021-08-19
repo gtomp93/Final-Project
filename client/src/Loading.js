@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from "react";
 import styled from "styled-components";
 import Login from "./Login";
+import {useAuth0} from "@auth0/auth0-react";
 
 import {FiLoader} from "react-icons/fi";
 import {UserContext} from "./UserContext";
@@ -9,9 +10,12 @@ export const Loading = () => {
   const {currentUser} = useContext(UserContext);
   const [timer, setTimer] = useState(4);
   const [stop, setStop] = useState(false);
+  const {user, isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
 
   useEffect(() => {
-    timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+    if (!isAuthenticated) {
+      timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+    }
   }, [timer]);
 
   if (timer === 0 && !currentUser) {

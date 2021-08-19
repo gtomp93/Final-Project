@@ -23,7 +23,7 @@ const ProfileGame = ({
   const [deleted, setDeleted] = useState(false);
   const [viewMore, setViewMore] = useState(false);
 
-  console.log(game);
+  // console.log(game);
 
   // if (!currentUser) {
   //   return "loading";
