@@ -492,7 +492,7 @@ const Home = styled(Link)`
   text-align: center;
   text-decoration: none;
   /* color: black; */
-  padding: 1px 10px 1px;
+  padding: 1px 10px 2px;
   background-color: rgba(0, 0, 0, 0.87);
   color: #5a7bb0;
   /* border: solid black 1px; */
@@ -527,7 +527,7 @@ const StyledButton = styled.button`
   color: #5a7bb0;
   box-shadow: 0 0 10px rgb(255 255 255 / 10%);
   font-weight: bold;
-  padding: 4px 7px 4px;
+  padding: 3px 7px 4px;
   &:disabled {
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: none;

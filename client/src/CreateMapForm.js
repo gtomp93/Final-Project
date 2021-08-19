@@ -148,13 +148,20 @@ const StyledButton = styled.button`
 `;
 
 const Next = styled(Link)`
-  font-size: 16px;
-  background-color: #b9bec7;
-  text-decoration: none;
-  color: black;
-  padding: 1px 4px 1px;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  margin-top: 4px;
+  /* border: solid grey 1px; */
   margin-left: 8px;
+
+  text-decoration: none;
+  border: none;
   border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  font-size: 13px;
+  padding: 4px 7px 4px;
 `;
 
 const Pic = styled.img`

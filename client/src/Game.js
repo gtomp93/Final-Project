@@ -37,7 +37,10 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => res.json());
+    }).then((res) => {
+      setLiked(!liked);
+      res.json();
+    });
 
     await fetch(`/addLikeToUser/${currentUser._id}`, {
       method: "PUT",
@@ -52,7 +55,6 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
       .then((res) => res.json())
       .then((res) => {
         console.log("HEERE");
-        setLiked(!liked);
         if (!liked) {
           setNumLikes(numLikes + 1);
         } else {

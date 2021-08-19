@@ -125,18 +125,25 @@ const Mode = styled.div`
 
 const StartGame = styled(Link)`
   display: block;
-  width: 35px;
+  width: 30px;
   font-size: 18px;
-  background-color: #b9bec7;
-  text-align: center;
-  text-decoration: none;
-  color: black;
+
   padding: 1px 10px 1px;
-  border: solid black 1px;
-  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
-  border-radius: 4px;
-  font-weight: bolder;
   margin-top: 16px;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* color: #b9bec7; */
+  /* margin-top: 4px; */
+  /* border: solid grey 1px; */
+  /* margin-left: 8px; */
+
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  color: #5a7bb0;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  font-weight: bold;
+  font-size: 17px;
+  padding: 3px 8px 3px 7px;
 `;
 
 const Search = styled.button`

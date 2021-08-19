@@ -42,7 +42,7 @@ const Wrapper = styled.div`
 const Spinner = styled(FiLoader)`
   height: 100px;
   width: 100px;
-  animation: App-logo-spin infinite 5s linear;
+  animation: App-logo-spin infinite 4s linear;
   color: #e8e6df;
 
   @keyframes App-logo-spin {

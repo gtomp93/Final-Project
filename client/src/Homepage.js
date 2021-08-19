@@ -20,6 +20,7 @@ const Homepage = () => {
   const {setSelected, setTimed} = useContext(GameContext);
   const [gamesList, setGamesList] = useState([]);
   const [searched, setSearched] = useState(false);
+  const [fullList, setFullList] = useState(null);
 
   // let gamesList = [];
 
@@ -29,6 +30,7 @@ const Homepage = () => {
       .then((res) => {
         console.log("this thing", res);
         setGames(res.result);
+        setFullList(res.result);
       });
     setSelected(null);
     setTimed(null);
@@ -88,8 +90,9 @@ const Homepage = () => {
               }}
               value={searchValue}
               placeholder="Search Maps"
+              disabled={searched}
             />
-            {searchValue.length > 1 && (
+            {searchValue.length > 1 && !searched && (
               <SuggestionsList>
                 {gamesList.map((game) => {
                   return (
@@ -118,13 +121,9 @@ const Homepage = () => {
             {searched && (
               <ResetButton
                 onClick={() => {
-                  fetch("/getGames")
-                    .then((res) => res.json())
-                    .then((res) => {
-                      console.log("this thing", res);
-                      setGames(res.result);
-                    });
+                  setGames(fullList);
                   setSearched(false);
+                  setSearchValue("");
                 }}
               >
                 Reset
@@ -214,9 +213,30 @@ const SearchButton = styled.button`
   /* color: #5a7bb0; */
   margin-left: 1px;
   color: #d3d2d9;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const ResetButton = styled.button``;
+const ResetButton = styled.button`
+  display: flex;
+  align-items: center;
+  /* padding: 0px 8px 0px; */
+  border-radius: 6px;
+  /* background: #e8e6df; */
+  border: none;
+  height: 25px;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* background-color: #07024d; */
+  border-radius: 6px;
+  /* color: #5a7bb0; */
+  margin-left: 1px;
+  color: #5a7bb0;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const GamePic = styled.img`
   width: 50px;
