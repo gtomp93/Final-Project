@@ -271,7 +271,7 @@ const Map = () => {
               {points} points!
             </Message>
           )}
-          {endGame && <GameOver>Game Over. Your score is {gameScore}</GameOver>}
+          {endGame && <GameOver>Game Over. Your total score is {gameScore}!</GameOver>}
           <BottomContainer>
             <StyledButton
               onClick={() => {

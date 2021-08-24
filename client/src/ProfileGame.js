@@ -437,6 +437,9 @@ const ActionBar = styled.div`
   display: flex;
   justify-content: space-between;
   width: 66%;
+  @media (min-width: 769px) {
+    width: 77%;
+  }
 `;
 
 const LikeButton = styled.button`
@@ -467,9 +470,9 @@ const CommentInput = styled.textarea`
   resize: none;
   margin-left: 4px;
   border-radius: 7px;
-  width: 70%;
-  @media (min-width: 769) {
-    width: 50%;
+  width: 72%;
+  @media (min-width: 769px) {
+    width: 70%;
   }
 `;
 

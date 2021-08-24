@@ -29,6 +29,8 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
   }
 
   const likeGame = async () => {
+    setLiked(!liked);
+
     fetch(`/likeGame/${game._id}`, {
       method: "PATCH",
       body: JSON.stringify({
@@ -38,7 +40,6 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      setLiked(!liked);
       res.json();
     });
 
@@ -315,7 +316,11 @@ const DescriptionWrapper = styled.div`
 const ActionBar = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 66%;
+  width: 93%;
+  margin-top: 2px;
+  @media (min-width: 769px) {
+    width: 77%;
+  }
 `;
 
 const LikeButton = styled.button`
@@ -342,10 +347,10 @@ const Likes = styled.span`
 const CommentInput = styled.textarea`
   margin-left: 4px;
   border-radius: 7px;
-  width: 70%;
+  width: 75%;
   resize: none;
-  @media (min-width: 769) {
-    width: 50%;
+  @media (min-width: 769px) {
+    width: 70%;
   }
 `;
 
