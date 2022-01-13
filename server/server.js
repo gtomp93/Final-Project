@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-const PORT = 8000;
+const PORT = 4000;
 const cors = require("cors");
 const {
   addUser,
@@ -9,8 +9,10 @@ const {
   updateUserScore,
   // getRandomLocations,
   searchOpponent,
-  CreateGame,
+  retrieveMap,
+  createGame,
   getGame,
+  CreateMap,
   AddGameToUser,
   getGames,
   likeGame,
@@ -19,6 +21,9 @@ const {
   deleteGame,
   comment,
   getS3url,
+  getPlayerGames,
+  submitGuess,
+  nextLocation,
 } = require("./handlers");
 
 // const {getS3url} = require("./s3");
@@ -40,13 +45,18 @@ express()
   .get("/locations/:_id", getLocations)
   // .get("/RandomLocations/:_id", getRandomLocations)
   .get("/searchOpponent", searchOpponent)
-  .post("/CreateGame", CreateGame)
+  .get("/getMap/:_id/:player", retrieveMap)
+  .post("/CreateMap", CreateMap)
+  .post("/createGame", createGame)
+  .patch("/submitGuess", submitGuess)
+  .patch("/nextLocation", nextLocation)
   .delete("/deleteGame/:_id", deleteGame)
   .put("/addGameToUser", AddGameToUser)
   .put("/removeFromUser", removeGameFromUser)
   .put("/addLikeToUser/:_id", addToLikes)
   .patch("/likeGame/:_id", likeGame)
   .put("/comment/:_id", comment)
+  .put("/getPlayerGames", getPlayerGames)
   .get("/s3url", getS3url)
 
   .get("*", (req, res) => {

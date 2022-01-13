@@ -1,23 +1,22 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {FiSearch} from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 // import {userInfo} from "os";
-import {UserContext} from "./UserContext";
+import { UserContext } from "./UserContext";
 import Game from "./Game";
 import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
-import {GameContext} from "./GameContext";
-import {Loading} from "./Loading";
-import {BiWorld} from "react-icons/bi";
+import { GameContext } from "./GameContext";
+import { Loading } from "./Loading";
+import { BiWorld } from "react-icons/bi";
 
 const Homepage = () => {
   const [games, setGames] = useState(null);
-  const [liked, setLiked] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
-  const {currentUser, isAuthenticated, loggedOut} = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [searchValue, setSearchValue] = useState("");
-  const {setSelected, setTimed} = useContext(GameContext);
+  const { setSelected, dispatch, resetMap } = useContext(GameContext);
   const [gamesList, setGamesList] = useState([]);
   const [searched, setSearched] = useState(false);
   const [fullList, setFullList] = useState(null);
@@ -28,23 +27,17 @@ const Homepage = () => {
     fetch("/getGames")
       .then((res) => res.json())
       .then((res) => {
-        console.log("this thing", res);
         setGames(res.result);
         setFullList(res.result);
       });
-    setSelected(null);
-    setTimed(null);
+    dispatch({ type: "clearGame" });
   }, [currentUser, updatePage]);
 
   // const likeGame = () =>{
   //   fetch(`/likeGame/${_id}`)
   // }
-  console.log("currentUser", currentUser);
-  // console.log(games);
-  console.log(gamesList);
 
   const FilterGames = (selectedGames) => {
-    console.log(selectedGames, "selectedGames");
     let copy = [];
     copy.push(selectedGames);
     setGames(copy);
@@ -53,8 +46,6 @@ const Homepage = () => {
   if (!currentUser || !games) {
     return <Loading />;
   }
-
-  // console.log("thingy", currentUser.givenName + " " + currentUser.lastName);
 
   return (
     <>
@@ -69,10 +60,16 @@ const Homepage = () => {
           >
             <BiWorld
               size={"50px"}
-              style={{marginTop: "18px", color: "black"}}
+              style={{ marginTop: "18px", color: "black" }}
             />
-            <h1 style={{marginBottom: "0", color: "#d3d2d9"}}> MapGuesser</h1>
+            <h1 style={{ marginBottom: "0", color: "#d3d2d9" }}> MapGuesser</h1>
           </div>
+          {/* <img
+            src={
+              "https://google-maps-bucket.s3.us-east-2.amazonaws.com/7353482103f5a33da92399411dd17d24"
+            }
+          /> */}
+
           <SearchWrapper>
             <Search
               onChange={(ev) => {
@@ -115,7 +112,7 @@ const Homepage = () => {
                   setSearched(true);
                 }}
               >
-                <FiSearch style={{color: "#5a7bb0"}} />
+                <FiSearch style={{ color: "#5a7bb0" }} />
               </SearchButton>
             )}
             {searched && (
@@ -133,7 +130,6 @@ const Homepage = () => {
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
           {games.map((game, index) => {
             let isLiked = false;
-            // console.log(game.pic);
             if (currentUser.likes.includes(game._id)) {
               isLiked = true;
             }

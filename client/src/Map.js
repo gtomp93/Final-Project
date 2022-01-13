@@ -1,9 +1,9 @@
-import React, {useState, useContext, useEffect, useRef} from "react";
-import {MapContext} from "./MapContext";
-import {GameContext} from "./GameContext";
-import styled, {css} from "styled-components";
-import {BsArrowsFullscreen} from "react-icons/bs";
-import {Link, useParams} from "react-router-dom";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { UserContext } from "./UserContext";
+import { GameContext } from "./GameContext";
+import styled, { css } from "styled-components";
+import { BsArrowsFullscreen } from "react-icons/bs";
+import { Link, useParams } from "react-router-dom";
 
 import {
   GoogleMap,
@@ -12,10 +12,10 @@ import {
   Polyline,
   StreetViewPanorama,
 } from "@react-google-maps/api";
-import {UserContext} from "./UserContext";
-import {clearInterval} from "timers";
-import {Loading} from "./Loading";
+import { clearInterval } from "timers";
+import { Loading } from "./Loading";
 /* eslint-disable no-undef */
+/* global google */
 
 const mapContainerStyle = {
   // boxShadow: "0px -2px 2px rgba(34,34,34,0.6)",
@@ -48,7 +48,7 @@ const streetViewOptions = {
   streetViewControl: true,
 };
 
-const libraries = ["geometry"];
+const libraries = ["geometry", "places"];
 
 const lineOptions = {
   strokeColor: "#FF0000",
@@ -65,62 +65,84 @@ const lineOptions = {
 };
 
 const Map = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const [clickedLat, setClickedLat] = useState(null);
   const [clickedLng, setClickedLng] = useState(null);
-  const [midpointLat, setMidpointLat] = useState(null);
-  const [midpointLng, setMidpointLng] = useState(null);
   const [hide, setHide] = useState(true);
   const [distance, setDistance] = useState(null);
   const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
   const [testPoint, setTestPoint] = useState(null);
   const [counter, setCounter] = useState(60);
-  const timerRef = useRef(null);
-  // const [timer, setTimer] = useState(10);
-
-  // const [locations, setLocations] = useState(null);
-  // const [guessed, setGuessed] = useState(false);
-  // const locations = [{lat: 44.6620659, lng: -63.5992192},{}];
-  const {} = useContext(MapContext);
 
   const {
-    locations,
-    center,
-    submitGuess,
-    zoom,
-    setZoom,
-    guessed,
-    setGuessed,
+    gameState: {
+      zoom,
+      guessed,
+      locations,
+      thirdPoint,
+      center,
+      locationIndex,
+      points,
+      gameScore,
+      endGame,
+      stop,
+      guessDistance,
+      guess,
+    },
     resetMap,
-    locationIndex,
-    points,
-    gameScore,
-    endGame,
-    stop,
-    setStop,
     timer,
     setTimer,
     timed,
-    setTimed,
+    submitGuess,
+    dispatch,
   } = useContext(GameContext);
 
-  // let timer1 = null;
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     if (timed === "timed") {
       if (timer === 0) {
-        setGuessed(true);
+        submitGuess(midpoint?.lat(), midpoint?.lng(), distance, clickedLat);
       }
       timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
     }
   }, [timer]);
 
-  const {isLoaded, loadError} = useLoadScript({
+  useEffect(() => {
+    if (!locations && currentUser) {
+      fetch(`/getMap/${id}/${currentUser.email}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          const { data } = res;
+          dispatch({
+            type: "loadGame",
+            id,
+            guess: data.guess,
+            guessDistance: data.distance,
+            thirdPoint: data.thirdPoint,
+            center: data.midPoint,
+            playerMode: data.playerMode,
+            locations: data.locations,
+            guessed: data.guessed,
+            points: data.points,
+            endGame: data.endGame,
+            gameScore: data.gameScore,
+            gameLink: `localhost:3000/map/${id}`,
+            timed: data.timeMode,
+            stop: data.guessed,
+            zoom: data.zoom,
+            locationIndex: data.locationIndex,
+          });
+        });
+    }
+  }, [currentUser]);
+
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
-
   if (loadError) {
     return "error loading maps";
   }
@@ -128,21 +150,17 @@ const Map = () => {
     return <Loading />;
   }
 
-  // if (!locations) {
-  //   return "loading";
-  // }
-
   let clickSpot = null;
 
-  let answerCoords = locations[locationIndex];
+  let answerCoords = locations ? locations[locationIndex] : null;
 
   let answer = new window.google.maps.LatLng(answerCoords);
-
+  console.log(center, zoom);
   const mapClickHandler = (ev) => {
     let testPointLng = null;
     setTimeout(() => {
       clickSpot = ev.latLng;
-      console.log(ev.latLng.lng(), "lng", ev.latLng.lat(), "lat");
+      // console.log(ev.latLng.lng(), "lng", ev.latLng.lat(), "lat");
       setClickedLng(ev.latLng.lng());
       setClickedLat(ev.latLng.lat());
       setDistance(
@@ -163,7 +181,6 @@ const Map = () => {
         ) > 1750000 &&
         (midpointLat > 58 || midpointLat < -58)
       ) {
-        console.log("here");
         if (midpointLat > 58) {
           midpointLat = midpointLat - 15;
         } else if (midpointLat < -58) {
@@ -185,22 +202,14 @@ const Map = () => {
       }
 
       setTestPoint(new google.maps.LatLng(answerCoords.lat, testPointLng));
-
-      console.log("midpoint", midpoint);
-      console.log(distance);
     }, 200);
   };
-  console.log("distance", distance);
-  console.log("zoom", zoom);
 
   if (!locations) {
     return "loading";
   }
-  //   if (guessed && locationIndex === locations.length - 1) {
-  //     return `Game Over. Your final score is ${gameScore}
-  // `;
-  //   }
-
+  console.log(locationIndex, "locindex");
+  console.log(guess, thirdPoint, locations[locationIndex]);
   return (
     <>
       <PageContainer>
@@ -226,28 +235,30 @@ const Map = () => {
                 options={options}
                 fullscreenControl={false}
               >
-                {clickedLat && clickedLng && (
+                {((clickedLat && clickedLng) || guessed) && (
                   <>
-                    <Marker
-                      position={{lat: clickedLat, lng: clickedLng}}
-                      clickable={false}
-                    />
+                    {!guessed && (
+                      <Marker
+                        position={{ lat: clickedLat, lng: clickedLng }}
+                        clickable={false}
+                      />
+                    )}
 
                     {guessed && (
-                      <Marker
-                        position={{lat: answer.lat(), lng: answer.lng()}}
-                        clickable={false}
-                      ></Marker>
+                      <>
+                        <Marker
+                          position={locations[locationIndex]}
+                          clickable={false}
+                        ></Marker>
+
+                        <Marker position={guess} clickable={false}></Marker>
+                      </>
                     )}
                   </>
                 )}
                 {guessed && (
                   <Polyline
-                    path={[
-                      {lat: clickedLat, lng: clickedLng},
-                      testPoint,
-                      answer,
-                    ]}
+                    path={[guess, thirdPoint, locations[locationIndex]]}
                     options={lineOptions}
                   ></Polyline>
                 )}
@@ -267,11 +278,13 @@ const Map = () => {
           </MapsWrapper>
           {guessed && (
             <Message>
-              Your guess was {(distance / 1000).toFixed(2)} km away! You scored{" "}
-              {points} points!
+              Your guess was {(guessDistance / 1000).toFixed(2)} km away! You
+              scored {points} points!
             </Message>
           )}
-          {endGame && <GameOver>Game Over. Your total score is {gameScore}!</GameOver>}
+          {endGame && (
+            <GameOver>Game Over. Your total score is {gameScore}!</GameOver>
+          )}
           <BottomContainer>
             <StyledButton
               onClick={() => {
@@ -279,9 +292,11 @@ const Map = () => {
                   midpoint.lat(),
                   midpoint.lng(),
                   distance,
-                  clickedLat
+                  clickedLat,
+                  clickedLng,
+                  testPoint
                 );
-                setGuessed(!guessed);
+                // setguessed(!guessed);
                 setExpand(false);
                 setHide(true);
               }}
@@ -292,7 +307,7 @@ const Map = () => {
             {timed === "timed" && <TimerDisplay>{timer}</TimerDisplay>}
 
             {!guessed && (
-              <div style={{display: "flex"}}>
+              <div style={{ display: "flex" }}>
                 <StyledButton
                   onClick={() => {
                     setHide(!hide);
@@ -309,7 +324,7 @@ const Map = () => {
                     }}
                   >
                     <ExpandArrows size="20px" />
-                    <span style={{marginLeft: "5px"}}>
+                    <span style={{ marginLeft: "5px" }}>
                       {expand ? "Collapse Map" : "Expand Map"}
                     </span>
                   </ExpandButton>
@@ -346,12 +361,12 @@ const Testing = styled(GoogleMap)`
   z-index: 500;
   display: block;
 
-  width: ${(props) =>
-    props.guessed || props.expand || !props.hide ? "100%" : "36%"};
+  width: ${({ guessed, expand, hide }) =>
+    guessed || expand || !hide ? "100%" : "36%"};
 
-  ${(props) =>
-    !props.guessed &&
-    !props.expand &&
+  ${(guessed, expand) =>
+    !guessed &&
+    !expand &&
     css`
       transition: 250ms ease-in-out;
 
@@ -437,12 +452,6 @@ const Message = styled.div`
   color: #afb4bd;
   font-weight: bolder;
 `;
-// const StreetViewWrapper = styled.div`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-// `;
 
 const MapWrapper = styled.a`
   position: absolute;

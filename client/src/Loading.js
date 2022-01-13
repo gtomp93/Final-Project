@@ -1,16 +1,16 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import Login from "./Login";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
-import {FiLoader} from "react-icons/fi";
-import {UserContext} from "./UserContext";
+import { FiLoader } from "react-icons/fi";
+import { UserContext } from "./UserContext";
 
 export const Loading = () => {
-  const {currentUser} = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [timer, setTimer] = useState(4);
   const [stop, setStop] = useState(false);
-  const {user, isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -19,13 +19,12 @@ export const Loading = () => {
   }, [timer]);
 
   if (timer === 0 && !currentUser) {
-    // setStop(true);
     return <Login />;
   }
 
   return (
     <Wrapper>
-      <h2 style={{color: "#e8e6df"}}>LOADING</h2>
+      <h2 style={{ color: "#e8e6df" }}>LOADING</h2>
       <Spinner />
     </Wrapper>
   );

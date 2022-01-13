@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Geocode from "react-geocode";
-import {BiTrash} from "react-icons/bi";
+import { BiTrash } from "react-icons/bi";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 const LocationInput = ({
   getCoords,
@@ -36,7 +37,7 @@ const LocationInput = ({
     Geocode.fromAddress(input)
       .then(
         (response) => {
-          const {lat, lng} = response.results[0].geometry.location;
+          const { lat, lng } = response.results[0].geometry.location;
           latitude = lat;
           longitude = lng;
           console.log(lat, lng);
@@ -50,7 +51,7 @@ const LocationInput = ({
         console.log(latitude, longitude);
         if (latitude && longitude) {
           getCoords(latitude, longitude, locationsList[index], index);
-          setLocation({lat: latitude, lng: longitude});
+          setLocation({ lat: latitude, lng: longitude });
           setStatus("found");
         }
       });
@@ -63,7 +64,7 @@ const LocationInput = ({
     <>
       <Container>
         <div>
-          <label style={{marginRight: "2px", fontWeight: "bolder"}}>
+          <label style={{ marginRight: "2px", fontWeight: "bolder" }}>
             Enter Address
           </label>
           <Input

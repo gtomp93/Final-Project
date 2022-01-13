@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import CreateMapForm from "./CreateMapForm";
@@ -7,12 +7,14 @@ import Login from "./Login";
 import Logout from "./Logout";
 import Header from "./Header";
 import GameOptions from "./GameOptions";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Profile from "./Profile";
 import Homepage from "./Homepage";
 import GlobalStyle from "./GlobalStyle";
 // import {useAuth0} from "@auth0/auth0-react";
 import CreateMap from "./CreateMap";
+import MapMaker from "./MapMaker";
+import Confirmation from "./Confirmation";
 
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
@@ -40,7 +42,8 @@ function App() {
           <CreateMapForm />
         </Route>
         <Route exact path="/CreateMap">
-          <CreateMap />
+          {/* <CreateMap /> */}
+          <MapMaker />
         </Route>
         <Route exact path="/login">
           <Login />
@@ -50,6 +53,9 @@ function App() {
         </Route>
         <Route exact path="/profile">
           <Profile />
+        </Route>
+        <Route exact path="/Confirmation">
+          <Confirmation />
         </Route>
       </Router>
     </>

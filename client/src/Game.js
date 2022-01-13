@@ -1,28 +1,17 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import {FiHeart, FiMessageCircle, FiPlay} from "react-icons/fi";
-import {Link} from "react-router-dom";
-import {UserContext} from "./UserContext";
+import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
 import Comment from "./Comment";
 
-const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
+const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   const [liked, setLiked] = useState(isLiked);
-  const {currentUser} = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
   const [comment, setComment] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [addComment, setAddComment] = useState(false);
   const [viewMore, setViewMore] = useState(false);
-
-  // console.log(game);
-
-  // if (!currentUser) {
-  //   return "loading";
-  // }
-
-  // if (game.comments.length) {
-  //   comments = game.comments;
-  // }
 
   if (!game.comments) {
     return "loading";
@@ -112,14 +101,14 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
                 >
                   <FiHeart
                     size="22px"
-                    style={liked ? {fill: "red"} : {fill: "none"}}
+                    style={liked ? { fill: "red" } : { fill: "none" }}
                   />
                 </LikeButton>
                 <Likes>{numLikes ? numLikes : null}</Likes>{" "}
               </LikeBox>
             </div>
             <CommentBox>
-              <FiMessageCircle size="22px" style={{fill: "#d3d2d9"}} />
+              <FiMessageCircle size="22px" style={{ fill: "#d3d2d9" }} />
               <NumComments>
                 {game.comments
                   ? game.comments.length
@@ -129,7 +118,7 @@ const Game = ({game, isLiked, updatePage, setUpdatePage, deleted}) => {
               </NumComments>
             </CommentBox>
             <StartGame to={`/gameOptions/${game._id}`}>
-              <FiPlay size="22px" style={{fill: "green"}} />
+              <FiPlay size="22px" style={{ fill: "green" }} />
               <Play>Play</Play>
             </StartGame>
           </ActionBar>

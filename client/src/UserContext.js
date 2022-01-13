@@ -1,43 +1,31 @@
-import React, {createContext, useEffect, useState} from "react";
-import {useAuth0} from "@auth0/auth0-react";
+import React, { createContext, useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const UserContext = createContext(null);
 
-export const UserContextProvider = ({children}) => {
-  const {user, isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
+export const UserContextProvider = ({ children }) => {
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState("idle");
   const [loggedOut, setLoggedOut] = useState(null);
 
-  console.log("user", user);
-  console.log("currentUser", currentUser);
-
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("isLoading", isLoading);
-
   let userInfo = null;
 
   useEffect(() => {
-    console.log("before add user");
-    console.log("isAuthenticated", isAuthenticated);
-    console.log("isLoading", isLoading);
     // loginWithRedirect();
     // if (localStorage.getItem("userinlocal")) {
     //   setCurrentUser(JSON.parse(localStorage.getItem("userinlocal")));
     //  } else {
     const addUser = async () => {
       let doesNotExist = false;
-      // console.log("isAuthenticated", isAuthenticated);
-      // console.log("isLoading", isLoading);
-      console.log("here1");
+
       if (isAuthenticated) {
         // localStorage.setItem("userinlocal", JSON.stringify(user));
-        console.log("here2");
 
         let email = user.email;
         await fetch("/checkusers", {
           method: "POST",
-          body: JSON.stringify({email}),
+          body: JSON.stringify({ email }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -45,8 +33,7 @@ export const UserContextProvider = ({children}) => {
           .then((res) => res.json())
           .then((res) => {
             userInfo = res.userInfo;
-            console.log("here3");
-            console.log("res", res);
+
             doesNotExist = res.doesNotExist;
           });
 
@@ -76,7 +63,6 @@ export const UserContextProvider = ({children}) => {
             },
           });
         } else {
-          console.log("setting current user");
           setCurrentUser(userInfo);
         }
       } else {
@@ -88,8 +74,6 @@ export const UserContextProvider = ({children}) => {
 
     // const addUser = async () => {
     //   let doesNotExist = false;
-    //   console.log("isAuthenticated", isAuthenticated);
-    //   console.log("isLoading", isLoading);
 
     //   if (isAuthenticated && !isLoading) {
     //     localStorage.setItem("userinlocal", JSON.stringify(user));
@@ -104,7 +88,6 @@ export const UserContextProvider = ({children}) => {
     //       .then((res) => res.json())
     //       .then((res) => {
     //         userInfo = res.userInfo;
-    //         console.log("res", res);
     //         doesNotExist = res.doesNotExist;
     //       });
 
@@ -134,7 +117,6 @@ export const UserContextProvider = ({children}) => {
     //         },
     //       });
     //     } else {
-    //       console.log("setting current user");
     //       setCurrentUser(userInfo);
     //     }
     //   }

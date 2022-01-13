@@ -1,17 +1,23 @@
-import {MapCreationContext} from "./MapCreationContext";
-import {Link} from "react-router-dom";
-import React, {useContext, useState} from "react";
+import { MapCreationContext } from "./MapCreationContext";
+import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 const CreateMapForm = () => {
-  const {handleSubmit, mapData, imageSRC} = useContext(MapCreationContext);
-  const [pic, setPic] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const { dispatch } = useContext(MapCreationContext);
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
-  const [imageFile, setImageFile] = useState({file: null});
+  const [tempURL, setTempURL] = useState("");
+  const [mapForm, setMapForm] = useState({
+    name: "",
+    description: "",
+    pic: "",
+  });
 
-  console.log("imageSRC", imageSRC);
+  const fillForm = (key, value) => {
+    setMapForm({ ...mapForm, [key]: value });
+  };
+
+  console.log(mapForm);
 
   return (
     <Container>
@@ -22,49 +28,48 @@ const CreateMapForm = () => {
           <Input
             placeholder="name"
             onChange={(ev) => {
-              setName(ev.target.value);
+              fillForm("name", ev.target.value);
             }}
             disabled={submitted}
-            style={{marginLeft: "8px"}}
+            style={{ marginLeft: "8px" }}
           />
-          {required && name.length < 1 && <Required>Required</Required>}
+          {required && mapForm.name.length < 1 && <Required>Required</Required>}
         </InputWrapper>
         <InputWrapper>
-          <Label style={{marginRight: "1px"}}>Description</Label>
+          <Label style={{ marginRight: "1px" }}>Description</Label>
           <TextArea
             placeholder="Description"
             onChange={(ev) => {
-              setDescription(ev.target.value);
+              fillForm("description", ev.target.value);
             }}
             disabled={submitted}
           ></TextArea>
-          {required && description.length < 1 && <Required>Required</Required>}
+          {required && mapForm.description.length < 1 && (
+            <Required>Required</Required>
+          )}
         </InputWrapper>
         <InputWrapper>
-          <Label style={{marginRight: "6px"}}>Map Image</Label>
+          <Label style={{ marginRight: "6px" }}>Map Image</Label>
           <input
             type="file"
             accept="image/*"
             onChange={(ev) => {
-              let copy = {...imageFile};
-              copy.file = ev.target.files[0];
-              setImageFile(copy);
+              fillForm("pic", ev.target.files[0]);
+              setTempURL(URL.createObjectURL(ev.target.files[0]));
             }}
           ></input>
-          {/* <Input
-            placeholder="Image URL"
-            onChange={(ev) => {
-              setPic(ev.target.value);
-            }}
-            disabled={submitted}
-          ></Input> */}
         </InputWrapper>
         <Submit
-          onClick={() => {
-            if (name.length > 0 && description.length > 0) {
+          onClick={(ev) => {
+            ev.preventDefault();
+            if (mapForm.name.length > 0 && mapForm.description.length > 0) {
               setRequired(false);
-              handleSubmit(name, description, pic, imageFile.file);
-              console.log("clicked");
+              dispatch({
+                type: "addMapData",
+                name: mapForm.name,
+                description: mapForm.description,
+                pic: mapForm.pic,
+              });
               setSubmitted(!submitted);
             } else {
               setRequired(true);
@@ -76,7 +81,7 @@ const CreateMapForm = () => {
         {/* <button onClick={()=>{}}>test</button> */}
         {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
-      {imageSRC && <Pic src={imageSRC}></Pic>}
+      {submitted && mapForm.pic && <Pic src={tempURL}></Pic>}
     </Container>
   );
 };
@@ -132,9 +137,7 @@ const Submit = styled.button`
 
 const StyledButton = styled.button`
   background-color: rgba(0, 0, 0, 0.87);
-  /* color: #b9bec7; */
   margin-top: 4px;
-  /* border: solid grey 1px; */
   border: none;
   border-radius: 4px;
   color: #5a7bb0;

@@ -1,30 +1,22 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
-import {GameContext} from "./GameContext";
-import {FiUser, FiUsers, FiClock} from "react-icons/fi";
-import {BiAlarm, BiAlarmOff} from "react-icons/bi";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { GameContext } from "./GameContext";
+import { FiUser, FiUsers, FiClock } from "react-icons/fi";
+import { BiAlarm, BiAlarmOff } from "react-icons/bi";
 
 import styled from "styled-components";
 
 const GameOptions = () => {
-  const {id} = useParams();
-  const [search, setSearch] = useState("");
-
-  console.log("id", id);
-  console.log(search, "search");
+  const { id } = useParams();
+  const [playerMode, setPlayerMode] = useState(null);
+  const [timeMode, setTimeMode] = useState(null);
+  let history = useHistory();
 
   const {
-    error,
+    gameState: { error, locations, _id, gameLink },
     setSelected,
-    selected,
-    loadGame,
-    locations,
-    setLocations,
-    opponent,
-    setOpponent,
-    searchOpponent,
+    createGame,
     timed,
-    setTimed,
   } = useContext(GameContext);
 
   return (
@@ -38,20 +30,23 @@ const GameOptions = () => {
       }}
     >
       <h1>Choose Game Mode</h1>
-      <h2 style={{color: "white", marginBottom: "5px"}}>Select One</h2>
+      <h2 style={{ color: "white", marginBottom: "5px" }}>Select One</h2>
       <Mode>
         <ModeButton
           onClick={() => {
-            setSelected("single");
-            loadGame(id);
+            setPlayerMode("single");
           }}
-          selected={selected}
-          style={selected === "single" ? {background: "#2bc425"} : null}
+          style={playerMode === "single" ? { background: "#2bc425" } : null}
         >
           <FiUser size={"22px"} />
           <div>Single Player</div>
         </ModeButton>
-        <ModeButton>
+        <ModeButton
+          onClick={() => {
+            setPlayerMode("multi");
+          }}
+          style={playerMode === "multi" ? { background: "#2bc425" } : null}
+        >
           <FiUsers size={"22px"} />
           <div>Multi-Player</div>
         </ModeButton>
@@ -75,14 +70,14 @@ const GameOptions = () => {
         )}
 
       </Multiplayer> */}
-      <h2 style={{color: "white", marginBottom: "5px"}}>Select One</h2>
+      <h2 style={{ color: "white", marginBottom: "5px" }}>Select One</h2>
 
       <Mode>
         <Timed
           onClick={() => {
-            setTimed("timed");
+            setTimeMode("timed");
           }}
-          style={timed === "timed" ? {background: "#2bc425"} : null}
+          style={timeMode === "timed" ? { background: "#2bc425" } : null}
         >
           <BiAlarm size={"22px"} />
 
@@ -90,9 +85,9 @@ const GameOptions = () => {
         </Timed>
         <Untimed
           onClick={() => {
-            setTimed("untimed");
+            setTimeMode("untimed");
           }}
-          style={timed === "untimed" ? {background: "#2bc425"} : null}
+          style={timeMode === "untimed" ? { background: "#2bc425" } : null}
         >
           {" "}
           <BiAlarmOff size={"22px"} />
@@ -100,11 +95,37 @@ const GameOptions = () => {
         </Untimed>
       </Mode>
 
-      {locations &&
-        (timed === "timed" || timed === "untimed") &&
-        (selected === "single" || selected === "multi") && (
-          <StartGame to={`/map/${id}`}>Start</StartGame>
+      {(timeMode === "timed" || timeMode === "untimed") &&
+        playerMode === "single" && (
+          <StartGame
+            onClick={async () => {
+              await createGame(id, timeMode, playerMode);
+              history.push(`/map/${_id}`);
+            }}
+          >
+            Start
+          </StartGame>
         )}
+      {(timeMode === "timed" || timeMode === "untimed") &&
+        playerMode === "multi" && (
+          <StartGame
+            onClick={async () => {
+              await createGame(id, timeMode, playerMode);
+            }}
+          >
+            Create Game
+          </StartGame>
+        )}
+      {_id && <div>Game Link: {gameLink}</div>}
+      {gameLink && (
+        <StartGame
+          onClick={() => {
+            history.push(`/map/${_id}`);
+          }}
+        >
+          Start
+        </StartGame>
+      )}
     </div>
   );
 };
@@ -123,7 +144,7 @@ const Mode = styled.div`
   margin-bottom: 12px;
 `;
 
-const StartGame = styled(Link)`
+const StartGame = styled.button`
   display: block;
   width: 30px;
   font-size: 18px;
