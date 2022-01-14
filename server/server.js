@@ -10,6 +10,7 @@ const {
   // getRandomLocations,
   searchOpponent,
   retrieveMap,
+  loadOtherPlayers,
   createGame,
   getGame,
   CreateMap,
@@ -46,6 +47,7 @@ express()
   // .get("/RandomLocations/:_id", getRandomLocations)
   .get("/searchOpponent", searchOpponent)
   .get("/getMap/:_id/:player", retrieveMap)
+  .get("/loadOtherPlayers/:_id/:player", loadOtherPlayers)
   .post("/CreateMap", CreateMap)
   .post("/createGame", createGame)
   .patch("/submitGuess", submitGuess)

@@ -331,12 +331,11 @@ const retrieveMap = async (req, res) => {
 
   if (game.type === "single") {
     gameProgress = game.gameData.length;
-    endGame = gameProgress >= 4;
-    if (endGame) {
-      game.gameData.forEach((round) => {
-        gameScore + round.score;
-      });
-    }
+    endGame = gameProgress >= 5;
+    game.gameData.forEach((round) => {
+      gameScore + round.score;
+    });
+
     if (game.guessed) {
       guessed = true;
 
@@ -352,13 +351,11 @@ const retrieveMap = async (req, res) => {
     let playerGame = game.players.find((item) => item.player === player);
     console.log(playerGame, "playergame");
     gameProgress = playerGame.gameData.length;
-    endGame = gameProgress >= 4;
+    endGame = gameProgress >= 5;
 
-    if (endGame) {
-      playerGame.gameData.forEach((round) => {
-        gameScore += round.score;
-      });
-    }
+    playerGame.gameData.forEach((round) => {
+      gameScore += round.score;
+    });
     if (playerGame.guessed) {
       guessed = true;
       console.log(guessed, 2);
@@ -375,10 +372,7 @@ const retrieveMap = async (req, res) => {
     if (distance > 3000000) {
       console.log("heeeere");
       zoom = 1;
-    } else if (
-      distance > 1000000 &&
-      (clickspotLat > 58 || clickspotLat < -58)
-    ) {
+    } else if (distance > 1000000 && (guess.lat > 58 || guess.lat < -58)) {
       zoom = 2;
     } else if (distance > 1750000) {
       zoom = 2;
@@ -437,6 +431,29 @@ const retrieveMap = async (req, res) => {
       midPoint,
     },
   });
+  client.close();
+};
+
+const loadOtherPlayers = async (req, res) => {
+  const { _id, player } = req.params;
+
+  await client.connect();
+
+  let gameInfo = await db.collection("Games").findOne({ _id });
+  console.log(gameInfo);
+  let data = gameInfo
+    ? gameInfo.players.filter((user) => {
+        return user.player !== player;
+      })
+    : null;
+  console.log(data, "data");
+  if (!data.length) {
+    data = null;
+  }
+
+  res.status(200).json({ status: 200, data });
+
+  client.close();
 };
 
 const AddGameToUser = async (req, res) => {
@@ -611,4 +628,5 @@ module.exports = {
   addToLikes,
   getPlayerGames,
   getS3url,
+  loadOtherPlayers,
 };

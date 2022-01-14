@@ -57,7 +57,9 @@ const gameReducer = (state, action) => {
         guessed: true,
         guessDistance: action.guessDistance,
         guess: action.guess,
+        zoom: action.zoom,
         thirdPoint: action.thirdPoint,
+        otherPlayerData: action.otherPlayerData,
       };
     case "resetMap":
       return {
@@ -100,6 +102,7 @@ const initialGame = {
   timeMode: null,
   thirdPoint: null,
   gameLink: null,
+  otherPlayerData: null,
 };
 
 export const GameContextProvider = ({ children }) => {
@@ -178,12 +181,24 @@ export const GameContextProvider = ({ children }) => {
     guessDistance,
     clickspotLat,
     clickSpotLng,
-    thirdPoint
+    thirdPoint,
+    id
   ) => {
     let score = 0;
     let zoom = 0;
     let endGame = false;
     let timed = gameState.timeMode;
+    let otherPlayerData = null;
+
+    if (gameState.playerMode === "multi") {
+      const result = await fetch(
+        `/loadOtherPlayers/${id}/${currentUser.email}`
+      );
+      const thing = await result.json();
+      otherPlayerData = thing.data;
+      console.log(thing, "thing");
+    }
+
     if (guessDistance > 3000000) {
       zoom = 1;
     } else if (
@@ -191,7 +206,10 @@ export const GameContextProvider = ({ children }) => {
       (clickspotLat > 58 || clickspotLat < -58)
     ) {
       zoom = 2;
+      console.log("here1");
     } else if (guessDistance > 1750000) {
+      console.log("here2");
+
       zoom = 2;
     } else if (guessDistance > 1000000) {
       zoom = 3;
@@ -212,6 +230,8 @@ export const GameContextProvider = ({ children }) => {
     } else {
       zoom = 11;
     }
+
+    console.log(zoom, "zoom");
 
     if (guessDistance <= 100) {
       score = 2000;
@@ -254,6 +274,7 @@ export const GameContextProvider = ({ children }) => {
     }
 
     if (gameState.locationIndex === gameState.locations.length - 1) {
+      console.log("in this spot");
       endGame = true;
       timed = null;
     }
@@ -271,6 +292,7 @@ export const GameContextProvider = ({ children }) => {
       endGame,
       timed,
       thirdPoint,
+      otherPlayerData,
     });
 
     // await fetch("/updateUserScore", {

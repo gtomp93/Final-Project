@@ -89,6 +89,7 @@ const Map = () => {
       stop,
       guessDistance,
       guess,
+      otherPlayerData,
     },
     resetMap,
     timer,
@@ -257,10 +258,28 @@ const Map = () => {
                   </>
                 )}
                 {guessed && (
-                  <Polyline
-                    path={[guess, thirdPoint, locations[locationIndex]]}
-                    options={lineOptions}
-                  ></Polyline>
+                  <>
+                    {otherPlayerData &&
+                      otherPlayerData.map((player) => {
+                        let playerData = player.gameData[locationIndex];
+                        return playerData ? (
+                          <>
+                            <Polyline
+                              path={[
+                                playerData.guess,
+                                playerData.thirdPoint,
+                                locations[locationIndex],
+                              ]}
+                            ></Polyline>
+                            <Marker position={playerData.guess}></Marker>
+                          </>
+                        ) : null;
+                      })}
+                    <Polyline
+                      path={[guess, thirdPoint, locations[locationIndex]]}
+                      options={lineOptions}
+                    ></Polyline>
+                  </>
                 )}
               </Testing>
             </MapWrapper>
@@ -294,7 +313,8 @@ const Map = () => {
                   distance,
                   clickedLat,
                   clickedLng,
-                  testPoint
+                  testPoint,
+                  id
                 );
                 // setguessed(!guessed);
                 setExpand(false);
