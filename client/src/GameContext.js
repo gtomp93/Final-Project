@@ -44,6 +44,7 @@ const gameReducer = (state, action) => {
         zoom: action.zoom,
         _id: action.id,
         locationIndex: action.locationIndex,
+        otherPlayerData: action.otherPlayerData,
       };
     case "submitGuess":
       return {
@@ -132,6 +133,7 @@ export const GameContextProvider = ({ children }) => {
       method: "POST",
       body: JSON.stringify({
         player: currentUser.email,
+        icon: currentUser.picture,
         locations: randomLocations,
         mode: playerMode,
         timeMode,

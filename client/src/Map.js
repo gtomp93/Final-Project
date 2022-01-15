@@ -4,6 +4,7 @@ import { GameContext } from "./GameContext";
 import styled, { css } from "styled-components";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
+import "./map.css";
 
 import {
   GoogleMap,
@@ -11,6 +12,7 @@ import {
   Marker,
   Polyline,
   StreetViewPanorama,
+  OverlayView,
 } from "@react-google-maps/api";
 import { clearInterval } from "timers";
 import { Loading } from "./Loading";
@@ -112,7 +114,13 @@ const Map = () => {
 
   useEffect(() => {
     if (!locations && currentUser) {
-      fetch(`/getMap/${id}/${currentUser.email}`)
+      fetch(`/getMap/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ currentUser }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
@@ -135,6 +143,7 @@ const Map = () => {
             stop: data.guessed,
             zoom: data.zoom,
             locationIndex: data.locationIndex,
+            otherPlayerData: data.otherPlayerData,
           });
         });
     }
@@ -209,11 +218,12 @@ const Map = () => {
   if (!locations) {
     return "loading";
   }
+
   console.log(locationIndex, "locindex");
-  console.log(guess, thirdPoint, locations[locationIndex]);
+  console.log(otherPlayerData);
   return (
     <>
-      <PageContainer>
+      <PageContainer picture={currentUser.picture} style={{}}>
         <BigWrapper guessed={guessed}>
           {/* {timed === "timed" && <div>{timer}</div>} */}
           <MapsWrapper guessed={guessed}>
@@ -223,6 +233,7 @@ const Map = () => {
               hide={hide}
               role="button"
               tabIndex="0"
+              className="okay"
             >
               <Testing
                 mapContainerStyle={mapContainerStyle}
@@ -247,38 +258,72 @@ const Map = () => {
 
                     {guessed && (
                       <>
+                        <OverlayView mapPaneName="markerLayer" position={guess}>
+                          <img
+                            className="yoo"
+                            src={currentUser.picture}
+                            style={{
+                              marginRight: "0",
+                              marginBottom: "0",
+                              borderRadius: "50%",
+                              width: "30px",
+                              transform: "translate(-15px,-15px)",
+                            }}
+                          />
+                        </OverlayView>
+
                         <Marker
                           position={locations[locationIndex]}
                           clickable={false}
-                        ></Marker>
+                        />
 
-                        <Marker position={guess} clickable={false}></Marker>
+                        {/* <IconMarker
+                          position={guess}
+                          clickable={false}
+                          // icon={{
+                          //   url: currentUser.picture,
+                          //   scaledSize: new google.maps.Size(30, 30),
+                          // }}
+                          markerShape={{ coords: [25, 25, 25], type: "circle" }}
+                        /> */}
+                        {otherPlayerData &&
+                          otherPlayerData.map((player) => {
+                            let playerData = player.gameData[locationIndex];
+                            return playerData ? (
+                              <>
+                                <Polyline
+                                  path={[
+                                    playerData.guess,
+                                    playerData.thirdPoint,
+                                    locations[locationIndex],
+                                  ]}
+                                ></Polyline>
+                                {/* <Marker position={playerData.guess}></Marker> */}
+                                <OverlayView
+                                  mapPaneName="markerLayer"
+                                  position={playerData.guess}
+                                >
+                                  <img
+                                    className="yoo"
+                                    src={player.icon}
+                                    style={{
+                                      marginRight: "0",
+                                      marginBottom: "0",
+                                      borderRadius: "50%",
+                                      width: "30px",
+                                      transform: "translate(-15px,-15px)",
+                                    }}
+                                  />
+                                </OverlayView>
+                              </>
+                            ) : null;
+                          })}
+                        <Polyline
+                          path={[guess, thirdPoint, locations[locationIndex]]}
+                          options={lineOptions}
+                        ></Polyline>
                       </>
                     )}
-                  </>
-                )}
-                {guessed && (
-                  <>
-                    {otherPlayerData &&
-                      otherPlayerData.map((player) => {
-                        let playerData = player.gameData[locationIndex];
-                        return playerData ? (
-                          <>
-                            <Polyline
-                              path={[
-                                playerData.guess,
-                                playerData.thirdPoint,
-                                locations[locationIndex],
-                              ]}
-                            ></Polyline>
-                            <Marker position={playerData.guess}></Marker>
-                          </>
-                        ) : null;
-                      })}
-                    <Polyline
-                      path={[guess, thirdPoint, locations[locationIndex]]}
-                      options={lineOptions}
-                    ></Polyline>
                   </>
                 )}
               </Testing>
@@ -409,6 +454,19 @@ const Testing = styled(GoogleMap)`
     display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
     height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
+  }
+`;
+
+const MarkerContainer = styled(OverlayView)`
+  img {
+    border-radius: 50%;
+  }
+`;
+
+const IconMarker = styled(Marker)`
+  border-radius: 50%;
+  img {
+    border-radius: 50%;
   }
 `;
 

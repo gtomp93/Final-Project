@@ -163,7 +163,7 @@ const deleteGame = async (req, res) => {
 };
 
 const createGame = async (req, res) => {
-  const { locations, player, mode, timeMode } = req.body;
+  const { locations, player, mode, timeMode, icon } = req.body;
   console.log(locations, mode);
   try {
     await client.connect();
@@ -177,7 +177,7 @@ const createGame = async (req, res) => {
       type: "multi",
       locations: locations,
       timeMode,
-      players: [{ player, gameData: [], guessed: false }],
+      players: [{ player, icon, gameData: [], guessed: false }],
     };
 
     console.log(newMultiplayerGame);
@@ -299,20 +299,40 @@ const nextLocation = async (req, res) => {
 };
 
 const retrieveMap = async (req, res) => {
-  const { _id, player } = req.params;
-
-  console.log(player, "player");
+  const { _id } = req.params;
+  const {
+    currentUser: { email, picture },
+  } = req.body;
+  console.log(email, picture, "player");
   await client.connect();
 
   let game = await db.collection("Games").findOne({ _id });
 
-  if (!game.players.some((item) => item.player === player)) {
+  if (
+    game.type === "multi" &&
+    !game.players.some((item) => item.player === email)
+  ) {
     console.log("we in here");
-    game.players.push({ player, gameData: [], guessed: false });
-
-    const addUser = await db
-      .collection("Games")
-      .updateOne({ _id }, { $push: { players: { player, gameData: [] } } });
+    game.players.push({
+      player: email,
+      gameData: [],
+      guessed: false,
+      icon: picture,
+    });
+    //player
+    const addUser = await db.collection("Games").updateOne(
+      { _id },
+      {
+        $push: {
+          players: {
+            player: email,
+            gameData: [],
+            guessed: false,
+            icon: picture,
+          },
+        },
+      }
+    );
   }
 
   let guessed = false;
@@ -327,6 +347,8 @@ const retrieveMap = async (req, res) => {
   let guess = null;
   let gameProgress = 0;
   let zoom = 2;
+  let otherPlayerData = null;
+
   console.log(guessed, 1);
 
   if (game.type === "single") {
@@ -338,7 +360,6 @@ const retrieveMap = async (req, res) => {
 
     if (game.guessed) {
       guessed = true;
-
       locationIndex = gameProgress - 1;
       distance = game.gameData[gameProgress - 1].distance;
       points = game[gameProgress - 1].score;
@@ -348,10 +369,13 @@ const retrieveMap = async (req, res) => {
     } else locationIndex = gameProgress;
   }
   if (game.type === "multi") {
-    let playerGame = game.players.find((item) => item.player === player);
+    let playerGame = game.players.find((item) => item.player === email);
     console.log(playerGame, "playergame");
     gameProgress = playerGame.gameData.length;
     endGame = gameProgress >= 5;
+    otherPlayerData = game.players.filter((user) => {
+      return user.player !== email;
+    });
 
     playerGame.gameData.forEach((round) => {
       gameScore += round.score;
@@ -410,6 +434,7 @@ const retrieveMap = async (req, res) => {
     playerMode: game.type,
     locations: game.locations,
     zoom,
+    otherPlayerData,
   });
 
   res.status(200).json({
@@ -429,6 +454,7 @@ const retrieveMap = async (req, res) => {
       guess,
       zoom,
       midPoint,
+      otherPlayerData,
     },
   });
   client.close();

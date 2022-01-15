@@ -1,0 +1,7 @@
+/* img {
+  border-radius: 50%;
+}
+
+div img[src*="googleapis"] {
+  border-radius: 100% !important;
+} */
