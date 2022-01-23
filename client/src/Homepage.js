@@ -128,26 +128,30 @@ const Homepage = () => {
             )}
           </SearchWrapper>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
-          {games.map((game, index) => {
-            let isLiked = false;
-            if (currentUser.likes.includes(game._id)) {
-              isLiked = true;
-            }
-            return (
-              <Game
-                game={game}
-                isLiked={isLiked}
-                key={Math.random() * 99999}
-                updatePage={updatePage}
-                setUpdatePage={setUpdatePage}
-              />
-            );
-          })}
+          <GamesGrid>
+            {games.map((game, index) => {
+              let isLiked = false;
+              if (currentUser.likes.includes(game._id)) {
+                isLiked = true;
+              }
+              return (
+                <Game
+                  game={game}
+                  isLiked={isLiked}
+                  key={Math.random() * 99999}
+                  updatePage={updatePage}
+                  setUpdatePage={setUpdatePage}
+                />
+              );
+            })}
+          </GamesGrid>
         </Container>
       )}
     </>
   );
 };
+
+const GamesGrid = styled.div``;
 
 const Container = styled.div`
   display: flex;

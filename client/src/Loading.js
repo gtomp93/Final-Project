@@ -13,9 +13,13 @@ export const Loading = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+    let check = true;
+    if (check) {
+      if (!isAuthenticated) {
+        timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+      }
     }
+    return () => (check = false);
   }, [timer]);
 
   if (timer === 0 && !currentUser) {

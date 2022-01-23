@@ -12,6 +12,7 @@ const CreateMapForm = () => {
     description: "",
     pic: "",
   });
+  const [state, setState] = useState("Hello");
 
   const fillForm = (key, value) => {
     setMapForm({ ...mapForm, [key]: value });
@@ -78,7 +79,13 @@ const CreateMapForm = () => {
         >
           {submitted ? "Edit" : "Submit"}
         </Submit>
-        {/* <button onClick={()=>{}}>test</button> */}
+        <button
+          onClick={() => {
+            setState(() => console.log(state), "hey");
+          }}
+        >
+          test
+        </button>
         {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
       {submitted && mapForm.pic && <Pic src={tempURL}></Pic>}

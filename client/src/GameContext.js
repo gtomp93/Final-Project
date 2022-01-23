@@ -16,7 +16,6 @@ const gameReducer = (state, action) => {
         ...initialGame,
       };
     case "createGame":
-      console.log("in the thing");
       return {
         ...state,
         locations: action.locations,
@@ -39,7 +38,7 @@ const gameReducer = (state, action) => {
         endGame: action.endGame,
         gameScore: action.gameScore,
         gameLink: action.gameLink,
-        timed: action.timed,
+        timeMode: action.timeMode,
         stop: action.stop,
         zoom: action.zoom,
         _id: action.id,
@@ -53,7 +52,7 @@ const gameReducer = (state, action) => {
         center: action.center,
         gameScore: state.gameScore + action.score,
         endGame: action.endGame,
-        timeMode: action.timed,
+        timeMode: action.timeMode,
         points: action.score,
         guessed: true,
         guessDistance: action.guessDistance,
@@ -80,8 +79,6 @@ const gameReducer = (state, action) => {
       return state;
   }
 };
-
-// setGameLink(`localhost:3000/${_id}`);
 
 const initialGame = {
   _id: null,
@@ -111,50 +108,8 @@ export const GameContextProvider = ({ children }) => {
 
   const [gameState, dispatch] = useReducer(gameReducer, initialGame);
 
-  // console.log(gameState, "HEYA");
-
   const [opponent, setOpponent] = useState(null);
   const [timer, setTimer] = useState(60);
-
-  const createGame = async (id, timeMode, playerMode) => {
-    let randomLocations = null;
-    // console.log(playerMode);
-    await fetch(`/locations/${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        randomLocations = res.randomLocations;
-      })
-      .catch((err) => {
-        dispatch({ type: "error", error: err.stack });
-      });
-
-    await fetch("/createGame", {
-      method: "POST",
-      body: JSON.stringify({
-        player: currentUser.email,
-        icon: currentUser.picture,
-        locations: randomLocations,
-        mode: playerMode,
-        timeMode,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // console.log(res);
-        dispatch({
-          type: "createGame",
-          locations: randomLocations,
-          timeMode,
-          playerMode,
-          _id: res.gameId,
-        });
-        return;
-      });
-  };
 
   if (gameState.playerMode === "multi") {
   }
@@ -189,16 +144,15 @@ export const GameContextProvider = ({ children }) => {
     let score = 0;
     let zoom = 0;
     let endGame = false;
-    let timed = gameState.timeMode;
+    let timeMode = gameState.timeMode;
     let otherPlayerData = null;
 
     if (gameState.playerMode === "multi") {
       const result = await fetch(
         `/loadOtherPlayers/${id}/${currentUser.email}`
       );
-      const thing = await result.json();
-      otherPlayerData = thing.data;
-      console.log(thing, "thing");
+      const parsedResult = await result.json();
+      otherPlayerData = parsedResult.data;
     }
 
     if (guessDistance > 3000000) {
@@ -278,10 +232,8 @@ export const GameContextProvider = ({ children }) => {
     if (gameState.locationIndex === gameState.locations.length - 1) {
       console.log("in this spot");
       endGame = true;
-      timed = null;
+      timeMode = null;
     }
-
-    console.log({ lat: clickspotLat, lng: clickSpotLng }, "guess");
 
     dispatch({
       type: "submitGuess",
@@ -292,20 +244,11 @@ export const GameContextProvider = ({ children }) => {
       score,
       zoom,
       endGame,
-      timed,
+      timeMode,
       thirdPoint,
       otherPlayerData,
     });
 
-    // await fetch("/updateUserScore", {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ _id: currentUser._id, score }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => console.log(res, "update user score response"));
     await fetch("/submitGuess", {
       method: "PATCH",
       body: JSON.stringify({
@@ -324,6 +267,20 @@ export const GameContextProvider = ({ children }) => {
         "Content-Type": "application/json",
       },
     });
+
+    if (endGame)
+      await fetch("/updateUserScore", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _id: currentUser._id,
+          score: gameState.gameScore + score,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => console.log(res, "update user score response"));
   };
 
   const resetMap = async () => {
@@ -342,14 +299,14 @@ export const GameContextProvider = ({ children }) => {
     setTimer(60);
   };
 
-  // console.log("here", gameState.locationIndex, gameState.zoom);
-
+  console.log(gameState, "HEYA");
+  // console.log(timer);
+  console.log(gameState.timeMode, "timemode");
   return (
     <GameContext.Provider
       value={{
         gameState,
         dispatch,
-        createGame,
         submitGuess,
         resetMap,
         opponent,

@@ -1,4 +1,10 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import { UserContext } from "./UserContext";
 import { GameContext } from "./GameContext";
 import styled, { css } from "styled-components";
@@ -9,12 +15,12 @@ import "./map.css";
 import {
   GoogleMap,
   useLoadScript,
+  useJsApiLoader,
   Marker,
   Polyline,
   StreetViewPanorama,
   OverlayView,
 } from "@react-google-maps/api";
-import { clearInterval } from "timers";
 import { Loading } from "./Loading";
 /* eslint-disable no-undef */
 /* global google */
@@ -92,25 +98,16 @@ const Map = () => {
       guessDistance,
       guess,
       otherPlayerData,
+      timeMode,
     },
     resetMap,
     timer,
     setTimer,
-    timed,
     submitGuess,
     dispatch,
   } = useContext(GameContext);
 
   const { currentUser } = useContext(UserContext);
-
-  useEffect(() => {
-    if (timed === "timed") {
-      if (timer === 0) {
-        submitGuess(midpoint?.lat(), midpoint?.lng(), distance, clickedLat);
-      }
-      timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
-    }
-  }, [timer]);
 
   useEffect(() => {
     if (!locations && currentUser) {
@@ -139,17 +136,44 @@ const Map = () => {
             endGame: data.endGame,
             gameScore: data.gameScore,
             gameLink: `localhost:3000/map/${id}`,
-            timed: data.timeMode,
+            timeMode: data.timeMode,
             stop: data.guessed,
             zoom: data.zoom,
             locationIndex: data.locationIndex,
             otherPlayerData: data.otherPlayerData,
           });
+          if (res.timeMode === "timed") {
+            setTimer(60);
+          }
         });
     }
   }, [currentUser]);
 
-  const { isLoaded, loadError } = useLoadScript({
+  useEffect(() => {
+    if (timeMode === "timed") {
+      console.log(timer, "TIMER");
+
+      if (timer === 0) {
+        submitGuess(
+          midpoint.lat(),
+          midpoint.lng(),
+          distance,
+          clickedLat,
+          clickedLng,
+          testPoint,
+          id
+        );
+      }
+      timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+    }
+
+    // return () => {
+    //   setTimer(null);
+    //   console.log("component unmounted");
+    // };
+  }, [timer, timeMode, stop]);
+
+  const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
@@ -165,7 +189,7 @@ const Map = () => {
   let answerCoords = locations ? locations[locationIndex] : null;
 
   let answer = new window.google.maps.LatLng(answerCoords);
-  console.log(center, zoom);
+  console.log({ otherPlayerData });
   const mapClickHandler = (ev) => {
     let testPointLng = null;
     setTimeout(() => {
@@ -219,11 +243,11 @@ const Map = () => {
     return "loading";
   }
 
-  console.log(locationIndex, "locindex");
-  console.log(otherPlayerData);
+  // console.log(locationIndex, "locindex");
+  // console.log(otherPlayerData);
   return (
     <>
-      <PageContainer picture={currentUser.picture} style={{}}>
+      <PageContainer picture={currentUser.picture} style={{}} beforeunload>
         <BigWrapper guessed={guessed}>
           {/* {timed === "timed" && <div>{timer}</div>} */}
           <MapsWrapper guessed={guessed}>
@@ -289,6 +313,11 @@ const Map = () => {
                         {otherPlayerData &&
                           otherPlayerData.map((player) => {
                             let playerData = player.gameData[locationIndex];
+                            console.log([
+                              playerData?.guess,
+                              playerData?.thirdPoint,
+                              locations[locationIndex],
+                            ]);
                             return playerData ? (
                               <>
                                 <Polyline
@@ -328,17 +357,19 @@ const Map = () => {
                 )}
               </Testing>
             </MapWrapper>
-            <GoogleMap
-              mapContainerStyle={streetViewStyle}
-              options={streetViewOptions}
-              linksControl={false}
-            >
-              <StreetViewPanorama
-                position={answerCoords}
-                visible={true}
+            {answerCoords && (
+              <GoogleMap
+                mapContainerStyle={streetViewStyle}
                 options={streetViewOptions}
-              />
-            </GoogleMap>
+                linksControl={false}
+              >
+                <StreetViewPanorama
+                  position={answerCoords}
+                  visible={true}
+                  options={streetViewOptions}
+                />
+              </GoogleMap>
+            )}
           </MapsWrapper>
           {guessed && (
             <Message>
@@ -369,7 +400,7 @@ const Map = () => {
             >
               Guess
             </StyledButton>
-            {timed === "timed" && <TimerDisplay>{timer}</TimerDisplay>}
+            {timeMode === "timed" && <TimerDisplay>{timer}</TimerDisplay>}
 
             {!guessed && (
               <div style={{ display: "flex" }}>

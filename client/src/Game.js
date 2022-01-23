@@ -212,7 +212,9 @@ const GameWrapper = styled.div`
 
 const GamePic = styled.img`
   width: 100%;
-  height: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: bottom;
   border-radius: 8px;
   box-shadow: 0 0 10px rgb(255 255 255 / 10%);
 `;

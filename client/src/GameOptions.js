@@ -5,19 +5,67 @@ import { FiUser, FiUsers, FiClock } from "react-icons/fi";
 import { BiAlarm, BiAlarmOff } from "react-icons/bi";
 
 import styled from "styled-components";
+import { UserContext } from "./UserContext";
 
 const GameOptions = () => {
   const { id } = useParams();
+  const { currentUser } = useContext(UserContext);
+
   const [playerMode, setPlayerMode] = useState(null);
   const [timeMode, setTimeMode] = useState(null);
   let history = useHistory();
 
   const {
     gameState: { error, locations, _id, gameLink },
+    dispatch,
     setSelected,
-    createGame,
     timed,
   } = useContext(GameContext);
+
+  const createGame = async (id, timeMode) => {
+    let randomLocations = null;
+    let _id = null;
+    await fetch(`/locations/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        randomLocations = res.randomLocations;
+      })
+      .catch((err) => {
+        dispatch({ type: "error", error: err.stack });
+      });
+
+    await fetch("/createGame", {
+      method: "POST",
+      body: JSON.stringify({
+        player: currentUser.email,
+        icon: currentUser.picture,
+        locations: randomLocations,
+        mode: playerMode,
+        timeMode,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.gameId);
+        _id = res.gameId;
+        dispatch({
+          type: "createGame",
+          locations: randomLocations,
+          timeMode,
+          playerMode,
+          _id: res.gameId,
+        });
+        if (playerMode === "single") {
+          console.log("going to game");
+          history.push(`/map/${_id}`);
+        }
+      });
+  };
+
+  console.log({ playerMode });
 
   return (
     <div
@@ -99,8 +147,9 @@ const GameOptions = () => {
         playerMode === "single" && (
           <StartGame
             onClick={async () => {
-              await createGame(id, timeMode, playerMode);
-              history.push(`/map/${_id}`);
+              let gameId = null;
+              gameId = await createGame(id, timeMode);
+              console.log(gameId);
             }}
           >
             Start
@@ -110,7 +159,7 @@ const GameOptions = () => {
         playerMode === "multi" && (
           <StartGame
             onClick={async () => {
-              await createGame(id, timeMode, playerMode);
+              await createGame(id, timeMode);
             }}
           >
             Create Game

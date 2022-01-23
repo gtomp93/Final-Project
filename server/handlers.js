@@ -234,9 +234,9 @@ const submitGuess = async (req, res) => {
             gameData: {
               score,
               distance,
-              zoom,
-              center,
-              polyline: { ans, guess, thirdPoint },
+              guess,
+              thirdPoint,
+              midPoint,
             },
           },
           $set: { guessed: true },
@@ -280,7 +280,7 @@ const nextLocation = async (req, res) => {
     if (mode === "single") {
       await db
         .collection("Games")
-        .updateOne({ _id }, { $set: { gameStatus: { guessed: false } } });
+        .updateOne({ _id }, { $set: { guessed: false } });
     } else if (mode === "multi") {
       await db.collection("Games").updateOne(
         { _id, "players.player": player },
@@ -355,14 +355,14 @@ const retrieveMap = async (req, res) => {
     gameProgress = game.gameData.length;
     endGame = gameProgress >= 5;
     game.gameData.forEach((round) => {
-      gameScore + round.score;
+      gameScore += round.score;
     });
-
+    console.log({ gameProgress, game });
     if (game.guessed) {
       guessed = true;
       locationIndex = gameProgress - 1;
       distance = game.gameData[gameProgress - 1].distance;
-      points = game[gameProgress - 1].score;
+      points = game.gameData[gameProgress - 1].score;
       guess = game.gameData[gameProgress - 1].guess;
       thirdPoint = game.gameData[gameProgress - 1].thirdPoint;
       midPoint = game.gameData[gameProgress - 1].midPoint;

@@ -35,7 +35,7 @@ express()
   .use(morgan("tiny"))
   .use(express.json())
   .use(express.static("public"))
-  .use(bodyParser.json())
+  // .use(bodyParser.json())
   .use(cors())
 
   .post("/users", addUser)
