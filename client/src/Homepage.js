@@ -151,7 +151,17 @@ const Homepage = () => {
   );
 };
 
-const GamesGrid = styled.div``;
+const GamesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.6rem;
+  margin: 25px auto;
+  width: calc(100% - 30px);
+  @media (min-width: 800px) {
+    width: calc(100% - 40px);
+    gap: 2.1rem;
+  }
+`;
 
 const Container = styled.div`
   display: flex;

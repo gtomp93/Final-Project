@@ -1,13 +1,18 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const Vars = {};
 
 export default createGlobalStyle`
+html{
+  margin:0;
+}
    * {
     /* box-sizing: border-box;
     margin: 0;
     padding: 0; */
     font-family: Abel;
+    margin:0;
+    padding:0;
   } 
   body{
     height: 100%;

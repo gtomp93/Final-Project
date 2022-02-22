@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import logo from "./logo.svg";
-import "./App.css";
 import CreateMapForm from "./CreateMapForm";
 import Map from "./Map";
 import Login from "./Login";
