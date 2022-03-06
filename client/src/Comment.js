@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const Comment = ({comment}) => {
+const Comment = ({ comment }) => {
   return (
     <Container>
-      <Pic src={comment.pic} />
+      <Pic src={comment.pic} referrerpolicy="no-referrer"></Pic>
       <CommentBubble>
         <CommentText>{comment.comment}</CommentText>
       </CommentBubble>
@@ -36,11 +36,11 @@ const CommentText = styled.div`
 `;
 
 const Container = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   height: 6%;
   margin-top: 4px;
-  margin-left: 5px;
+  /* margin-left: 10px; */
 `;
 
 const Pic = styled.img`

@@ -24,5 +24,7 @@ html{
   );
   /* background: rgba(23, 56, 156, 1) 0%; */
   }
-  
+  button{
+    cursor: pointer;
+  }
 `;

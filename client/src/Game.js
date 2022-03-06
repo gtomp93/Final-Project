@@ -4,15 +4,19 @@ import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import Comment from "./Comment";
+import GameModal from "./GameModal";
 
 const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   const [liked, setLiked] = useState(isLiked);
   const { currentUser } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
+  const [showModal, setShowModal] = useState(false);
 
   if (!game.comments) {
     return "loading";
   }
+
+  console.log(showModal);
 
   const likeGame = async () => {
     setLiked(!liked);
@@ -51,7 +55,7 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   };
 
   return (
-    <GameContainer>
+    <GameContainer onClick={() => setShowModal(true)}>
       <Box>
         <Name>{game.name}</Name>
         <Description>{game.description}</Description>
@@ -87,6 +91,13 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
           </StartGame>
         </ActionBar>
       </Box>
+      {showModal && (
+        <GameModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          game={game}
+        />
+      )}
     </GameContainer>
   );
 };
@@ -100,6 +111,12 @@ const GameContainer = styled.div`
   /* min-width: 350px; */
   display: flex;
   justify-content: center;
+  cursor: pointer;
+  transition: 400ms;
+
+  &:hover {
+    transform: scale(1.01);
+  }
   @media (min-width: 700px) {
     /* width: 98vw; */
   }
@@ -130,7 +147,7 @@ const GamePic = styled.img`
 const Name = styled.h2`
   font-size: 20px;
   padding: 0;
-  all: unset;
+  /* all: unset; */
   @media (min-width: 769px) {
     font-size: 30px;
     margin: 0 0 5px;

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FiSearch } from "react-icons/fi";
 // import {userInfo} from "os";
 import { UserContext } from "./UserContext";
@@ -128,6 +128,7 @@ const Homepage = () => {
             )}
           </SearchWrapper>
           {/* <Link to={"/CreateMapForm"}>Create Map</Link> */}
+
           <GamesGrid>
             {games.map((game, index) => {
               let isLiked = false;

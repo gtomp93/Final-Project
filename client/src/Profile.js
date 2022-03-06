@@ -89,7 +89,7 @@ const Profile = () => {
       .then((res) => console.log(res));
   };
 
-  console.log("games", games, likedGames);
+  console.log("currentUser", currentUser);
 
   if (isLoading || !currentUser || !games.length || !likedGames.length) {
     return <Loading />;
@@ -103,7 +103,8 @@ const Profile = () => {
             src={currentUser.picture}
             alt={currentUser.name}
             style={{ borderRadius: "20%" }}
-          />
+            referrerpolicy="no-referrer"
+          ></img>
           <h2 style={{ marginBottom: "0px", marginTop: "5px" }}>
             {currentUser.givenName + " " + currentUser.lastName}
           </h2>
