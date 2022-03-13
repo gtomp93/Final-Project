@@ -20,11 +20,8 @@ const initial = {
 };
 
 const reducer = (state, action) => {
-  console.log(action, "action");
-
   switch (action.type) {
     case "addMapData":
-      console.log(action);
       console.log({
         ...state,
         name: action.name,
@@ -72,8 +69,6 @@ export const MapCreationContextProvider = ({ children }) => {
     "https://google-maps-bucket.s3.us-east-2.amazonaws.com/7353482103f5a33da92399411dd17d24",
   ];
 
-  console.log(mapState);
-
   const addLocations = async (locations) => {
     let gameid = null;
 
@@ -100,10 +95,7 @@ export const MapCreationContextProvider = ({ children }) => {
 
     if (url) {
       imageURL = url.split("?")[0];
-      console.log(imageURL, "thisOne");
     }
-
-    console.log(imageURL, "imageURL");
 
     let mapData = {
       name: mapState.name,

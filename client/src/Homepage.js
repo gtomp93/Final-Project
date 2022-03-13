@@ -56,12 +56,10 @@ const Homepage = () => {
               display: "flex",
               alignItems: "center",
               color: "rgba(0, 0, 0, 0.87)",
+              margin: "10px 0",
             }}
           >
-            <BiWorld
-              size={"50px"}
-              style={{ marginTop: "18px", color: "black" }}
-            />
+            <BiWorld size={"50px"} style={{ color: "black" }} />
             <h1 style={{ marginBottom: "0", color: "#d3d2d9" }}> MapGuesser</h1>
           </div>
           {/* <img

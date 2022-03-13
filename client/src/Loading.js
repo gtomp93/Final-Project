@@ -7,6 +7,7 @@ import { FiLoader } from "react-icons/fi";
 import { UserContext } from "./UserContext";
 
 export const Loading = () => {
+  console.log("loading");
   let img =
     "https://www.google-maps-bucket.s3.us-east-2.amazonaws.com/world map stock photo.jpg";
   const { currentUser } = useContext(UserContext);
@@ -72,6 +73,8 @@ const Globe = styled.div`
   width: 143px;
   height: 143px;
   margin: 20px auto;
+  position: relative;
+  z-index: 10;
   /* background-color: red; */
   background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/world map stock photo.jpg");
   background-size: 226px 171px;

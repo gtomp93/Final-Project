@@ -125,7 +125,7 @@ export const GameContextProvider = ({ children }) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.doesNotExist) {
-          console.log("player not found");
+          // console.log("player not found");
         } else if (!res.doesNotExist) {
           setOpponent(email);
         }
@@ -162,10 +162,7 @@ export const GameContextProvider = ({ children }) => {
       (clickspotLat > 58 || clickspotLat < -58)
     ) {
       zoom = 2;
-      console.log("here1");
     } else if (guessDistance > 1750000) {
-      console.log("here2");
-
       zoom = 2;
     } else if (guessDistance > 1000000) {
       zoom = 3;
@@ -186,8 +183,6 @@ export const GameContextProvider = ({ children }) => {
     } else {
       zoom = 11;
     }
-
-    console.log(zoom, "zoom");
 
     if (guessDistance <= 100) {
       score = 2000;
@@ -230,7 +225,6 @@ export const GameContextProvider = ({ children }) => {
     }
 
     if (gameState.locationIndex === gameState.locations.length - 1) {
-      console.log("in this spot");
       endGame = true;
       timeMode = null;
     }
@@ -299,9 +293,7 @@ export const GameContextProvider = ({ children }) => {
     setTimer(60);
   };
 
-  console.log(gameState, "HEYA");
   // console.log(timer);
-  console.log(gameState.timeMode, "timemode");
   return (
     <GameContext.Provider
       value={{

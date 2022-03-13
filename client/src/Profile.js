@@ -11,17 +11,17 @@ import { FiLogOut } from "react-icons/fi";
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState({});
   const [likedGames, setLikedGames] = useState([]);
-  const [created, setCreated] = useState(true);
+  const [showGames, setShowGames] = useState("created");
   const { logout } = useAuth0();
 
   const toggleCreate = () => {
-    setCreated(true);
+    setShowGames("created");
   };
 
   const toggleLike = () => {
-    setCreated(false);
+    setShowGames("liked");
   };
 
   useEffect(async () => {
@@ -55,7 +55,6 @@ const Profile = () => {
           body: JSON.stringify({ games: currentUser.games }),
         });
         const parsedGamesData = await gamesData.json();
-        setGames(parsedGamesData.data);
 
         const likesData = await fetch("/getPlayerGames", {
           method: "PUT",
@@ -64,7 +63,11 @@ const Profile = () => {
         });
 
         const parsedLikesData = await likesData.json();
-        setLikedGames(parsedLikesData.data);
+        setGames({
+          ...games,
+          created: parsedGamesData.data,
+          liked: parsedLikesData.data,
+        });
       }
     }
     return () => (isCancelled = true);
@@ -91,9 +94,11 @@ const Profile = () => {
 
   console.log("currentUser", currentUser);
 
-  if (isLoading || !currentUser || !games.length || !likedGames.length) {
+  if (isLoading || !currentUser || !Object.values(games).length) {
     return <Loading />;
   }
+
+  console.log(games, "games");
 
   return (
     isAuthenticated && (
@@ -103,7 +108,7 @@ const Profile = () => {
             src={currentUser.picture}
             alt={currentUser.name}
             style={{ borderRadius: "20%" }}
-            referrerpolicy="no-referrer"
+            referrerPolicy="no-referrer"
           ></img>
           <h2 style={{ marginBottom: "0px", marginTop: "5px" }}>
             {currentUser.givenName + " " + currentUser.lastName}
@@ -121,7 +126,7 @@ const Profile = () => {
           <GamesOption
             onClick={toggleCreate}
             style={
-              created
+              showGames === "created"
                 ? { fontWeight: "bolder", color: "#e8e6df" }
                 : { color: "#9897a1" }
             }
@@ -132,34 +137,32 @@ const Profile = () => {
           <GamesOption
             onClick={toggleLike}
             style={
-              created
-                ? { color: "#9897a1" }
-                : { fontWeight: "bolder", color: "#e8e6df" }
+              showGames === "liked"
+                ? { fontWeight: "bolder", color: "#e8e6df" }
+                : { color: "#9897a1" }
             }
           >
             Liked Maps
           </GamesOption>
         </Choose>
-        <Created created={created}>
-          {games.map((game) => {
+        <Games created={showGames}>
+          {games[showGames].map((game) => {
             if (game) {
               let isLiked = currentUser.likes.includes(game._id);
               return (
-                <div
+                // <div style={{ display: "flex", flexDirection: "column" }}>
+                <Game
                   key={Math.random() * 9999}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <ProfileGame
-                    game={game}
-                    isLiked={isLiked}
-                    deleteGame={deleteGame}
-                  />
-                </div>
+                  game={game}
+                  isLiked={isLiked}
+                  deleteGame={deleteGame}
+                />
+                // </div>
               );
             }
           })}
-        </Created>
-        <Liked created={created}>
+        </Games>
+        {/* <Liked created={created}>
           {likedGames.map((game) => {
             if (game) {
               let isLiked = currentUser.likes.includes(game._id);
@@ -172,7 +175,7 @@ const Profile = () => {
               );
             }
           })}
-        </Liked>
+        </Liked> */}
       </Container>
     )
   );
@@ -181,6 +184,7 @@ const Profile = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const Choose = styled.div`
@@ -197,8 +201,13 @@ const GamesOption = styled.button`
   }
 `;
 
-const Created = styled.div`
-  display: ${(props) => (props.created ? "block" : "none")};
+const Games = styled.div`
+  /* display: ${(props) => (props.created ? "block" : "none")}; */
+  /* margin: 30px auto; */
+  max-width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
 `;
 
 const Liked = styled.div`

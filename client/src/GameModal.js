@@ -1,86 +1,146 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
 import { UserContext } from "./UserContext";
 import ReactDOM from "react-dom";
 import Game from "./Game";
+import ActionBar from "./ActionBar";
 import { BiX } from "react-icons/bi";
-export default function GameModal({ game, showModal, setShowModal, test }) {
-  console.log(showModal);
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { Loading } from "./Loading";
+export default function GameModal(
+  {
+    // game,
+    // showModal,
+    // setShowModal,
+    // test,
+    // likeGame,
+    // numLikes,
+    // setNumLikes,
+    // liked,
+    // setLiked,
+  }
+) {
   const [comment, setComment] = useState("");
+  const { currentUser } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");
   const [viewMore, setViewMore] = useState(false);
-  console.log(game);
-
+  const { id } = useParams();
+  const [gameInfo, setGameInfo] = useState(null);
+  const [updatePage, setUpdatePage] = useState(false);
+  const [showModal, setShowModal, liked, setLiked, numLikes, setNumLikes] =
+    useOutletContext();
+  // const [numLikes, setNumLikes] = useOutletContext();
+  const navigate = useNavigate();
   const submitComment = async (comment) => {
-    //   setUpdatePage(!updatePage);
-    //   await fetch(`/comment/${game._id}`, {
-    //     method: "PUT",
-    //     body: JSON.stringify({
-    //       comment: comment,
-    //       commentBy: currentUser._id,
-    //       pic: currentUser.picture,
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //     .then((res) => {
-    //       console.log("Gotten here");
-    //       res.json();
-    //     })
-    //     .then((res) => {
-    //       console.log(res);
-    //     });
+    setUpdatePage(!updatePage);
+    await fetch(`/comment/${gameInfo._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        comment: comment,
+        commentBy: currentUser._id,
+        pic: currentUser.picture,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        console.log("Gotten here");
+        res.json();
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
+  useEffect(() => {
+    fetch(`/getGame/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res, "herez");
+        setGameInfo(res.result);
+        // setGames((arr) => [...arr, res.result]);
+      });
+  }, []);
+
+  const { name, description, creator, pic, likeGame } = gameInfo
+    ? gameInfo
+    : {
+        name: undefined,
+        description: undefined,
+        creator: undefined,
+        pic: undefined,
+        likeGame: undefined,
+        likes: undefined,
+      };
 
   return ReactDOM.createPortal(
     <Overlay>
-      <ModalContainer>
-        <Title>{game.name}</Title>
-        <Description>{game.description}</Description>
-        <Creator>{game.creator}</Creator>
-        <MapImage src={game.pic} />
-        <CommentsSection>
-          {game.comments.length > 2 && (
-            <View
-              onClick={() => {
-                setViewMore(!viewMore);
-              }}
-            >
-              {viewMore ? "View Less Comments" : "View More Comments"}
-            </View>
-          )}
-          {game.comments.map((comment, index) => {
-            if (index >= game.comments.length - 2 && !viewMore) {
-              return <Comment key={Math.random() * 999999} comment={comment} />;
-            } else if (viewMore) {
-              return <Comment key={Math.random() * 999999} comment={comment} />;
-            }
-          })}
-          <CreateComment>
-            <CommentInput
-              placeholder="comment"
-              onChange={(ev) => {
-                setComment(ev.target.value);
-                setInputValue(ev.target.value);
-              }}
-              value={inputValue}
-            ></CommentInput>
-            <Submit
-              onClick={() => {
-                submitComment(comment);
-                setInputValue("");
-              }}
-            >
-              Comment
-            </Submit>
-          </CreateComment>
-        </CommentsSection>
+      <ModalContainer gameInfo={gameInfo}>
+        {gameInfo ? (
+          <>
+            <Title>{name}</Title>
+            <Description>{description}</Description>
+            <Creator>{creator}</Creator>
+            <MapImage src={pic} />
+            <ActionBar
+              likeGame={likeGame}
+              numLikes={numLikes}
+              setNumLikes={setNumLikes}
+              game={gameInfo}
+              liked={liked}
+              setLiked={setLiked}
+            />
+            <CommentsSection>
+              {gameInfo.comments.length > 2 && (
+                <View
+                  onClick={() => {
+                    setViewMore(!viewMore);
+                  }}
+                >
+                  {viewMore ? "View Less Comments" : "View More Comments"}
+                </View>
+              )}
+              {gameInfo.comments.map((comment, index) => {
+                if (index >= gameInfo.comments.length - 2 && !viewMore) {
+                  return (
+                    <Comment key={Math.random() * 999999} comment={comment} />
+                  );
+                } else if (viewMore) {
+                  return (
+                    <Comment key={Math.random() * 999999} comment={comment} />
+                  );
+                }
+              })}
+              <CreateComment>
+                <CommentInput
+                  placeholder="comment"
+                  onChange={(ev) => {
+                    setComment(ev.target.value);
+                    setInputValue(ev.target.value);
+                  }}
+                  value={inputValue}
+                ></CommentInput>
+                <Submit
+                  onClick={() => {
+                    submitComment(comment);
+                    setInputValue("");
+                  }}
+                >
+                  Comment
+                </Submit>
+              </CreateComment>
+            </CommentsSection>{" "}
+          </>
+        ) : (
+          <div>
+            <Loading />
+          </div>
+        )}
         <CloseModal
           onClick={(ev) => {
             ev.stopPropagation();
-            console.log("clicked");
+            navigate(-1);
             setShowModal(false);
           }}
         >
@@ -117,7 +177,7 @@ const CloseModal = styled.button`
   height: 25px;
   opacity: 0.5;
   display: grid;
-  place-items: center;
+  place-content: center;
 `;
 
 const Description = styled.h2``;
@@ -148,9 +208,9 @@ const CreateComment = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  overflow: auto;
+  /* overflow: auto; */
   position: fixed;
-  max-height: 90%;
+  max-height: ${({ gameInfo }) => (gameInfo ? "90%" : "50%")};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -160,6 +220,8 @@ const ModalContainer = styled.div`
   background-color: #9ab2d9;
   padding: 5px 10px 10px 10px;
   border-radius: 6px;
+  display: ${({ gameInfo }) => (gameInfo ? "block" : "flex")};
+  justify-content: center;
 `;
 
 const CommentInput = styled.textarea`

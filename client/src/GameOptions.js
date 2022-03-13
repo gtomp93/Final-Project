@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { GameContext } from "./GameContext";
 import { FiUser, FiUsers, FiClock } from "react-icons/fi";
 import { BiAlarm, BiAlarmOff } from "react-icons/bi";
@@ -13,7 +13,7 @@ const GameOptions = () => {
 
   const [playerMode, setPlayerMode] = useState(null);
   const [timeMode, setTimeMode] = useState(null);
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const {
     gameState: { error, locations, _id, gameLink },
@@ -60,7 +60,7 @@ const GameOptions = () => {
         });
         if (playerMode === "single") {
           console.log("going to game");
-          history.push(`/map/${_id}`);
+          navigate(`/map/${_id}`);
         }
       });
   };
@@ -169,7 +169,7 @@ const GameOptions = () => {
       {gameLink && (
         <StartGame
           onClick={() => {
-            history.push(`/map/${_id}`);
+            navigate(`/map/${_id}`);
           }}
         >
           Start

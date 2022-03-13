@@ -6,7 +6,7 @@ import Login from "./Login";
 import Logout from "./Logout";
 import Header from "./Header";
 import GameOptions from "./GameOptions";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Profile from "./Profile";
 import Homepage from "./Homepage";
 import GlobalStyle from "./GlobalStyle";
@@ -14,6 +14,7 @@ import GlobalStyle from "./GlobalStyle";
 import CreateMap from "./CreateMap";
 import MapMaker from "./MapMaker";
 import Confirmation from "./Confirmation";
+import GameModal from "./GameModal";
 
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
@@ -27,35 +28,25 @@ function App() {
       <Router>
         <GlobalStyle />
         <Header></Header>
-        <Switch />
-        <Route exact path="/">
-          <Homepage />
-        </Route>
-        <Route exact path="/gameOptions/:id">
-          <GameOptions />
-        </Route>
-        <Route exact path="/map/:id">
-          <Map />
-        </Route>
-        <Route exact path="/CreateMapForm">
-          <CreateMapForm />
-        </Route>
-        <Route exact path="/CreateMap">
-          {/* <CreateMap /> */}
-          <MapMaker />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/logoutPage">
-          <Logout />
-        </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
-        <Route exact path="/Confirmation">
-          <Confirmation />
-        </Route>
+        <Routes>
+          <Route exact path="/" element={<Homepage />}>
+            <Route path="game/:id" element={<GameModal />} />
+          </Route>
+          <Route exact path="/gameOptions/:id" element={<GameOptions />} />
+          <Route exact path="/map/:id" element={<Map />} />
+
+          <Route exact path="/CreateMapForm" element={<CreateMapForm />} />
+
+          <Route exact path="/CreateMap" element={<MapMaker />} />
+
+          <Route exact path="/login" element={<Login />} />
+
+          <Route exact path="/logoutPage" element={<Logout />} />
+
+          <Route exact path="/profile" element={<Profile />} />
+
+          <Route exact path="/Confirmation" element={<Confirmation />} />
+        </Routes>
       </Router>
     </>
   );

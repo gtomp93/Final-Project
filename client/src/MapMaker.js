@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, useContext } from "react";
 import MapInput from "./MapInput";
 import MapItem from "./MapItem";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 /*global google*/
 
 import {
@@ -28,7 +28,7 @@ const streetViewOptions = {
 
 const MapMaker = () => {
   const { addLocations, dispatch, mapState } = useContext(MapCreationContext);
-  let history = useHistory();
+  let navigate = useNavigate();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -72,7 +72,7 @@ const MapMaker = () => {
           <button
             onClick={async () => {
               await addLocations(mapState.locations);
-              history.push("/Confirmation");
+              navigate.push("/Confirmation");
             }}
           >
             Create Map

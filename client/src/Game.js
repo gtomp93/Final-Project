@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import Comment from "./Comment";
 import GameModal from "./GameModal";
+import ActionBar from "./ActionBar";
+import { Outlet } from "react-router-dom";
 
 const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   const [liked, setLiked] = useState(isLiked);
@@ -12,11 +13,12 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   const [numLikes, setNumLikes] = useState(game.likes);
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
   if (!game.comments) {
     return "loading";
   }
 
-  console.log(showModal);
+  // console.log(game);
 
   const likeGame = async () => {
     setLiked(!liked);
@@ -55,47 +57,39 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   };
 
   return (
-    <GameContainer onClick={() => setShowModal(true)}>
+    <GameContainer
+      onClick={() => {
+        navigate(`game/${game._id}`);
+        setShowModal(true);
+      }}
+    >
       <Box>
         <Name>{game.name}</Name>
         <Description>{game.description}</Description>
         <Creator>Created by {game.creator}</Creator>
         <GamePic src={game.pic} />
-        <ActionBar>
-          <LikeBox>
-            <LikeButton
-              onClick={() => {
-                likeGame();
-              }}
-            >
-              <FiHeart
-                size="22px"
-                style={liked ? { fill: "red" } : { fill: "none" }}
-              />
-            </LikeButton>
-            <Likes>{numLikes ? numLikes : null}</Likes>{" "}
-          </LikeBox>
-          <CommentBox>
-            <FiMessageCircle size="22px" style={{ fill: "#d3d2d9" }} />
-            <NumComments>
-              {game.comments
-                ? game.comments.length
-                  ? game.comments.length
-                  : null
-                : null}
-            </NumComments>
-          </CommentBox>
-          <StartGame to={`/gameOptions/${game._id}`}>
-            <FiPlay size="22px" style={{ fill: "green" }} />
-            <Play>Play</Play>
-          </StartGame>
-        </ActionBar>
-      </Box>
-      {showModal && (
-        <GameModal
-          showModal={showModal}
-          setShowModal={setShowModal}
+        <ActionBar
+          likeGame={likeGame}
+          numLikes={numLikes}
+          setNumLikes={setNumLikes}
           game={game}
+          liked={liked}
+          setLiked={setLiked}
+        />
+      </Box>
+
+      {/* <Link to={`game/:${game._id}`}>Link</Link> */}
+      {showModal && (
+        <Outlet
+          // showModal={showModal}
+          // setShowModal={setShowModal}
+          // game={game}
+          // likeGame={likeGame}
+          // numLikes={numLikes}
+          // setNumLikes={setNumLikes}
+          // liked={liked}
+          // setLiked={setLiked}
+          context={[showModal, setShowModal, liked, setLiked]}
         />
       )}
     </GameContainer>
@@ -186,15 +180,6 @@ const CommentBox = styled.div`
 `;
 
 const NumComments = styled.span``;
-
-const ActionBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  @media (min-width: 769px) {
-    /* width: 93%; */
-  }
-`;
 
 const LikeButton = styled.button`
   background: inherit;
