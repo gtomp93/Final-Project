@@ -98,6 +98,7 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
 
 const GameContainer = styled.div`
   display: ${(props) => (props.deleted ? "none" : "flex")};
+  /* visibility: hidden; */
   /* margin-top: 20px; */
   /* position: relative; */
   /* width: 100% */
@@ -105,6 +106,7 @@ const GameContainer = styled.div`
   /* min-width: 350px; */
   display: flex;
   justify-content: center;
+  /* align-items: center; */
   cursor: pointer;
   transition: 400ms;
 
@@ -120,7 +122,7 @@ const Box = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: rgb(255, 255, 255, 0.32);
+  background-color: rgb(255, 255, 255, 0.6);
   border-radius: 7px 7px 7px 7px;
   padding: 10px;
   @media (min-width: 700px) {
@@ -129,7 +131,7 @@ const Box = styled.div`
 `;
 
 const GamePic = styled.img`
-  /* width: 100%; */
+  width: 100%;
   height: 200px;
   object-fit: cover;
   object-position: bottom;

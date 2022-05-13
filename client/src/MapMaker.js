@@ -72,7 +72,7 @@ const MapMaker = () => {
           <button
             onClick={async () => {
               await addLocations(mapState.locations);
-              navigate.push("/Confirmation");
+              navigate("/Confirmation");
             }}
           >
             Create Map

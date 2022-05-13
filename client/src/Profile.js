@@ -204,9 +204,9 @@ const GamesOption = styled.button`
 const Games = styled.div`
   /* display: ${(props) => (props.created ? "block" : "none")}; */
   /* margin: 30px auto; */
-  max-width: 90%;
+  max-width: 95%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 32px;
 `;
 

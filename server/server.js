@@ -29,7 +29,7 @@ const {
 
 // const {getS3url} = require("./s3");
 
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 
 express()
   .use(morgan("tiny"))

@@ -222,6 +222,8 @@ const ModalContainer = styled.div`
   border-radius: 6px;
   display: ${({ gameInfo }) => (gameInfo ? "block" : "flex")};
   justify-content: center;
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/world map stock photo.jpg");
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/Mountains.jpg");
 `;
 
 const CommentInput = styled.textarea`

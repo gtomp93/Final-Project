@@ -1,31 +1,91 @@
 import React from "react";
 import LoginButton from "./LoginButton";
-import {NavLink, Link} from "react-router-dom";
-import {Auth0Provider} from "@auth0/auth0-react";
-import {useAuth0} from "@auth0/auth0-react";
+import { NavLink, Link } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { FiSearch } from "react-icons/fi";
+
+import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from "./LogoutButton";
 import Profile from "./Profile";
 import styled from "styled-components";
-import {FiUser, FiHome} from "react-icons/fi";
-import {BiWorld, BiMap} from "react-icons/bi";
+import { FiUser, FiHome } from "react-icons/fi";
+import { BiWorld, BiMap } from "react-icons/bi";
 
-const Header = ({handleTest}) => {
-  const {user, isAuthenticated, isLoading} = useAuth0();
+const Header = ({ handleTest }) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
     <>
       <HeaderContainer>
-        <Home to={"/"} activeStyle={{color: "#e8e6df"}}>
+        {/* <Home to={"/"} activeStyle={{color: "#e8e6df"}}>
           <HomeIcon
             size={"25px"}
             style={{marginBottom: "2px", marginRight: "2px"}}
           />
           <NavName2>Home</NavName2>
-        </Home>
+        </Home> */}
         <Create to={"/CreateMapForm"}>
           <BiMap size={"25px"} />
           <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
         </Create>
+        <Link
+          style={{
+            display: "flex",
+            alignItems: "center",
+            color: "rgba(0, 0, 0, 0.87)",
+            margin: "10px 0",
+          }}
+          to="/"
+        >
+          <BiWorld size={"50px"} style={{ color: "#5a7bb0" }} />
+          <h1 style={{ marginBottom: "0", color: "#5a7bb0" }}> MapGuesser</h1>
+        </Link>
+        <SearchWrapper>
+          <Search
+          // onChange={(ev) => {
+          //   setSearchValue(ev.target.value);
+          //   if (ev.target.value.length > 1) {
+          //     let arr = games.filter((game) => {
+          //       return game.name
+          //         .toLowerCase()
+          //         .includes(ev.target.value.toLowerCase());
+          //     });
+          //     setGamesList(arr);
+          //   } else {
+          //     setGamesList([]);
+          //   }
+          // }}
+          // value={searchValue}
+          // placeholder="Search Maps"
+          // disabled={searched}
+          />
+          {/* {searchValue.length > 1 && !searched && ( */}
+          <SuggestionsList>
+            {/* {gamesList.map((game) => {
+                  return (
+                    <Suggestion
+                      onClick={() => {
+                        FilterGames(game);
+                        setSearched(true);
+                      }}
+                    >
+                      {game.name}
+                    </Suggestion>
+                  );
+                })} */}
+          </SuggestionsList>
+          {/* )} */}
+          {/* {!searched && ( */}
+          <SearchButton
+          // onClick={() => {
+          //   setGames(gamesList);
+          //   setSearched(true);
+          // }}
+          >
+            <FiSearch style={{ color: "#5a7bb0" }} />
+          </SearchButton>
+          {/* )} */}
+        </SearchWrapper>
         {isAuthenticated && (
           <ProfileLink to="/profile">
             <ProfileIcon size={"25px"} />
@@ -33,7 +93,7 @@ const Header = ({handleTest}) => {
           </ProfileLink>
         )}
 
-        {isAuthenticated && <LogoutButton>Log Out</LogoutButton>}
+        {/* {isAuthenticated && <LogoutButton>Log Out</LogoutButton>} */}
         {!isAuthenticated && <LoginButton>Log In</LoginButton>}
       </HeaderContainer>
     </>
@@ -44,11 +104,15 @@ export default Header;
 
 const HeaderContainer = styled.div`
   height: 44px;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100vw;
   /* background: #7a7280; */
   /* background: #87a1c4; */
   background-color: rgba(0, 0, 0, 0.87);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   @media (min-width: 700px) {
     height: 44px;
   }
@@ -109,4 +173,83 @@ const ProfileIcon = styled(FiUser)``;
 const Logout = styled(LogoutButton)`
   margin-right: 20px;
   color: green;
+`;
+
+const Search = styled.input`
+  width: 160px;
+  background-color: #d3d2d9;
+  border: solid black 1px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
+  height: 21px;
+`;
+
+const SuggestionsList = styled.div`
+  width: 155px;
+  position: absolute;
+  left: 0;
+  top: 23px;
+  z-index: 10;
+  background-color: #d3d2d9;
+  padding: 0 4px 0;
+  border: solid grey 1px;
+  /* box-sizing: border-box; */
+`;
+
+const Suggestion = styled.div`
+  font-weight: bold;
+  margin: 4px 0 4px;
+  font-size: 15px;
+  &:hover {
+    cursor: pointer;
+    color: #4e86f5;
+  }
+`;
+
+const SearchWrapper = styled.div`
+  display: flex;
+  position: relative;
+  margin-left: 3px;
+  align-items: center;
+  font-weight: bold;
+`;
+
+const SearchButton = styled.button`
+  display: flex;
+  align-items: center;
+  /* padding: 0px 8px 0px; */
+  border-radius: 6px;
+  /* background: #e8e6df; */
+  border: none;
+  height: 25px;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* background-color: #07024d; */
+  border-radius: 6px;
+  /* color: #5a7bb0; */
+  margin-left: 1px;
+  color: #d3d2d9;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ResetButton = styled.button`
+  display: flex;
+  align-items: center;
+  /* padding: 0px 8px 0px; */
+  border-radius: 6px;
+  /* background: #e8e6df; */
+  border: none;
+  height: 25px;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.87);
+  /* background-color: #07024d; */
+  border-radius: 6px;
+  /* color: #5a7bb0; */
+  margin-left: 1px;
+  color: #5a7bb0;
+  &:hover {
+    cursor: pointer;
+  }
 `;

@@ -25,10 +25,31 @@ function App() {
 
   return (
     <>
-      <Router>
+      <Router
+        style={{
+          // marginTop: "44px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          // height: "calc(100vh - 44px)",
+          background: "pink",
+          overflowY: "hidden",
+        }}
+      >
         <GlobalStyle />
         <Header></Header>
-        <Routes>
+        <Routes
+          style={{
+            marginTop: "44px",
+            // height: "100%",
+            width: "100%",
+            border: "solid green 3px",
+            overflowY: "hidden",
+            background: "pink",
+          }}
+        >
           <Route exact path="/" element={<Homepage />}>
             <Route path="game/:id" element={<GameModal />} />
           </Route>
