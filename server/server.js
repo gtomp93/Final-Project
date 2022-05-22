@@ -25,6 +25,7 @@ const {
   getPlayerGames,
   submitGuess,
   nextLocation,
+  searchMaps,
 } = require("./handlers");
 
 // const {getS3url} = require("./s3");
@@ -60,6 +61,7 @@ express()
   .put("/comment/:_id", comment)
   .put("/getPlayerGames", getPlayerGames)
   .get("/s3url", getS3url)
+  .get("/searchMaps", searchMaps)
 
   .get("*", (req, res) => {
     res.status(404).json({

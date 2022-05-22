@@ -3,7 +3,7 @@ import LoginButton from "./LoginButton";
 import { NavLink, Link } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { FiSearch } from "react-icons/fi";
-
+import Search from "./Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from "./LogoutButton";
 import Profile from "./Profile";
@@ -11,19 +11,12 @@ import styled from "styled-components";
 import { FiUser, FiHome } from "react-icons/fi";
 import { BiWorld, BiMap } from "react-icons/bi";
 
-const Header = ({ handleTest }) => {
+const Header = ({ handleTest, showModal, setShowModal }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
     <>
       <HeaderContainer>
-        {/* <Home to={"/"} activeStyle={{color: "#e8e6df"}}>
-          <HomeIcon
-            size={"25px"}
-            style={{marginBottom: "2px", marginRight: "2px"}}
-          />
-          <NavName2>Home</NavName2>
-        </Home> */}
         <Create to={"/CreateMapForm"}>
           <BiMap size={"25px"} />
           <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
@@ -37,53 +30,13 @@ const Header = ({ handleTest }) => {
           }}
           to="/"
         >
-          <BiWorld size={"50px"} style={{ color: "#5a7bb0" }} />
+          <BiWorld size={"40px"} style={{ color: "#5a7bb0" }} />
           <h1 style={{ marginBottom: "0", color: "#5a7bb0" }}> MapGuesser</h1>
         </Link>
         <SearchWrapper>
-          <Search
-          // onChange={(ev) => {
-          //   setSearchValue(ev.target.value);
-          //   if (ev.target.value.length > 1) {
-          //     let arr = games.filter((game) => {
-          //       return game.name
-          //         .toLowerCase()
-          //         .includes(ev.target.value.toLowerCase());
-          //     });
-          //     setGamesList(arr);
-          //   } else {
-          //     setGamesList([]);
-          //   }
-          // }}
-          // value={searchValue}
-          // placeholder="Search Maps"
-          // disabled={searched}
-          />
-          {/* {searchValue.length > 1 && !searched && ( */}
-          <SuggestionsList>
-            {/* {gamesList.map((game) => {
-                  return (
-                    <Suggestion
-                      onClick={() => {
-                        FilterGames(game);
-                        setSearched(true);
-                      }}
-                    >
-                      {game.name}
-                    </Suggestion>
-                  );
-                })} */}
-          </SuggestionsList>
-          {/* )} */}
-          {/* {!searched && ( */}
-          <SearchButton
-          // onClick={() => {
-          //   setGames(gamesList);
-          //   setSearched(true);
-          // }}
-          >
-            <FiSearch style={{ color: "#5a7bb0" }} />
-          </SearchButton>
+          <Search showModal={showModal} setShowModal={setShowModal} />
+
+          <FiSearch style={{ color: "#5a7bb0" }} />
           {/* )} */}
         </SearchWrapper>
         {isAuthenticated && (
@@ -104,6 +57,8 @@ export default Header;
 
 const HeaderContainer = styled.div`
   height: 44px;
+  /* z-index: -1; */
+
   top: 0;
   left: 0;
   position: fixed;
@@ -113,6 +68,7 @@ const HeaderContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.87);
   display: flex;
   justify-content: space-around;
+  z-index: 20;
   @media (min-width: 700px) {
     height: 44px;
   }
@@ -175,15 +131,6 @@ const Logout = styled(LogoutButton)`
   color: green;
 `;
 
-const Search = styled.input`
-  width: 160px;
-  background-color: #d3d2d9;
-  border: solid black 1px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
-  height: 21px;
-`;
-
 const SuggestionsList = styled.div`
   width: 155px;
   position: absolute;
@@ -192,7 +139,7 @@ const SuggestionsList = styled.div`
   z-index: 10;
   background-color: #d3d2d9;
   padding: 0 4px 0;
-  border: solid grey 1px;
+  /* border: solid grey 1px; */
   /* box-sizing: border-box; */
 `;
 

@@ -7,11 +7,17 @@ import GameModal from "./GameModal";
 import ActionBar from "./ActionBar";
 import { Outlet } from "react-router-dom";
 
-const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
+const Game = ({
+  game,
+  isLiked,
+  updatePage,
+  setUpdatePage,
+  showModal,
+  setShowModal,
+}) => {
   const [liked, setLiked] = useState(isLiked);
   const { currentUser } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
-  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
   if (!game.comments) {
@@ -59,8 +65,11 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
   return (
     <GameContainer
       onClick={() => {
-        navigate(`game/${game._id}`);
-        setShowModal(true);
+        if (!showModal) {
+          console.log("helllo");
+          navigate(`game/${game._id}`);
+          setShowModal(game._id);
+        }
       }}
     >
       <Box>
@@ -79,7 +88,7 @@ const Game = ({ game, isLiked, updatePage, setUpdatePage }) => {
       </Box>
 
       {/* <Link to={`game/:${game._id}`}>Link</Link> */}
-      {showModal && (
+      {game._id === showModal && (
         <Outlet
           // showModal={showModal}
           // setShowModal={setShowModal}

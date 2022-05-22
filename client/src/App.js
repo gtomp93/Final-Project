@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import CreateMapForm from "./CreateMapForm";
 import Map from "./Map";
@@ -22,36 +22,22 @@ import GameModal from "./GameModal";
 function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
   // const {user, isAuthenticated, isLoading} = useAuth0();
+  const [showModal, setShowModal] = useState(null);
 
   return (
     <>
-      <Router
-        style={{
-          // marginTop: "44px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100vw",
-          // height: "calc(100vh - 44px)",
-          background: "pink",
-          overflowY: "hidden",
-        }}
-      >
+      <Router>
         <GlobalStyle />
-        <Header></Header>
-        <Routes
-          style={{
-            marginTop: "44px",
-            // height: "100%",
-            width: "100%",
-            border: "solid green 3px",
-            overflowY: "hidden",
-            background: "pink",
-          }}
-        >
-          <Route exact path="/" element={<Homepage />}>
-            <Route path="game/:id" element={<GameModal />} />
+        <Header showModal={showModal} setShowModal={setShowModal}></Header>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <Homepage showModal={showModal} setShowModal={setShowModal} />
+            }
+          >
+            <Route path="/game/:id" element={<GameModal />} />
           </Route>
           <Route exact path="/gameOptions/:id" element={<GameOptions />} />
           <Route exact path="/map/:id" element={<Map />} />

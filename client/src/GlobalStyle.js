@@ -16,10 +16,13 @@ html{
   } 
   #root{
     height: 100%;
-    margin-top:44px;
-        overflow-y: hidden ;
+    width: 100% ;
+       /* overflow-y: hidden ; */
         /* margin-bottom: -160px; */
-
+        display: flex ;
+flex-direction: column ;
+align-items: center ;
+justify-content:center;
   }
 
   body{
@@ -27,14 +30,22 @@ html{
     /* background-color: rgba(0,0,0,0.9); */
     /* overflow-y: hidden ; */
   /* background-color: red ; */
-
+    margin: 0 ;
+    padding: 0;
     background: linear-gradient(
     90deg,
     rgba(23, 56, 156, 1) 0%,
     rgba(24, 30, 87, 1) 150%
   );
+  width: 100vw ;
+  display: flex ;
+flex-direction: column ;
+align-items: center ;
+justify-content:center  ;
   /* margin-bottom: -160px; */
-
+  margin-top:44px;
+position: relative ;
+z-index: 1 ;
   /* border: solid 8px lightgreen; */
   /* background-image: url("https://www.istockphoto.com/photo/twilight-at-spirit-island-gm485371557-38624866"); */
 }

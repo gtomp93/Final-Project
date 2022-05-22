@@ -10,10 +10,10 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const client = new MongoClient(MONGO_URI, options);
-const db = client.db("Final_Project");
-
 const checkForUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const email = req.body;
     let doesNotExist = true;
@@ -36,6 +36,9 @@ const checkForUser = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { email, givenName, lastName, picture, likes, games, score } =
       req.body;
@@ -63,6 +66,9 @@ const addUser = async (req, res) => {
 };
 
 const getLocations = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
 
@@ -91,11 +97,14 @@ const getLocations = async (req, res) => {
 };
 
 const getGame = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
 
     await client.connect();
-
+    console.log(_id);
     // const Game_Modes = db.collection;
 
     const result = await db.collection("Game_Modes").findOne({ _id });
@@ -110,6 +119,9 @@ const getGame = async (req, res) => {
 };
 
 const updateUserScore = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { score, _id } = req.body;
 
@@ -126,6 +138,9 @@ const updateUserScore = async (req, res) => {
 };
 
 const CreateMap = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { name, description, pic, locations, creator, comments } = req.body;
 
@@ -145,6 +160,9 @@ const CreateMap = async (req, res) => {
 };
 
 const deleteGame = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
 
@@ -163,6 +181,9 @@ const deleteGame = async (req, res) => {
 };
 
 const createGame = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   const { locations, player, mode, timeMode, icon } = req.body;
   console.log(locations, mode);
   try {
@@ -206,6 +227,8 @@ const createGame = async (req, res) => {
 };
 
 const submitGuess = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
   try {
     const {
       mode,
@@ -273,6 +296,9 @@ const submitGuess = async (req, res) => {
 };
 
 const nextLocation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { mode, _id, player } = req.body;
     // console.log(req.body);
@@ -299,190 +325,208 @@ const nextLocation = async (req, res) => {
 };
 
 const retrieveMap = async (req, res) => {
-  const { _id } = req.params;
-  const {
-    currentUser: { email, picture },
-  } = req.body;
-  console.log(email, picture, "player");
-  await client.connect();
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
 
-  let game = await db.collection("Games").findOne({ _id });
+  try {
+    const { _id } = req.params;
+    const {
+      currentUser: { email, picture },
+    } = req.body;
+    console.log(email, picture, "player");
+    await client.connect();
 
-  if (
-    game.type === "multi" &&
-    !game.players.some((item) => item.player === email)
-  ) {
-    console.log("we in here");
-    game.players.push({
-      player: email,
-      gameData: [],
-      guessed: false,
-      icon: picture,
-    });
-    //player
-    const addUser = await db.collection("Games").updateOne(
-      { _id },
-      {
-        $push: {
-          players: {
-            player: email,
-            gameData: [],
-            guessed: false,
-            icon: picture,
+    let game = await db.collection("Games").findOne({ _id });
+
+    if (
+      game.type === "multi" &&
+      !game.players.some((item) => item.player === email)
+    ) {
+      console.log("we in here");
+      game.players.push({
+        player: email,
+        gameData: [],
+        guessed: false,
+        icon: picture,
+      });
+      //player
+      const addUser = await db.collection("Games").updateOne(
+        { _id },
+        {
+          $push: {
+            players: {
+              player: email,
+              gameData: [],
+              guessed: false,
+              icon: picture,
+            },
           },
-        },
-      }
-    );
-  }
-
-  let guessed = false;
-  let locationIndex = 0;
-  let points = 0;
-  let endGame = false;
-  let gameScore = 0;
-  let timeMode = null;
-  let distance = 0;
-  let thirdPoint = null;
-  let midPoint = { lat: 0, lng: 0 };
-  let guess = null;
-  let gameProgress = 0;
-  let zoom = 2;
-  let otherPlayerData = null;
-
-  console.log(guessed, 1);
-
-  if (game.type === "single") {
-    gameProgress = game.gameData.length;
-    endGame = gameProgress >= 5;
-    game.gameData.forEach((round) => {
-      gameScore += round.score;
-    });
-    console.log({ gameProgress, game });
-    if (game.guessed) {
-      guessed = true;
-      locationIndex = gameProgress - 1;
-      distance = game.gameData[gameProgress - 1].distance;
-      points = game.gameData[gameProgress - 1].score;
-      guess = game.gameData[gameProgress - 1].guess;
-      thirdPoint = game.gameData[gameProgress - 1].thirdPoint;
-      midPoint = game.gameData[gameProgress - 1].midPoint;
-    } else locationIndex = gameProgress;
-  }
-  if (game.type === "multi") {
-    let playerGame = game.players.find((item) => item.player === email);
-    console.log(playerGame, "playergame");
-    gameProgress = playerGame.gameData.length;
-    endGame = gameProgress >= 5;
-    otherPlayerData = game.players.filter((user) => {
-      return user.player !== email;
-    });
-
-    playerGame.gameData.forEach((round) => {
-      gameScore += round.score;
-    });
-    if (playerGame.guessed) {
-      guessed = true;
-      console.log(guessed, 2);
-      points = playerGame.gameData[gameProgress - 1].score;
-      locationIndex = gameProgress - 1;
-      distance = playerGame.gameData[gameProgress - 1].distance;
-      thirdPoint = playerGame.gameData[gameProgress - 1].thirdPoint;
-      guess = playerGame.gameData[gameProgress - 1].guess;
-      midPoint = playerGame.gameData[gameProgress - 1].midPoint;
-    } else locationIndex = gameProgress;
-  }
-
-  if (guessed) {
-    if (distance > 3000000) {
-      console.log("heeeere");
-      zoom = 1;
-    } else if (distance > 1000000 && (guess.lat > 58 || guess.lat < -58)) {
-      zoom = 2;
-    } else if (distance > 1750000) {
-      zoom = 2;
-    } else if (distance > 1000000) {
-      zoom = 3;
-    } else if (distance > 500000) {
-      zoom = 4;
-    } else if (distance > 200000) {
-      zoom = 5;
-    } else if (distance > 100000) {
-      zoom = 6;
-    } else if (distance > 50000) {
-      zoom = 7;
-    } else if (distance > 20000) {
-      zoom = 8;
-    } else if (distance > 5000) {
-      zoom = 9;
-    } else if (distance > 1000) {
-      zoom = 10;
-    } else {
-      zoom = 11;
+        }
+      );
     }
-  }
-  console.log({
-    points,
-    timeMode,
-    endGame,
-    gameScore,
-    locationIndex,
-    distance,
-    guessed,
-    thirdPoint,
-    guess,
-    midPoint,
-    playerMode: game.type,
-    locations: game.locations,
-    zoom,
-    otherPlayerData,
-  });
 
-  res.status(200).json({
-    status: 200,
-    data: {
-      locationIndex,
-      playerMode: game.type,
-      locations: game.locations,
-      guessed,
+    let guessed = false;
+    let locationIndex = 0;
+    let points = 0;
+    let endGame = false;
+    let gameScore = 0;
+    let timeMode = null;
+    let distance = 0;
+    let thirdPoint = null;
+    let midPoint = { lat: 0, lng: 0 };
+    let guess = null;
+    let gameProgress = 0;
+    let zoom = 2;
+    let otherPlayerData = null;
+
+    console.log(guessed, 1);
+
+    if (game.type === "single") {
+      gameProgress = game.gameData.length;
+      endGame = gameProgress >= 5;
+      game.gameData.forEach((round) => {
+        gameScore += round.score;
+      });
+      console.log({ gameProgress, game });
+      if (game.guessed) {
+        guessed = true;
+        locationIndex = gameProgress - 1;
+        distance = game.gameData[gameProgress - 1].distance;
+        points = game.gameData[gameProgress - 1].score;
+        guess = game.gameData[gameProgress - 1].guess;
+        thirdPoint = game.gameData[gameProgress - 1].thirdPoint;
+        midPoint = game.gameData[gameProgress - 1].midPoint;
+      } else locationIndex = gameProgress;
+    }
+    if (game.type === "multi") {
+      let playerGame = game.players.find((item) => item.player === email);
+      console.log(playerGame, "playergame");
+      gameProgress = playerGame.gameData.length;
+      endGame = gameProgress >= 5;
+      otherPlayerData = game.players.filter((user) => {
+        return user.player !== email;
+      });
+
+      playerGame.gameData.forEach((round) => {
+        gameScore += round.score;
+      });
+      if (playerGame.guessed) {
+        guessed = true;
+        console.log(guessed, 2);
+        points = playerGame.gameData[gameProgress - 1].score;
+        locationIndex = gameProgress - 1;
+        distance = playerGame.gameData[gameProgress - 1].distance;
+        thirdPoint = playerGame.gameData[gameProgress - 1].thirdPoint;
+        guess = playerGame.gameData[gameProgress - 1].guess;
+        midPoint = playerGame.gameData[gameProgress - 1].midPoint;
+      } else locationIndex = gameProgress;
+    }
+
+    if (guessed) {
+      if (distance > 3000000) {
+        console.log("heeeere");
+        zoom = 1;
+      } else if (distance > 1000000 && (guess.lat > 58 || guess.lat < -58)) {
+        zoom = 2;
+      } else if (distance > 1750000) {
+        zoom = 2;
+      } else if (distance > 1000000) {
+        zoom = 3;
+      } else if (distance > 500000) {
+        zoom = 4;
+      } else if (distance > 200000) {
+        zoom = 5;
+      } else if (distance > 100000) {
+        zoom = 6;
+      } else if (distance > 50000) {
+        zoom = 7;
+      } else if (distance > 20000) {
+        zoom = 8;
+      } else if (distance > 5000) {
+        zoom = 9;
+      } else if (distance > 1000) {
+        zoom = 10;
+      } else {
+        zoom = 11;
+      }
+    }
+    console.log({
       points,
+      timeMode,
       endGame,
       gameScore,
-      timeMode: game.timeMode,
-      points,
+      locationIndex,
       distance,
+      guessed,
       thirdPoint,
       guess,
-      zoom,
       midPoint,
+      playerMode: game.type,
+      locations: game.locations,
+      zoom,
       otherPlayerData,
-    },
-  });
-  client.close();
+    });
+
+    res.status(200).json({
+      status: 200,
+      data: {
+        locationIndex,
+        playerMode: game.type,
+        locations: game.locations,
+        guessed,
+        points,
+        endGame,
+        gameScore,
+        timeMode: game.timeMode,
+        points,
+        distance,
+        thirdPoint,
+        guess,
+        zoom,
+        midPoint,
+        otherPlayerData,
+      },
+    });
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    client.close();
+  }
 };
 
 const loadOtherPlayers = async (req, res) => {
-  const { _id, player } = req.params;
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
 
-  await client.connect();
+  try {
+    const { _id, player } = req.params;
 
-  let gameInfo = await db.collection("Games").findOne({ _id });
-  console.log(gameInfo);
-  let data = gameInfo
-    ? gameInfo.players.filter((user) => {
-        return user.player !== player;
-      })
-    : null;
-  console.log(data, "data");
-  if (!data.length) {
-    data = null;
+    await client.connect();
+
+    let gameInfo = await db.collection("Games").findOne({ _id });
+    console.log(gameInfo);
+    let data = gameInfo
+      ? gameInfo.players.filter((user) => {
+          return user.player !== player;
+        })
+      : null;
+    console.log(data, "data");
+    if (!data.length) {
+      data = null;
+    }
+
+    res.status(200).json({ status: 200, data });
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    client.close();
   }
-
-  res.status(200).json({ status: 200, data });
-
-  client.close();
 };
 
 const AddGameToUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { gameid, user } = req.body;
     let _id = user;
@@ -494,13 +538,17 @@ const AddGameToUser = async (req, res) => {
     const result = await db.collection("Users").updateOne({ _id }, newGame);
 
     res.status(200).json({ status: 200, updated: _id });
-    client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    client.close();
   }
 };
 
 const removeGameFromUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { gameid, user } = req.body;
     let _id = user;
@@ -512,28 +560,36 @@ const removeGameFromUser = async (req, res) => {
     const result = await db.collection("Users").updateOne({ _id }, newGame);
 
     res.status(200).json({ status: 200, updated: _id });
-    client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    client.close();
   }
 };
 
 const getGames = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     await client.connect();
 
     const result = await db.collection("Game_Modes").find().toArray();
 
     res.status(200).json({ status: 200, result });
-    client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    client.close();
   }
 };
 
 // const liked = false;
 
 const likeGame = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
     const { liked } = req.body;
@@ -551,14 +607,18 @@ const likeGame = async (req, res) => {
     }
 
     res.status(200).json({ status: 200, updated: _id });
-    client.close();
   } catch (err) {
     res.status(404).json({ status: 404, message: "not found" });
     console.log(err);
+  } finally {
+    client.close();
   }
 };
 
 const comment = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
     const { comment, commentBy, pic } = req.body;
@@ -568,14 +628,17 @@ const comment = async (req, res) => {
     await db
       .collection("Game_Modes")
       .updateOne({ _id }, { $push: { comments: { comment, commentBy, pic } } });
-
-    client.close();
   } catch (err) {
     res.status(200).json({ err });
+  } finally {
+    client.close();
   }
 };
 
 const addToLikes = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   try {
     const { _id } = req.params;
     const { likedGame, liked } = req.body;
@@ -596,15 +659,18 @@ const addToLikes = async (req, res) => {
     }
 
     res.status(200).json({ status: 200, result });
-
-    client.close();
   } catch (err) {
     res.status(404).json({ status: 404, message: "Not Found" });
     console.log(err);
+  } finally {
+    client.close();
   }
 };
 
 const getPlayerGames = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
   const { games } = req.body;
   try {
     await client.connect();
@@ -617,6 +683,8 @@ const getPlayerGames = async (req, res) => {
   } catch (err) {
     res.status(404).json({ status: 404, message: "Not Found" });
     console.log(err.stack);
+  } finally {
+    client.close();
   }
 };
 
@@ -627,6 +695,40 @@ const getS3url = async (req, res) => {
     res.status(200).json({ status: 200, url });
   } catch (err) {
     console.log(err);
+  }
+};
+
+const searchMaps = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
+  try {
+    await client.connect();
+
+    const { searchQuery } = req.query;
+    console.log(req.query);
+    console.log({ searchQuery });
+
+    await db
+      .collection("Game_Modes")
+      .createIndex({ description: "text", name: "text" });
+
+    const games = await db
+      .collection("Game_Modes")
+      .find({ $text: { $search: searchQuery, $caseSensitive: false } })
+      .toArray();
+
+    console.log({ games });
+
+    if (games) {
+      res.status(200).json({ status: 200, data: games });
+    } else {
+      res.status(404).json({ status: 404, message: "not found" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    client.close();
   }
 };
 
@@ -655,4 +757,5 @@ module.exports = {
   getPlayerGames,
   getS3url,
   loadOtherPlayers,
+  searchMaps,
 };

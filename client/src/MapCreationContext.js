@@ -91,7 +91,8 @@ export const MapCreationContextProvider = ({ children }) => {
       });
     }
 
-    let imageURL = defaultImages[Math.floor(Math.random(defaultImages.length))];
+    let imageURL =
+      defaultImages[Math.floor(Math.random() * defaultImages.length)];
 
     if (url) {
       imageURL = url.split("?")[0];
