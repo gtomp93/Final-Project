@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import {BiWorld} from "react-icons/bi";
-import {useAuth0} from "@auth0/auth0-react";
+import { BiWorld } from "react-icons/bi";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
-  const {loginWithRedirect} = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <Container>
-      <h1>MapGuesser</h1>
+      <h1 style={{ color: "white" }}>MapGuesser</h1>
       <BiWorld size={"100px"} />
       <LoginButton onClick={() => loginWithRedirect()}>Login</LoginButton>
     </Container>
@@ -25,6 +25,8 @@ const Container = styled.div`
   &:hover {
     cursor: pointer;
   }
+  position: relative;
+  z-index: 500;
 `;
 
 const LoginButton = styled.div`

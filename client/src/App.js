@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
+import Homepage from "./Homepage";
 import CreateMapForm from "./CreateMapForm";
 import Map from "./Map";
 import Login from "./Login";
@@ -8,7 +9,7 @@ import Header from "./Header";
 import GameOptions from "./GameOptions";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Profile from "./Profile";
-import Homepage from "./Homepage";
+import Explore from "./Explore";
 import GlobalStyle from "./GlobalStyle";
 // import {useAuth0} from "@auth0/auth0-react";
 import CreateMap from "./CreateMap";
@@ -30,14 +31,16 @@ function App() {
         <GlobalStyle />
         <Header showModal={showModal} setShowModal={setShowModal}></Header>
         <Routes>
+          <Route path="/" element={<Homepage />} />
+
           <Route
             exact
-            path="/"
+            path="/explore"
             element={
-              <Homepage showModal={showModal} setShowModal={setShowModal} />
+              <Explore showModal={showModal} setShowModal={setShowModal} />
             }
           >
-            <Route path="/game/:id" element={<GameModal />} />
+            <Route path="/explore/game/:id" element={<GameModal />} />
           </Route>
           <Route exact path="/gameOptions/:id" element={<GameOptions />} />
           <Route exact path="/map/:id" element={<Map />} />

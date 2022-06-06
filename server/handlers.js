@@ -228,6 +228,7 @@ const createGame = async (req, res) => {
 
 const submitGuess = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
 
   try {
     const {
@@ -572,9 +573,22 @@ const getGames = async (req, res) => {
   const db = client.db("Final_Project");
 
   try {
+    const { page } = req.query;
+    let indexStart = (Number(page) - 1) * 20;
+    console.log(req.query);
     await client.connect();
-
-    const result = await db.collection("Game_Modes").find().toArray();
+    let result = null;
+    if (page > 1) {
+      result = await db
+        .collection("Game_Modes")
+        .find()
+        .skip(indexStart)
+        .limit(20)
+        .toArray();
+    } else {
+      console.log("we in here");
+      result = await db.collection("Game_Modes").find().limit(20).toArray();
+    }
 
     res.status(200).json({ status: 200, result });
   } catch (err) {

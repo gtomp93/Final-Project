@@ -79,13 +79,7 @@ const CreateMapForm = () => {
         >
           {submitted ? "Edit" : "Submit"}
         </Submit>
-        <button
-          onClick={() => {
-            setState(() => console.log(state), "hey");
-          }}
-        >
-          test
-        </button>
+
         {submitted && <Next to="/CreateMap">Next</Next>}
       </FormWrapper>
       {submitted && mapForm.pic && <Pic src={tempURL}></Pic>}

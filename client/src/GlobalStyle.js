@@ -37,7 +37,7 @@ justify-content:center;
     rgba(23, 56, 156, 1) 0%,
     rgba(24, 30, 87, 1) 150%
   );
-  width: 100vw ;
+  /* background: black ; */
   display: flex ;
 flex-direction: column ;
 align-items: center ;

@@ -44,10 +44,11 @@ const Search = ({ showModal, setShowModal }) => {
           {suggestions.map((suggestion) => {
             return (
               <Suggestion
-                to={`/game/${suggestion._id}`}
+                to={`/explore/game/${suggestion._id}`}
                 onClick={() => {
                   setShowModal(suggestion._id);
                   setSuggestions([]);
+                  setInputValue("");
                 }}
               >
                 {suggestion.name}
@@ -78,12 +79,16 @@ const Searchbar = styled.input`
 `;
 
 const Suggestion = styled(Link)`
-  background: lightblue;
+  background: #616161;
   border: blue;
+  color: white;
+  font-size: 18px;
+  padding: 4px;
   &:hover {
-    background: #4287f5;
+    background: #60c7f0;
   }
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const Suggestions = styled.div`
@@ -92,5 +97,8 @@ const Suggestions = styled.div`
   left: 2px;
   z-index: 20;
   width: 98%;
-  border: solid lightblue 1px;
+  /* border: solid lightblue 1px; */
+  display: flex;
+  flex-direction: column;
+  background: #616161;
 `;

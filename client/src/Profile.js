@@ -94,75 +94,78 @@ const Profile = () => {
 
   console.log("currentUser", currentUser);
 
-  if (isLoading || !currentUser || !Object.values(games).length) {
-    return <Loading />;
-  }
+  // if (isLoading || !currentUser || !Object.values(games).length) {
+  //   return <Loading />;
+  // }
 
   console.log(games, "games");
 
   return (
-    isAuthenticated && (
-      <Container>
-        <div style={{ margin: "10px 8px 5px" }}>
-          <img
-            src={currentUser.picture}
-            alt={currentUser.name}
-            style={{ borderRadius: "20%" }}
-            referrerPolicy="no-referrer"
-          ></img>
-          <h2 style={{ marginBottom: "0px", marginTop: "5px" }}>
-            {currentUser.givenName + " " + currentUser.lastName}
-          </h2>
-          <p style={{ margin: "3px 0 6px" }}>{currentUser.email}</p>
-          <p style={{ margin: "3px 0 6px", fontWeight: "bolder" }}>
-            Total all-time score: {currentUser.score}
-          </p>
-          <Logout onClick={() => logout({ returnTo: window.location.origin })}>
-            <FiLogOut />
-            Sign Out
-          </Logout>
-        </div>
-        <Choose style={{ marginTop: "10px", marginBottom: "0" }}>
-          <GamesOption
-            onClick={toggleCreate}
-            style={
-              showGames === "created"
-                ? { fontWeight: "bolder", color: "#e8e6df" }
-                : { color: "#9897a1" }
-            }
-          >
-            Created Maps
-          </GamesOption>
-          <span style={{ fontSize: "30px" }}>|</span>
-          <GamesOption
-            onClick={toggleLike}
-            style={
-              showGames === "liked"
-                ? { fontWeight: "bolder", color: "#e8e6df" }
-                : { color: "#9897a1" }
-            }
-          >
-            Liked Maps
-          </GamesOption>
-        </Choose>
-        <Games created={showGames}>
-          {games[showGames].map((game) => {
-            if (game) {
-              let isLiked = currentUser.likes.includes(game._id);
-              return (
-                // <div style={{ display: "flex", flexDirection: "column" }}>
-                <Game
-                  key={Math.random() * 9999}
-                  game={game}
-                  isLiked={isLiked}
-                  deleteGame={deleteGame}
-                />
-                // </div>
-              );
-            }
-          })}
-        </Games>
-        {/* <Liked created={created}>
+    <ScrollContainer>
+      {isAuthenticated && currentUser && Object.values(games).length ? (
+        <Container>
+          <TopWrapper style={{ margin: "10px 8px 5px" }}>
+            <img
+              src={currentUser.picture}
+              alt={currentUser.name}
+              style={{ borderRadius: "20%" }}
+              referrerPolicy="no-referrer"
+            ></img>
+            <h2 style={{ marginBottom: "0px", marginTop: "5px" }}>
+              {currentUser.givenName + " " + currentUser.lastName}
+            </h2>
+            <p style={{ margin: "3px 0 6px" }}>{currentUser.email}</p>
+            <p style={{ margin: "3px 0 6px", fontWeight: "bolder" }}>
+              Total all-time score: {currentUser.score}
+            </p>
+            <Logout
+              onClick={() => logout({ returnTo: window.location.origin })}
+            >
+              <FiLogOut />
+              Sign Out
+            </Logout>
+          </TopWrapper>
+          <Choose style={{ marginTop: "10px", marginBottom: "0" }}>
+            <GamesOption
+              onClick={toggleCreate}
+              style={
+                showGames === "created"
+                  ? { fontWeight: "bolder", color: "#e8e6df" }
+                  : { color: "#9897a1" }
+              }
+            >
+              Created Maps
+            </GamesOption>
+            <span style={{ fontSize: "30px", color: "white" }}>|</span>
+            <GamesOption
+              onClick={toggleLike}
+              style={
+                showGames === "liked"
+                  ? { fontWeight: "bolder", color: "#e8e6df" }
+                  : { color: "#9897a1" }
+              }
+            >
+              Liked Maps
+            </GamesOption>
+          </Choose>
+          <Games created={showGames}>
+            {games[showGames].map((game) => {
+              if (game) {
+                let isLiked = currentUser.likes.includes(game._id);
+                return (
+                  // <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Game
+                    key={Math.random() * 9999}
+                    game={game}
+                    isLiked={isLiked}
+                    deleteGame={deleteGame}
+                  />
+                  // </div>
+                );
+              }
+            })}
+          </Games>
+          {/* <Liked created={created}>
           {likedGames.map((game) => {
             if (game) {
               let isLiked = currentUser.likes.includes(game._id);
@@ -176,15 +179,31 @@ const Profile = () => {
             }
           })}
         </Liked> */}
-      </Container>
-    )
+        </Container>
+      ) : (
+        <Loading />
+      )}
+    </ScrollContainer>
   );
 };
 
+const ScrollContainer = styled.div`
+  width: 100vw;
+  height: calc(100vh - 44px);
+  overflow-y: auto;
+  background-size: cover;
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg");
+`;
+
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const TopWrapper = styled.div`
+  color: white;
 `;
 
 const Choose = styled.div`
@@ -204,10 +223,12 @@ const GamesOption = styled.button`
 const Games = styled.div`
   /* display: ${(props) => (props.created ? "block" : "none")}; */
   /* margin: 30px auto; */
-  max-width: 95%;
+  width: calc(100% - 40px);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 32px;
+  margin: 15px 0 20px;
+  color: black;
 `;
 
 const Liked = styled.div`
@@ -217,12 +238,13 @@ const Liked = styled.div`
 const Logout = styled.button`
   font-weight: bold;
   border-radius: 5px;
-  border: solid black 1px;
+  border: solid white 1px;
   background: none;
   display: flex;
+  padding: 4px;
   align-items: center;
   /* color: #9897a1; */
-  color: black;
+  color: white;
 `;
 
 export default Profile;

@@ -30,6 +30,8 @@ const MapInput = ({ dispatch, index, address }) => {
     }
   }, [value]);
 
+  console.log(value);
+
   return (
     <Container>
       <Option
@@ -55,13 +57,15 @@ const MapInput = ({ dispatch, index, address }) => {
 
       <button
         onClick={() => {
-          dispatch({
-            type: "addLocation",
-            index,
-            location: coords,
-            address: value.label,
-          });
-          setValue("");
+          if (value?.label) {
+            dispatch({
+              type: "addLocation",
+              index,
+              location: coords,
+              address: value.label,
+            });
+            setValue("");
+          }
         }}
       >
         Add Location

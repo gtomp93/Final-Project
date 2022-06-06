@@ -118,6 +118,9 @@ const GameContainer = styled.div`
   /* align-items: center; */
   cursor: pointer;
   transition: 400ms;
+  box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
+  -webkit-box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
+  -moz-box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
 
   &:hover {
     transform: scale(1.01);

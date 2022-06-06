@@ -5,13 +5,13 @@ const MapItem = ({ address, dispatch, index }) => {
   return (
     <Container>
       <div>{address}</div>
-      <button
+      {/* <button
         onClick={() => {
           dispatch({ type: "removeLocation", index });
         }}
       >
         Remove Location
-      </button>
+      </button> */}
     </Container>
   );
 };

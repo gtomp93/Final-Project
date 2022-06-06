@@ -17,10 +17,12 @@ const Header = ({ handleTest, showModal, setShowModal }) => {
   return (
     <>
       <HeaderContainer>
-        <Create to={"/CreateMapForm"}>
-          <BiMap size={"25px"} />
-          <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
-        </Create>
+        {isAuthenticated && (
+          <Create to={"/CreateMapForm"}>
+            <BiMap size={"25px"} />
+            <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
+          </Create>
+        )}
         <Link
           style={{
             display: "flex",
