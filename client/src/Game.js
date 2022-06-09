@@ -16,7 +16,7 @@ const Game = ({
   setShowModal,
 }) => {
   const [liked, setLiked] = useState(isLiked);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
 
   const navigate = useNavigate();
@@ -24,11 +24,13 @@ const Game = ({
     return "loading";
   }
 
-  // console.log(game);
-
   const likeGame = async () => {
-    setLiked(!liked);
+    if (!currentUser) {
+      setStatus("loginError");
+      return;
+    }
 
+    setLiked(!liked);
     fetch(`/likeGame/${game._id}`, {
       method: "PATCH",
       body: JSON.stringify({
@@ -86,20 +88,8 @@ const Game = ({
           setLiked={setLiked}
         />
       </Box>
-
-      {/* <Link to={`game/:${game._id}`}>Link</Link> */}
       {game._id === showModal && (
-        <Outlet
-          // showModal={showModal}
-          // setShowModal={setShowModal}
-          // game={game}
-          // likeGame={likeGame}
-          // numLikes={numLikes}
-          // setNumLikes={setNumLikes}
-          // liked={liked}
-          // setLiked={setLiked}
-          context={[showModal, setShowModal, liked, setLiked]}
-        />
+        <Outlet context={[showModal, setShowModal, liked, setLiked]} />
       )}
     </GameContainer>
   );

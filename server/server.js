@@ -11,6 +11,7 @@ const {
   searchOpponent,
   retrieveMap,
   loadOtherPlayers,
+  getTopPlayers,
   createGame,
   getGame,
   CreateMap,
@@ -46,6 +47,7 @@ express()
   .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
   // .get("/RandomLocations/:_id", getRandomLocations)
+  .get("/getTopPlayers", getTopPlayers)
   .get("/searchOpponent", searchOpponent)
   .patch("/getMap/:_id", retrieveMap)
   .get("/loadOtherPlayers/:_id/:player", loadOtherPlayers)

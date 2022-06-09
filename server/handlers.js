@@ -96,6 +96,29 @@ const getLocations = async (req, res) => {
   }
 };
 
+const getTopPlayers = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
+  await client.connect();
+
+  try {
+    const players = await db
+      .collection("Users")
+      .find({}, { projection: { givenName: 1, _id: 0 } })
+      .sort({ score: -1 })
+      .limit(5)
+      .toArray();
+
+    res.status(200).json({ data: players, status: 200 });
+  } catch (err) {
+    res.status(404).json({ status: 404, message: "not found" });
+    console.log(err.stack);
+  } finally {
+    await client.close();
+  }
+};
+
 const getGame = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const db = client.db("Final_Project");
@@ -753,6 +776,7 @@ module.exports = {
   checkForUser,
   getLocations,
   updateUserScore,
+  getTopPlayers,
   // getRandomLocations,
   retrieveMap,
   submitGuess,

@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { UserContext } from "./UserContext";
 import Game from "./Game";
+import Error from "./Error";
 import LogoutButton from "./LogoutButton";
 import { GameContext } from "./GameContext";
 import { Loading } from "./Loading";
@@ -19,10 +20,9 @@ const Explore = ({ showModal, setShowModal, location }) => {
   const { currentUser } = useContext(UserContext);
   const [searchValue, setSearchValue] = useState("");
   const { setSelected, dispatch, resetMap } = useContext(GameContext);
-  const [gamesList, setGamesList] = useState([]);
   const [searched, setSearched] = useState(false);
   const [fullList, setFullList] = useState(null);
-  // const [page, setPage] = useState(0);
+  const { status, setStatus } = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page"));
   console.log(page, "page");
@@ -45,6 +45,7 @@ const Explore = ({ showModal, setShowModal, location }) => {
     <>
       <Container>
         <ParallaxWrapper>
+          {status === "loginError" && <Error setStatus={setStatus} />}
           <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg" />
 
           {/* <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg" /> */}
@@ -74,7 +75,6 @@ const Explore = ({ showModal, setShowModal, location }) => {
               <PageContainer style={{ textAlign: "center" }}>
                 {page > 1 && (
                   <Page
-                    // to="/explore/?page="
                     style={{ color: "white" }}
                     onClick={() =>
                       setSearchParams(

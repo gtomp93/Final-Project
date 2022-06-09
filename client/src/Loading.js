@@ -15,26 +15,24 @@ export const Loading = () => {
   const [stop, setStop] = useState(false);
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
-  useEffect(() => {
-    let check = true;
-    if (check) {
-      if (!isAuthenticated) {
-        timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
-      }
-    }
-    return () => (check = false);
-  }, [timer]);
+  // useEffect(() => {
+  //   let check = true;
+  //   if (check) {
+  //     if (!isAuthenticated) {
+  //       timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
+  //     }
+  //   }
+  //   return () => (check = false);
+  // }, [timer]);
 
-  if (timer === 0 && !currentUser) {
-    return <Login />;
-  }
+  // if (timer === 0 && !currentUser) {
+  //   return <Login />;
+  // }
 
   return (
     <Wrapper>
       <h2 style={{ color: "#e8e6df" }}>LOADING...</h2>
 
-      {/* <Spinner /> */}
-      {/* <img src={img} /> */}
       <Globe />
     </Wrapper>
   );

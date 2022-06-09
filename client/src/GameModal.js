@@ -8,19 +8,7 @@ import ActionBar from "./ActionBar";
 import { BiX } from "react-icons/bi";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Loading } from "./Loading";
-export default function GameModal(
-  {
-    // game,
-    // showModal,
-    // setShowModal,
-    // test,
-    // likeGame,
-    // numLikes,
-    // setNumLikes,
-    // liked,
-    // setLiked,
-  }
-) {
+export default function GameModal({}) {
   const [comment, setComment] = useState("");
   const { currentUser } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");
