@@ -105,10 +105,23 @@ const getTopPlayers = async (req, res) => {
   try {
     const players = await db
       .collection("Users")
-      .find({}, { projection: { givenName: 1, _id: 0 } })
+      .find(
+        {},
+        {
+          projection: {
+            givenName: 1,
+            score: 1,
+            lastName: 1,
+            picture: 1,
+            _id: 0,
+          },
+        }
+      )
       .sort({ score: -1 })
       .limit(5)
       .toArray();
+
+    console.log(players);
 
     res.status(200).json({ data: players, status: 200 });
   } catch (err) {
