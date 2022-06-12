@@ -6,7 +6,7 @@ export const UserContext = createContext(null);
 export const UserContextProvider = ({ children }) => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState(null);
   const [loggedOut, setLoggedOut] = useState(null);
 
   let userInfo = null;

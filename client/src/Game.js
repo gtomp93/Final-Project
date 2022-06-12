@@ -26,7 +26,7 @@ const Game = ({
 
   const likeGame = async () => {
     if (!currentUser) {
-      setStatus("loginError");
+      setStatus({ error: "like" });
       return;
     }
 
@@ -89,7 +89,9 @@ const Game = ({
         />
       </Box>
       {game._id === showModal && (
-        <Outlet context={[showModal, setShowModal, liked, setLiked]} />
+        <Outlet
+          context={[showModal, setShowModal, liked, setLiked, likeGame, game]}
+        />
       )}
     </GameContainer>
   );
@@ -108,9 +110,6 @@ const GameContainer = styled.div`
   /* align-items: center; */
   cursor: pointer;
   transition: 400ms;
-  box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
-  -webkit-box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
-  -moz-box-shadow: 4px 6px 14px 0px rgba(0, 0, 0, 0.33);
 
   &:hover {
     transform: scale(1.01);
@@ -118,14 +117,19 @@ const GameContainer = styled.div`
   @media (min-width: 700px) {
     /* width: 98vw; */
   }
+  border-radius: 7px 7px 7px 7px;
+  background-color: rgb(0, 0, 0, 0.66);
+  -webkit-box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
+  box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
 `;
 
 const Box = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: rgb(255, 255, 255, 0.6);
-  border-radius: 7px 7px 7px 7px;
+  /* background-color: rgb(5, 46, 77, 0.8); */
+
+  //7, 59, 97,
   padding: 10px;
   @media (min-width: 700px) {
     /* width: 80%; */
@@ -143,9 +147,13 @@ const GamePic = styled.img`
 `;
 
 const Name = styled.h2`
-  font-size: 20px;
+  font-size: 28px;
   padding: 0;
-  /* all: unset; */
+  color: white;
+  color: #edd70e;
+  color: yellow;
+  color: #b103fc;
+  text-shadow: 2px 2px 15px rgba(206, 89, 55, 0.86); /* all: unset; */
   @media (min-width: 769px) {
     font-size: 30px;
     margin: 0 0 5px;
@@ -153,8 +161,12 @@ const Name = styled.h2`
 `;
 
 const Description = styled.h3`
+  /* color: rgb(66, 194, 245); */
+  /* color: #46c1f2; */
+  color: white;
+
   font-weight: lighter;
-  font-size: 15px;
+  font-size: 18px;
   @media (min-width: 769px) {
     font-size: 23px;
     margin: 0 0 8px;
@@ -165,6 +177,7 @@ const Creator = styled.h4`
   font-size: 13px;
   /* width: 93%; */
   color: #030129;
+  color: yellow;
   font-weight: bolder;
   margin-bottom: 10px;
   @media (min-width: 769px) {

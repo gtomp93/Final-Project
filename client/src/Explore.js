@@ -45,8 +45,11 @@ const Explore = ({ showModal, setShowModal, location }) => {
     <>
       <Container>
         <ParallaxWrapper>
-          {status === "loginError" && <Error setStatus={setStatus} />}
-          <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg" />
+          {status && <Error status={status} setStatus={setStatus} />}
+          <Background
+            /*src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg" src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg"*/
+            src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg"
+          />
 
           {/* <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg" /> */}
           {games ? (
@@ -195,120 +198,121 @@ const Background = styled.img`
   z-index: -1;
   overflow: hidden;
   transform: translateZ(-30px) scale(4);
-  top: 4%;
-  height: 32%;
+  top: 12%;
+  height: 35.5%;
   /*  HERE top: 500px;
   height: 37%; */
 
   @media screen and (min-height: 815px) {
-    top: 0.5%;
+    /* top: 0.5%; */
   }
 
   @media (min-width: 395px) {
-    top: 6%;
+    /* top: 6%; */
     /* top: 100vh; */
     height: 30%;
   }
 
   @media (min-width: 412px) {
-    top: 7%;
+    /* top: 7%; */
     /* top: 100vh; */
     height: 30%;
     @media screen and (min-height: 815px) {
-      top: 2.5%;
+      /* top: 2.5%; */
     }
     @media screen and (min-height: 850px) {
-      top: 0%;
+      /* top: 0%; */
     }
   }
 
   @media (min-width: 425px) {
-    top: 7.5%;
+    /* top: 7.5%; */
     /* top: 100vh; */
     height: 30%;
     @media screen and (min-height: 815px) {
-      top: 4%;
+      /* top: 4%; */
     }
   }
 
   @media (min-width: 435px) {
-    top: 8%;
+    /* top: 8%; */
     /* top: 100vh; */
     height: 30%;
     @media screen and (min-height: 815px) {
-      top: 4.5%;
+      /* top: 4.5%; */
     }
   }
 
   @media (min-width: 450px) {
-    top: 8.5%;
+    /* top: 8.5%; */
     /* top: 100vh; */
     height: 30%;
     @media screen and (min-height: 815px) {
-      top: 5%;
+      /* top: 5%; */
     }
   }
 
   @media (min-width: 460px) {
-    top: 9%;
+    /* top: 9%; */
     /* top: 100vh; */
     height: 30%;
     @media screen and (min-height: 825px) {
-      top: 5.5%;
+      /* top: 5.5%; */
     }
   }
 
   @media (min-width: 475px) {
-    top: 12%;
+    /* top: 12%; */
     /* top: 100vh; */
     height: 30%;
   }
 
   @media (min-width: 725px) {
-    top: 200px;
+    /* top: 200px; */
     transform: translateZ(-20px) scale(3);
     height: calc(50.5% - 30px);
     /* @media (min-height: 750px) { */
-    top: 1400px;
-    height: 32%;
+    /* top: 1400px; */
+    /* height: 32%; */
     /* } */
   }
   @media (min-width: 756px) {
-    top: 300px;
+    /* top: 300px; */
     transform: translateZ(-20px) scale(3);
     height: calc(48% - 30px);
     @media (min-height: 750px) {
-      top: -300px;
+      /* top: -300px; */
       height: 52%;
     }
   }
 
   @media screen and (min-width: 800px) {
-    top: 300px;
+    /* top: 300px; */
     transform: translateZ(-20px) scale(3);
     height: calc(48% - 30px);
     @media (min-height: 900px) {
-      top: -200px;
+      /* top: -200px; */
       height: 52%;
     }
   }
 
   @media screen and (min-width: 1000px) {
-    top: 220px;
+    /* top: 220px; */
     transform: translateZ(-20px) scale(3);
     height: calc(48% - 30px);
+    top: -200px;
+
     @media (min-height: 900px) {
-      top: 80px;
       height: 52%;
     }
   }
 
   @media (min-width: 1147px) {
-    top: 0px;
+    /* top: 0px; */
     height: 67%;
     transform: translateZ(-10px) scale(2);
     @media (min-height: 780px) {
-      top: -150px;
+      /* top: -150px; */
       height: 72%;
     }
   }

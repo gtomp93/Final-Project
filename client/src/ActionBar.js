@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 const ActionBar = ({
   likeGame,
@@ -11,6 +12,8 @@ const ActionBar = ({
   liked,
   setLiked,
 }) => {
+  const { currentUser, setStatus, status } = useContext(UserContext);
+
   return (
     <ActionBarContainer>
       <LikeBox>
@@ -22,7 +25,11 @@ const ActionBar = ({
         >
           <FiHeart
             size="22px"
-            style={liked ? { fill: "red" } : { fill: "none" }}
+            style={
+              liked
+                ? { fill: "red", color: "black" }
+                : { fill: "none", color: "white" }
+            }
           />
         </LikeButton>
         <Likes>{numLikes ? numLikes : null}</Likes>{" "}
@@ -37,7 +44,17 @@ const ActionBar = ({
             : null}
         </NumComments>
       </CommentBox>
-      <StartGame to={`/gameOptions/${game._id}`}>
+      <StartGame
+        onClick={(ev) => {
+          if (!currentUser) {
+            setStatus({ error: "play" });
+            ev.preventDefault();
+            ev.stopPropagation();
+            return;
+          }
+        }}
+        to={`/gameOptions/${game._id}`}
+      >
         <FiPlay size="22px" style={{ fill: "green" }} />
         <Play>Play</Play>
       </StartGame>
@@ -48,19 +65,24 @@ const ActionBar = ({
 const LikeBox = styled.div`
   display: flex;
   align-items: center;
+  color: white;
 `;
 
 const CommentBox = styled.div`
   display: flex;
   align-items: center;
+  color: white;
 `;
 
-const NumComments = styled.span``;
+const NumComments = styled.span`
+  color: white;
+`;
 const LikeButton = styled.button`
   background: inherit;
   border: none;
   padding: 0px;
   padding-right: 4px;
+  color: white;
 `;
 
 const StartGame = styled(Link)`
@@ -69,6 +91,7 @@ const StartGame = styled(Link)`
   display: flex;
   align-items: center;
   color: black;
+  color: white;
 `;
 
 const Play = styled.span`

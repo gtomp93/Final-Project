@@ -6,6 +6,11 @@ export const SubTitle = styled.h2`
   text-align: left;
   padding-left: 5px;
   padding-top: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  /* place-items: center; */
 `;
 
 export const Container = styled.div`

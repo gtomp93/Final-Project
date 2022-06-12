@@ -68,6 +68,7 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
   z-index: 0;
+  opacity: 0.8;
 `;
 
 const Searchbar = styled.input`

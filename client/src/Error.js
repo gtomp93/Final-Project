@@ -4,14 +4,17 @@ import ReactDOM from "react-dom";
 import { UserContext } from "./UserContext";
 import { BiX } from "react-icons/bi";
 import { Navigate, useNavigate } from "react-router-dom";
+import Login from "./Login";
+import LoginButton from "./LoginButton";
 
 const Error = () => {
-  const { setStatus } = useContext(UserContext);
+  const { setStatus, status } = useContext(UserContext);
   console.log("Hello?");
   const navigate = useNavigate();
   return ReactDOM.createPortal(
     <Container>
-      <div>Please sign up or log in in order to like a map</div>{" "}
+      <div>Please sign up or log in in order to {status.error} a map</div>{" "}
+      <LoginButton />
       <CloseModal
         onClick={(ev) => {
           ev.stopPropagation();

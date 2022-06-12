@@ -47,6 +47,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+  @media screen and (min-width: 450px) {
+    flex-direction: row;
+  }
 `;
 const Section = styled.div`
   margin: 10px 0 10px;

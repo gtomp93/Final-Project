@@ -8,19 +8,75 @@ import ActionBar from "./ActionBar";
 import { BiX } from "react-icons/bi";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Loading } from "./Loading";
+import Error from "./Error";
 export default function GameModal({}) {
   const [comment, setComment] = useState("");
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, status, setStatus } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");
   const [viewMore, setViewMore] = useState(false);
   const { id } = useParams();
   const [gameInfo, setGameInfo] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
-  const [showModal, setShowModal, liked, setLiked, numLikes, setNumLikes] =
-    useOutletContext();
+  const [
+    showModal,
+    setShowModal,
+    liked,
+    setLiked,
+    numLikes,
+    setNumLikes,
+    game,
+    // likeGame,
+  ] = useOutletContext();
   // const [numLikes, setNumLikes] = useOutletContext();
+  const likeGame = async () => {
+    if (!currentUser) {
+      setStatus({ error: "like" });
+      return;
+    }
+
+    setLiked(!liked);
+    fetch(`/likeGame/${game._id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        liked: !liked,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      res.json();
+    });
+
+    await fetch(`/addLikeToUser/${currentUser._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        likedGame: game._id,
+        liked: !liked,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("HEERE");
+        if (!liked) {
+          setNumLikes(numLikes + 1);
+        } else {
+          setNumLikes(numLikes - 1);
+        }
+      });
+  };
+
   const navigate = useNavigate();
-  const submitComment = async (comment) => {
+  const submitComment = async (comment, ev) => {
+    if (!currentUser) {
+      setStatus({ error: "comment" });
+      ev.preventDefault();
+      ev.stopPropagation();
+      return;
+    }
+
     setUpdatePage(!updatePage);
     await fetch(`/comment/${gameInfo._id}`, {
       method: "PUT",
@@ -51,19 +107,21 @@ export default function GameModal({}) {
       });
   }, []);
 
-  const { name, description, creator, pic, likeGame } = gameInfo
+  const { name, description, creator, pic } = gameInfo
     ? gameInfo
     : {
         name: undefined,
         description: undefined,
         creator: undefined,
         pic: undefined,
-        likeGame: undefined,
+        // likeGame: undefined,
         likes: undefined,
       };
 
   return ReactDOM.createPortal(
     <Overlay>
+      {status === "loginError" && <Error setStatus={setStatus} />}
+
       <ModalContainer gameInfo={gameInfo}>
         {gameInfo ? (
           <>
@@ -110,8 +168,8 @@ export default function GameModal({}) {
                   value={inputValue}
                 ></CommentInput>
                 <Submit
-                  onClick={() => {
-                    submitComment(comment);
+                  onClick={(ev) => {
+                    submitComment(comment, ev);
                     setInputValue("");
                   }}
                 >
