@@ -29,9 +29,16 @@ function App() {
     <>
       <Router>
         <GlobalStyle />
-        <Header showModal={showModal} setShowModal={setShowModal}></Header>
+        <Header></Header>
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route
+            path="/"
+            element={
+              <Homepage showModal={showModal} setShowModal={setShowModal} />
+            }
+          >
+            <Route path="/game/:id" element={<GameModal />} />
+          </Route>
 
           <Route
             exact
@@ -39,6 +46,8 @@ function App() {
             element={
               <Explore showModal={showModal} setShowModal={setShowModal} />
             }
+            showModal={showModal}
+            setShowModal={setShowModal}
           >
             <Route path="/explore/game/:id" element={<GameModal />} />
           </Route>
@@ -53,7 +62,9 @@ function App() {
 
           <Route exact path="/logoutPage" element={<Logout />} />
 
-          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/profile" element={<Profile />}>
+            <Route path="/profile/game/:id" element={<GameModal />} />
+          </Route>
 
           <Route exact path="/Confirmation" element={<Confirmation />} />
         </Routes>

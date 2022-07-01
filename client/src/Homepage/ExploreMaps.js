@@ -10,19 +10,19 @@ const ExploreMaps = () => {
 
   return (
     <ExploreContainer onClick={() => navigate("/explore")}>
-      <div style={{ position: "relative", zIndex: "5" }}>
-        <SubTitle>
-          <MdExplore style={{ margin: "" }} /> Explore Maps <MdExplore />
-        </SubTitle>
-        <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
-      </div>{" "}
+      <SubTitle>
+        <CompassIcon style={{ margin: "" }} /> Explore Maps <CompassIcon />
+      </SubTitle>
+      <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
     </ExploreContainer>
   );
 };
 
 const Image = styled.img`
-  width: 100%;
-  max-width: 500px;
+  width: 95%;
+  height: 90%;
+  /* max-width: 500px; */
+  object-fit: cover;
   border-radius: 6px;
 `;
 
@@ -37,10 +37,9 @@ const movingBackground = keyframes`
 const ExploreContainer = styled(Container)`
   cursor: pointer;
   color: white;
-  position: relative;
   background-image: linear-gradient(
     225deg,
-    rgba(204, 204, 207, 0.75) 1%,
+    rgba(204, 204, 207, 0.5) 1%,
     rgba(101, 98, 98, 0.2) 63%
   );
   &:hover {
@@ -49,6 +48,15 @@ const ExploreContainer = styled(Container)`
   background-size: 200%;
   transition: transform 500ms;
   animation: ${movingBackground} 7s forwards infinite;
+`;
+
+const spinning = keyframes`
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+`;
+
+const CompassIcon = styled(MdExplore)`
+  animation: ${spinning} 5000ms forwards linear infinite;
 `;
 
 export default ExploreMaps;

@@ -10,15 +10,16 @@ import { Outlet } from "react-router-dom";
 const Game = ({
   game,
   isLiked,
-  updatePage,
+  index,
   setUpdatePage,
   showModal,
   setShowModal,
+  type,
 }) => {
   const [liked, setLiked] = useState(isLiked);
   const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
-
+  console.log({ type });
   const navigate = useNavigate();
   if (!game.comments) {
     return "loading";
@@ -66,6 +67,8 @@ const Game = ({
 
   return (
     <GameContainer
+      type={type}
+      index={index}
       onClick={() => {
         if (!showModal) {
           console.log("helllo");
@@ -118,9 +121,12 @@ const GameContainer = styled.div`
     /* width: 98vw; */
   }
   border-radius: 7px 7px 7px 7px;
-  background-color: rgb(0, 0, 0, 0.66);
+  background-color: ${({ type }) =>
+    type === "featured" ? "rgb(255,255,255,1)" : "rgb(0, 0, 0, 0.66)"};
   -webkit-box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
   box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
+  margin-bottom: ${({ index, type }) =>
+    index === 0 && type === "featured" ? "2rem" : "0px"};
 `;
 
 const Box = styled.div`

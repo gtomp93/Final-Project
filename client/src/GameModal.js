@@ -186,7 +186,7 @@ export default function GameModal({}) {
         <CloseModal
           onClick={(ev) => {
             ev.stopPropagation();
-            navigate("/explore");
+            navigate(-1);
             setShowModal(false);
           }}
         >

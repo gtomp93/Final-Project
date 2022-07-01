@@ -3,20 +3,10 @@ import styled from "styled-components";
 import { Container } from "./styledComponents";
 import { SubTitle } from "./styledComponents";
 
-const Leaderboard = () => {
-  const [users, setUsers] = useState(null);
-  useEffect(() => {
-    fetch("/getTopPlayers")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUsers(data.data);
-      });
-  }, []);
-
+const Leaderboard = ({ users }) => {
   return (
     <>
-      <Container>
+      <StyledContainer>
         {" "}
         <SubTitle> Leaderboard</SubTitle>
         <table style={{ borderCollapse: "collapse" }}>
@@ -41,7 +31,7 @@ const Leaderboard = () => {
             );
           })}{" "}
         </table>
-      </Container>
+      </StyledContainer>
     </>
   );
 };
@@ -53,6 +43,8 @@ const Leaderboard = () => {
 //   padding-left: 5px;
 //   padding-top: 0;
 // `;
+
+const StyledContainer = styled(Container)``;
 
 const Row = styled.tr``;
 

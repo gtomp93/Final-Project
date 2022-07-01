@@ -121,7 +121,7 @@ const getTopPlayers = async (req, res) => {
       .limit(5)
       .toArray();
 
-    console.log(players);
+    // console.log(players);
 
     res.status(200).json({ data: players, status: 200 });
   } catch (err) {
@@ -628,7 +628,33 @@ const getGames = async (req, res) => {
 
     res.status(200).json({ status: 200, result });
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
+  } finally {
+    client.close();
+  }
+};
+
+const getFeaturedMaps = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
+  const maps = [
+    "337a4661-dab0-46d9-bffc-7fe00c48223f",
+    "ffd65286-96e8-4c85-9b53-8544aa1b52e3",
+    // "d65052e8-7875-4b47-8ff2-64f563db76f7",
+  ];
+
+  try {
+    await client.connect();
+    const result = await db
+      .collection("Game_Modes")
+      .find({ _id: { $in: maps } })
+      .toArray();
+    console.log("mappy", result);
+
+    res.status(200).json({ status: 200, result });
+  } catch (err) {
+    console.log(err.stack);
   } finally {
     client.close();
   }
@@ -791,6 +817,7 @@ module.exports = {
   updateUserScore,
   getTopPlayers,
   // getRandomLocations,
+  getFeaturedMaps,
   retrieveMap,
   submitGuess,
   nextLocation,
