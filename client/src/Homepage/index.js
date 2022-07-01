@@ -47,14 +47,14 @@ const Homepage = () => {
               {/* <Link to="/explore?page=1">Leaderboard</Link> */}
               <Leaderboard users={users} setUsers={setUsers} />
             </Section>
-            <Section style={{ gridColumn: "1 / 8", gridRow: "12 / -1" }}>
+            <Section style={{ gridColumn: "1 / 9", gridRow: "12 / -1" }}>
               <CreateMap />
             </Section>
             <Section
               style={{
                 // gridColumn: "span 3",
-                gridColumn: "9 / -1",
-                gridRow: "13 / -1",
+                gridColumn: "10 / -1",
+                gridRow: "14 / -1",
               }}
             >
               <Featured

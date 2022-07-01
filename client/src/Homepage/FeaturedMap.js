@@ -8,11 +8,13 @@ const FeaturedMap = ({ game }) => {
 
   return (
     <Container>
+      {/* <Wrapper> */}
       <Title>{game.name}</Title>
       <Description>{game.description}</Description>
-      <Author>{game.creator}</Author>
+      <Author> Created by {game.creator}</Author>
       <Picture src={game.pic} />
-      <ActionBar game={game} />
+      <ActionBar game={game} type="profile" />
+      {/* </Wrapper> */}
     </Container>
   );
 };
@@ -21,8 +23,14 @@ export default FeaturedMap;
 
 const Container = styled.div`
   width: 50%;
-  /* border: 1px solid blue; */
+  border: 1px solid blue;
+  max-height: 100%;
+  height: 100%;
 `;
+// const Wrapper = styled.div`
+//   height: 100%;
+// `;
+
 const Title = styled.h2`
   color: #196b09;
   font-size: 30px;
@@ -32,4 +40,5 @@ const Author = styled.p``;
 
 const Picture = styled.img`
   width: 100%;
+  height: calc(100% - 130px);
 `;

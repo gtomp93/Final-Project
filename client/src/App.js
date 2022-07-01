@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import logo from "./logo.svg";
 import Homepage from "./Homepage";
 import CreateMapForm from "./CreateMapForm";
@@ -18,6 +18,8 @@ import Confirmation from "./Confirmation";
 import GameModal from "./GameModal";
 import LikedGames from "./Profile/LikedGames";
 import CreatedGames from "./Profile/CreatedGames";
+import { UserContext } from "./UserContext";
+import AddNameModal from "./AddNameModal";
 
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
@@ -26,12 +28,14 @@ function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
   // const {user, isAuthenticated, isLoading} = useAuth0();
   // const [showModal, setShowModal] = useState(null);
+  const { status } = useContext(UserContext);
 
   return (
     <>
       <Router>
         <GlobalStyle />
         <Header></Header>
+        {status === "noName" && <AddNameModal />}
         <Routes>
           <Route exact strict path="/" element={<Homepage />}>
             <Route path="/game/:id" element={<GameModal />} />
@@ -51,7 +55,7 @@ function App() {
 
           <Route exact path="/logoutPage" element={<Logout />} />
 
-          <Route exact path="/profile" element={<Profile active="created" />}>
+          <Route exact path="/profile" element={<Profile active="liked" />}>
             <Route
               exact
               strict

@@ -22,8 +22,6 @@ const Leaderboard = ({ users }) => {
               <Heading>Score</Heading>
             </Row>
             {users?.map((user) => {
-              console.log(user);
-
               return (
                 <Row>
                   <Pic>

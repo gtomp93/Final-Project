@@ -46,4 +46,6 @@ const StyledContainer = styled(Container)`
 const StyledWrapper = styled.div`
   display: flex;
   gap: 25px;
+  border: 1px solid red;
+  height: calc(100% - 29px);
 `;

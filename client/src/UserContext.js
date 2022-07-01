@@ -8,8 +8,7 @@ export const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState(null);
   const [loggedOut, setLoggedOut] = useState(null);
-
-  let userInfo = null;
+  const [reloadUser, setReloadUser] = useState(false);
 
   useEffect(() => {
     // loginWithRedirect();
@@ -18,6 +17,7 @@ export const UserContextProvider = ({ children }) => {
     //  } else {
     const addUser = async () => {
       let doesNotExist = false;
+      let userInfo = null;
 
       if (isAuthenticated) {
         // localStorage.setItem("userinlocal", JSON.stringify(user));
@@ -62,14 +62,29 @@ export const UserContextProvider = ({ children }) => {
               "Content-Type": "application/json",
             },
           });
+
+          console.log("inhere", user.given_name, user.family_name);
+
+          if (!user.given_name || !user.family_name) {
+            setStatus("noName");
+          }
         } else {
+          if (!userInfo.givenName || !userInfo.lastName) {
+            setStatus("noName");
+          }
           setCurrentUser(userInfo);
         }
-      } else {
-        setLoggedOut("logout");
       }
     };
-    addUser();
+    if (user) {
+      addUser();
+    } else if (
+      user &&
+      currentUser.email &&
+      (!currentUser.givenName || !currentUser.lastName)
+    ) {
+      setStatus("noName");
+    }
     // }
 
     // const addUser = async () => {
@@ -121,13 +136,23 @@ export const UserContextProvider = ({ children }) => {
     //     }
     //   }
     // };
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading, reloadUser]);
+
+  console.log({
+    status,
+    currentUser,
+    user,
+    givenName: user?.givenName,
+    thing: "status",
+  });
 
   return (
     <UserContext.Provider
       value={{
         currentUser,
         setCurrentUser,
+        setReloadUser,
+        reloadUser,
         status,
         setStatus,
         isAuthenticated,

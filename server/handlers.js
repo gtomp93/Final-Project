@@ -65,6 +65,26 @@ const addUser = async (req, res) => {
   }
 };
 
+const addName = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+  const { email, givenName, lastName } = req.body;
+
+  try {
+    await client.connect();
+    const update = await db
+      .collection("Users")
+      .updateOne({ email }, { $set: { givenName, lastName } });
+    if (update.modifiedCount) {
+      res.status(200).json({ status: 200 });
+    }
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    client.close;
+  }
+};
+
 const getLocations = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const db = client.db("Final_Project");
@@ -816,7 +836,7 @@ module.exports = {
   getLocations,
   updateUserScore,
   getTopPlayers,
-  // getRandomLocations,
+  addName,
   getFeaturedMaps,
   retrieveMap,
   submitGuess,

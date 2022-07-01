@@ -8,7 +8,7 @@ const {
   getLocations,
   updateUserScore,
   getFeaturedMaps,
-  // getRandomLocations,
+  addName,
   searchOpponent,
   retrieveMap,
   loadOtherPlayers,
@@ -48,6 +48,7 @@ express()
   .patch("/updateUserScore", updateUserScore)
   .get("/locations/:_id", getLocations)
   // .get("/RandomLocations/:_id", getRandomLocations)
+  .patch("/addName", addName)
   .get("/featuredMaps", getFeaturedMaps)
   .get("/getTopPlayers", getTopPlayers)
   .get("/searchOpponent", searchOpponent)
