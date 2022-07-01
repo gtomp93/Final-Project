@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import ActionBar from "../ActionBar";
+import { ModalContext } from "../ModalContext";
 
 const FeaturedMap = ({ game }) => {
   const { showModal, setShowModal } = useContext(ModalContext);

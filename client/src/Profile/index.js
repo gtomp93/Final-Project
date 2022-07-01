@@ -13,19 +13,8 @@ const Profile = ({ showModal, setShowModal }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
   const [games, setGames] = useState({});
-  const [likedGames, setLikedGames] = useState([]);
   // const [showGames, setShowGames] = useState("liked");
   const { logout } = useAuth0();
-
-  const { showGames } = useParams;
-
-  const toggleCreate = () => {
-    // setShowGames("created");
-  };
-
-  const toggleLike = () => {
-    // setShowGames("liked");
-  };
 
   useEffect(async () => {
     let isCancelled = false;

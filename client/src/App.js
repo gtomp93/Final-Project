@@ -37,15 +37,7 @@ function App() {
             <Route path="/game/:id" element={<GameModal />} />
           </Route>
 
-          <Route
-            exact
-            path="/explore"
-            element={
-              <Explore showModal={showModal} setShowModal={setShowModal} />
-            }
-            showModal={showModal}
-            setShowModal={setShowModal}
-          >
+          <Route exact path="/explore" element={<Explore />}>
             <Route path="/explore/game/:id" element={<GameModal />} />
           </Route>
           <Route exact path="/gameOptions/:id" element={<GameOptions />} />
