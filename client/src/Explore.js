@@ -16,11 +16,8 @@ const Explore = ({ showModal, setShowModal, location }) => {
 
   const [games, setGames] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
-  const [changePage, setChangePage] = useState(false);
   const { currentUser } = useContext(UserContext);
-  const [searchValue, setSearchValue] = useState("");
   const { setSelected, dispatch, resetMap } = useContext(GameContext);
-  const [searched, setSearched] = useState(false);
   const [fullList, setFullList] = useState(null);
   const { status, setStatus } = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
