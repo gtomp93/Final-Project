@@ -22,4 +22,10 @@ export const Container = styled.div`
   padding: 0 30px 30px;
   -webkit-box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
   box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 80px; */
+  @media (max-width: 1414px) {
+    padding: 0 15px 30px;
+  }
 `;

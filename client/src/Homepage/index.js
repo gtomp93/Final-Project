@@ -8,11 +8,14 @@ import CreateMap from "./CreateMap";
 import { Loading } from "../Loading";
 import GlobeSpinner from "../Globe";
 import { ModalContext } from "../ModalContext";
+import ProfileLinks from "./ProfileLinks";
+import SignUp from "./SignUp";
+import { UserContext } from "../UserContext";
 
 const Homepage = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const [maps, setMaps] = useState(null);
-
+  const { currentUser } = useContext(UserContext);
   const [users, setUsers] = useState(null);
   useEffect(() => {
     fetch("/getTopPlayers")
@@ -47,14 +50,23 @@ const Homepage = () => {
               {/* <Link to="/explore?page=1">Leaderboard</Link> */}
               <Leaderboard users={users} setUsers={setUsers} />
             </Section>
-            <Section style={{ gridColumn: "1 / 9", gridRow: "12 / -1" }}>
+            <Section style={{ gridColumn: "1 / 9", gridRow: "12 / 21" }}>
               <CreateMap />
             </Section>
             <Section
               style={{
                 // gridColumn: "span 3",
                 gridColumn: "10 / -1",
-                gridRow: "14 / -1",
+                gridRow: "12 / 15",
+              }}
+            >
+              {currentUser ? <ProfileLinks /> : <SignUp />}
+            </Section>
+            <Section
+              style={{
+                // gridColumn: "span 3",
+                gridColumn: "10 / -1",
+                gridRow: "15 / -1",
               }}
             >
               <Featured

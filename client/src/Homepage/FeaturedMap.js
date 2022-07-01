@@ -22,23 +22,54 @@ const FeaturedMap = ({ game }) => {
 export default FeaturedMap;
 
 const Container = styled.div`
+  /* background-color: rgba(47, 90, 233, 0.25); */
+
   width: 50%;
-  border: 1px solid blue;
   max-height: 100%;
   height: 100%;
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.02);
+  }
+  transition: all 500ms;
 `;
 // const Wrapper = styled.div`
 //   height: 100%;
 // `;
 
 const Title = styled.h2`
-  color: #196b09;
-  font-size: 30px;
+  /* background-color: rgba(47, 90, 233, 0.25); */
+  background-color: rgba(0, 0, 0, 0.15);
+
+  color: #155a08;
+  color: darkblue;
+  font-size: 33px;
+  @media (max-width: 1240px) {
+    font-size: 28px;
+  }
 `;
-const Description = styled.h3``;
-const Author = styled.p``;
+const Description = styled.h3`
+  /* background-color: rgba(47, 90, 233, 0.25); */
+  background-color: rgba(0, 0, 0, 0.15);
+
+  font-size: 20px;
+  @media (max-width: 1414px) {
+    font-size: 20px;
+  }
+`;
+const Author = styled.p`
+  background-color: rgba(0, 0, 0, 0.15);
+
+  font-size: 20px;
+  @media (max-width: 1414px) {
+    font-size: 16px;
+  }
+`;
 
 const Picture = styled.img`
   width: 100%;
-  height: calc(100% - 130px);
+  height: calc(100% - 140px);
+  object-fit: cover;
 `;
