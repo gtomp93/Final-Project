@@ -10,10 +10,12 @@ import LogoutButton from "./LogoutButton";
 import { GameContext } from "./GameContext";
 import { Loading } from "./Loading";
 import { BiWorld } from "react-icons/bi";
+import Search from "./Search";
+import { ModalContext } from "./ModalContext";
 
-const Explore = ({ showModal, setShowModal, location }) => {
+const Explore = () => {
   const { id } = useParams();
-
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [games, setGames] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
   const { currentUser } = useContext(UserContext);
@@ -51,6 +53,8 @@ const Explore = ({ showModal, setShowModal, location }) => {
           {/* <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg" /> */}
           {games ? (
             <GamesWrapper>
+              {" "}
+              <Search setShowModal={setShowModal} />
               <GamesGrid
               // onLoad={calculateHeight}
               >

@@ -77,7 +77,6 @@ export default function GameModal({}) {
       return;
     }
 
-    setUpdatePage(!updatePage);
     await fetch(`/comment/${gameInfo._id}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -94,6 +93,8 @@ export default function GameModal({}) {
         res.json();
       })
       .then((res) => {
+        setUpdatePage(!updatePage);
+
         console.log(res);
       });
   };
@@ -127,7 +128,7 @@ export default function GameModal({}) {
           <>
             <Title>{name}</Title>
             <Description>{description}</Description>
-            <Creator>{creator}</Creator>
+            <Creator>Created by {creator}</Creator>
             <MapImage src={pic} />
             <ActionBar
               likeGame={likeGame}

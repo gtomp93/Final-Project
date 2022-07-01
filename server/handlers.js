@@ -47,7 +47,7 @@ const addUser = async (req, res) => {
 
     await client.connect();
 
-    result = await db.collection("Users").insertOne({
+    let result = await db.collection("Users").insertOne({
       _id,
       email,
       givenName,
@@ -118,7 +118,7 @@ const getTopPlayers = async (req, res) => {
         }
       )
       .sort({ score: -1 })
-      .limit(5)
+      .limit(15)
       .toArray();
 
     // console.log(players);

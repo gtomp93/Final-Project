@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Leaderboard from "./Leaderboard";
@@ -7,8 +7,10 @@ import Featured from "./Featured";
 import CreateMap from "./CreateMap";
 import { Loading } from "../Loading";
 import GlobeSpinner from "../Globe";
+import { ModalContext } from "../ModalContext";
 
-const Homepage = ({ showModal, setShowModal }) => {
+const Homepage = () => {
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [maps, setMaps] = useState(null);
 
   const [users, setUsers] = useState(null);
@@ -30,30 +32,29 @@ const Homepage = ({ showModal, setShowModal }) => {
   }, []);
 
   return (
-    <Container>
+    <Container users={users} maps={maps}>
       {users && maps ? (
         <>
           <TopWrapper>
-            <GlobeSpinner speed={10000} />
             <Title>MapGuesser</Title>
             <GlobeSpinner speed={10000} />
           </TopWrapper>
           <Wrapper>
-            <Section style={{ gridColumn: "1 / 15", gridRow: "1 / 6" }}>
+            <Section style={{ gridColumn: "1 / 15", gridRow: "1 / 12" }}>
               <ExploreMaps />
             </Section>{" "}
-            <Section style={{ gridColumn: "16 / -1", gridRow: "1 / 6" }}>
+            <Section style={{ gridColumn: "16 / -1", gridRow: "1 / 12" }}>
               {/* <Link to="/explore?page=1">Leaderboard</Link> */}
               <Leaderboard users={users} setUsers={setUsers} />
             </Section>
-            <Section style={{ gridColumn: "1 / 8", gridRow: "7 / -1" }}>
+            <Section style={{ gridColumn: "1 / 8", gridRow: "12 / -1" }}>
               <CreateMap />
             </Section>
             <Section
               style={{
                 // gridColumn: "span 3",
                 gridColumn: "9 / -1",
-                gridRow: "6 / -1",
+                gridRow: "13 / -1",
               }}
             >
               <Featured
@@ -73,8 +74,8 @@ const Homepage = ({ showModal, setShowModal }) => {
 };
 
 const Container = styled.div`
-  width: 100vw;
-  height: calc(100%);
+  width: 100%;
+  height: ${({ users, maps }) => (users && maps ? "100%" : "100vh")};
   background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg");
   background-size: cover;
 
@@ -108,10 +109,12 @@ const Wrapper = styled.div`
     flex-direction: row;
   }
   display: grid;
-  grid-template-rows: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
   grid-template-columns: repeat(20, 5%);
   /* gap: 4rem; */
+  /* grid-row-gap: 35px; */
 `;
+
 const Section = styled.div`
   margin: 10px 0 10px;
 `;

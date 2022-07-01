@@ -1,36 +1,42 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Container } from "./styledComponents";
 import { SubTitle } from "./styledComponents";
+import { FaMedal } from "react-icons/fa";
 
 const Leaderboard = ({ users }) => {
   return (
     <>
       <StyledContainer>
         {" "}
-        <SubTitle> Leaderboard</SubTitle>
-        <table style={{ borderCollapse: "collapse" }}>
-          <Row>
-            <Heading></Heading>
+        <SubTitle>
+          {" "}
+          Leaderboard <FaMedal style={{ fill: "gold" }} />
+        </SubTitle>
+        <ScrollContainer>
+          <StyledTable>
+            <Row>
+              <Heading></Heading>
 
-            <Heading>Name</Heading>
-            <Heading>Score</Heading>
-          </Row>
-          {users?.map((user) => {
-            console.log(user);
+              <Heading>Name</Heading>
+              <Heading>Score</Heading>
+            </Row>
+            {users?.map((user) => {
+              console.log(user);
 
-            return (
-              <Row>
-                <Pic>
-                  {" "}
-                  <ProfPic src={user.picture} />
-                </Pic>
-                <Name>{user.givenName + " " + user.lastName}</Name>
-                <Name>{user.score}</Name>
-              </Row>
-            );
-          })}{" "}
-        </table>
+              return (
+                <Row>
+                  <Pic>
+                    {" "}
+                    <ProfPic src={user.picture} />
+                  </Pic>
+                  <Name>{user.givenName + " " + user.lastName}</Name>
+                  <Name>{user.score}</Name>
+                </Row>
+              );
+            })}{" "}
+          </StyledTable>
+        </ScrollContainer>
       </StyledContainer>
     </>
   );
@@ -44,9 +50,52 @@ const Leaderboard = ({ users }) => {
 //   padding-top: 0;
 // `;
 
-const StyledContainer = styled(Container)``;
+const movingBackground = keyframes`
+0%{background-position: right center}
+25%{background-position:center center}
+50%{background-position: left center}
+25%{background-position:center center}
+100%{background-position: right center}
+`;
 
-const Row = styled.tr``;
+const StyledContainer = styled(Container)`
+  /* background: rgb(0, 0, 0, 0.55); */
+  /* background-image: linear-gradient(
+    225deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(147, 147, 147, 0.5) 50%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
+  background-size: 400%; */
+
+  /* animation: ${movingBackground} 7s forwards infinite; */
+  display: flex;
+  flex-direction: column;
+
+  padding: 2px;
+`;
+
+const ScrollContainer = styled.div`
+  overflow-y: auto;
+  width: 100;
+  height: 100%;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  @media (min-width: 1740px) {
+    /* width: 95%; */
+  }
+`;
+
+const Row = styled.tr`
+  tr:not(:first-child) {
+    /* display: block; */
+  }
+  /* display: flex; */
+  width: 100%;
+`;
 
 const ProfPic = styled.img`
   width: 32px;
@@ -59,6 +108,8 @@ const ProfPic = styled.img`
 
 const Pic = styled.td`
   height: 40px;
+  float: right;
+  width: fit-content;
   /* border: 1px solid red; */
   text-align: center;
   display: flex;
@@ -69,16 +120,25 @@ const Pic = styled.td`
 `;
 
 const Name = styled.td`
-  color: yellow;
-  border: 1px solid white;
+  color: black;
+  border: 2px solid black;
   width: 200px;
-
+  /* background: rgba(0, 0, 0, 0.6); */
+  font-weight: bold;
   /* margin-right: 5px; */
   text-align: left;
   /* border: 2px solid white; */
   /* padding: 3px; */
   font-size: 25px;
-  /* border: 1px solid red; */
+  :nth-child(1) {
+    width: 35px;
+  }
+  :nth-child(2) {
+    width: calc(60%);
+  }
+  :nth-child(3) {
+    width: calc(40%);
+  }
 `;
 
 const User = styled.tr`

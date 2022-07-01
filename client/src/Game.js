@@ -6,16 +6,11 @@ import Comment from "./Comment";
 import GameModal from "./GameModal";
 import ActionBar from "./ActionBar";
 import { Outlet } from "react-router-dom";
+import { ModalContext } from "./ModalContext";
 
-const Game = ({
-  game,
-  isLiked,
-  index,
-  setUpdatePage,
-  showModal,
-  setShowModal,
-  type,
-}) => {
+const Game = ({ game, isLiked, index, setUpdatePage, type }) => {
+  const { showModal, setShowModal } = useContext(ModalContext);
+
   const [liked, setLiked] = useState(isLiked);
   const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
@@ -78,9 +73,9 @@ const Game = ({
       }}
     >
       <Box>
-        <Name>{game.name}</Name>
-        <Description>{game.description}</Description>
-        <Creator>Created by {game.creator}</Creator>
+        <Name type={type}>{game.name}</Name>
+        <Description type={type}>{game.description}</Description>
+        <Creator type={type}>Created by {game.creator}</Creator>
         <GamePic src={game.pic} />
         <ActionBar
           likeGame={likeGame}
@@ -89,6 +84,7 @@ const Game = ({
           game={game}
           liked={liked}
           setLiked={setLiked}
+          type={type}
         />
       </Box>
       {game._id === showModal && (
@@ -122,11 +118,9 @@ const GameContainer = styled.div`
   }
   border-radius: 7px 7px 7px 7px;
   background-color: ${({ type }) =>
-    type === "featured" ? "rgb(255,255,255,1)" : "rgb(0, 0, 0, 0.66)"};
+    type === "profile" ? "rgb(255,255,255,.51)" : "rgb(0, 0, 0, 0.66)"};
   -webkit-box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
   box-shadow: 5px 5px 4px 5px rgba(0, 0, 0, 0.27);
-  margin-bottom: ${({ index, type }) =>
-    index === 0 && type === "featured" ? "2rem" : "0px"};
 `;
 
 const Box = styled.div`
@@ -153,13 +147,14 @@ const GamePic = styled.img`
 `;
 
 const Name = styled.h2`
-  font-size: 28px;
+  font-size: 30px;
   padding: 0;
-  color: white;
-  color: #edd70e;
-  color: yellow;
-  color: #b103fc;
-  text-shadow: 2px 2px 15px rgba(206, 89, 55, 0.86); /* all: unset; */
+
+  color: ${({ type }) => (type === "profile" ? "#0e0091" : "#b103fc")};
+  text-shadow: ${({ type }) =>
+    type === "profile"
+      ? "2px 2px 15px rgba(83, 55, 206, 0.86)"
+      : "2px 2px 15px rgba(206, 89, 55, 0.86)"};
   @media (min-width: 769px) {
     font-size: 30px;
     margin: 0 0 5px;
@@ -170,8 +165,9 @@ const Description = styled.h3`
   /* color: rgb(66, 194, 245); */
   /* color: #46c1f2; */
   color: white;
+  color: ${({ type }) => (type === "profile" ? "#444546" : "white")};
 
-  font-weight: lighter;
+  /* font-weight: lighter; */
   font-size: 18px;
   @media (min-width: 769px) {
     font-size: 23px;
@@ -183,7 +179,7 @@ const Creator = styled.h4`
   font-size: 13px;
   /* width: 93%; */
   color: #030129;
-  color: yellow;
+  /* color: rgb(53, 56, 59); */
   font-weight: bolder;
   margin-bottom: 10px;
   @media (min-width: 769px) {
@@ -191,18 +187,6 @@ const Creator = styled.h4`
     margin: 0 0 10px;
   }
 `;
-
-const LikeBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CommentBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const NumComments = styled.span``;
 
 const LikeButton = styled.button`
   background: inherit;

@@ -16,6 +16,8 @@ import CreateMap from "./CreateMap";
 import MapMaker from "./MapMaker";
 import Confirmation from "./Confirmation";
 import GameModal from "./GameModal";
+import LikedGames from "./Profile/LikedGames";
+import CreatedGames from "./Profile/CreatedGames";
 
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
@@ -23,7 +25,7 @@ import GameModal from "./GameModal";
 function App() {
   //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
   // const {user, isAuthenticated, isLoading} = useAuth0();
-  const [showModal, setShowModal] = useState(null);
+  // const [showModal, setShowModal] = useState(null);
 
   return (
     <>
@@ -31,12 +33,7 @@ function App() {
         <GlobalStyle />
         <Header></Header>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Homepage showModal={showModal} setShowModal={setShowModal} />
-            }
-          >
+          <Route path="/" element={<Homepage />}>
             <Route path="/game/:id" element={<GameModal />} />
           </Route>
 
@@ -63,7 +60,13 @@ function App() {
           <Route exact path="/logoutPage" element={<Logout />} />
 
           <Route exact path="/profile" element={<Profile />}>
-            <Route path="/profile/game/:id" element={<GameModal />} />
+            <Route index element={<LikedGames />}></Route>
+            <Route path="profile/game/:id" element={<GameModal />} />
+
+            <Route path="created" element={<GameModal />}>
+              <Route path="game/:id" element={<GameModal />} />
+            </Route>
+            <Route path="profile/active" element={<GameModal />} />
           </Route>
 
           <Route exact path="/Confirmation" element={<Confirmation />} />

@@ -4,14 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
-const ActionBar = ({
-  likeGame,
-  game,
-  numLikes,
-  setNumLikes,
-  liked,
-  setLiked,
-}) => {
+const ActionBar = ({ likeGame, game, numLikes, setNumLikes, liked, type }) => {
   const { currentUser, setStatus, status } = useContext(UserContext);
 
   return (
@@ -28,15 +21,26 @@ const ActionBar = ({
             style={
               liked
                 ? { fill: "red", color: "black" }
+                : type === "profile"
+                ? { fill: "none", color: "black" }
                 : { fill: "none", color: "white" }
             }
           />
         </LikeButton>
-        <Likes>{numLikes ? numLikes : null}</Likes>{" "}
+        <Likes
+          style={type === "profile" ? { color: "black" } : { fill: "#d3d2d9" }}
+        >
+          {numLikes ? numLikes : null}
+        </Likes>{" "}
       </LikeBox>
       <CommentBox>
-        <FiMessageCircle size="22px" style={{ fill: "#d3d2d9" }} />
-        <NumComments>
+        <FiMessageCircle
+          size="22px"
+          style={type === "profile" ? { color: "black" } : { fill: "#d3d2d9" }}
+        />
+        <NumComments
+          style={type === "profile" ? { color: "black" } : { fill: "#d3d2d9" }}
+        >
           {game.comments
             ? game.comments.length
               ? game.comments.length
@@ -55,8 +59,19 @@ const ActionBar = ({
         }}
         to={`/gameOptions/${game._id}`}
       >
-        <FiPlay size="22px" style={{ fill: "green" }} />
-        <Play>Play</Play>
+        <FiPlay
+          style={
+            type === "profile"
+              ? { color: "black", fill: "green" }
+              : { color: "white", fill: "green" }
+          }
+          size="22px"
+        />
+        <Play
+          style={type === "profile" ? { color: "black" } : { color: "white" }}
+        >
+          Play
+        </Play>
       </StartGame>
     </ActionBarContainer>
   );

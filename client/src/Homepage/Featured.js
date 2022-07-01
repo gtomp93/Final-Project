@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Game from "../Game";
 import { UserContext } from "../UserContext";
 import { Container, SubTitle } from "./styledComponents";
+import FeaturedMap from "./FeaturedMap";
 
 const Featured = ({ showModal, setShowModal, maps }) => {
   const { currentUser } = useContext(UserContext);
@@ -17,9 +18,8 @@ const Featured = ({ showModal, setShowModal, maps }) => {
             isLiked = true;
           }
           return (
-            <Game
+            <FeaturedMap
               type="featured"
-              index={index}
               game={game}
               isLiked={isLiked}
               key={Math.random() * 99999}
@@ -45,4 +45,5 @@ const StyledContainer = styled(Container)`
 
 const StyledWrapper = styled.div`
   display: flex;
+  gap: 25px;
 `;

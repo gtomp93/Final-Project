@@ -1,13 +1,14 @@
 import React from "react";
-import {Auth0Provider} from "@auth0/auth0-react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {UserContextProvider} from "./UserContext";
-import {MapContextProvider} from "./MapContext";
-import {GameContextProvider} from "./GameContext";
-import {MapCreationContextProvider} from "./MapCreationContext";
+import { UserContextProvider } from "./UserContext";
+import { MapContextProvider } from "./MapContext";
+import { GameContextProvider } from "./GameContext";
+import { MapCreationContextProvider } from "./MapCreationContext";
+import { ModalContextProvider } from "./ModalContext";
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -26,9 +27,9 @@ ReactDOM.render(
     <UserContextProvider>
       <GameContextProvider>
         <MapCreationContextProvider>
-          <MapContextProvider>
+          <ModalContextProvider>
             <App />
-          </MapContextProvider>
+          </ModalContextProvider>
         </MapCreationContextProvider>
       </GameContextProvider>
     </UserContextProvider>

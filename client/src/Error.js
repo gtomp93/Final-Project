@@ -13,7 +13,7 @@ const Error = () => {
   const navigate = useNavigate();
   return ReactDOM.createPortal(
     <Container>
-      <div>Please sign up or log in in order to {status.error} a map</div>{" "}
+      <div>Please sign up or log in in order to {status.error} a map 😊</div>{" "}
       <LoginButton />
       <CloseModal
         onClick={(ev) => {

@@ -16,7 +16,7 @@ const spin = keyframes`
 const Globe = styled.div`
   width: 143px;
   height: 143px;
-  margin: 20px auto;
+  margin: 20px auto 0;
   position: relative;
   z-index: 10;
   /* background-color: red; */

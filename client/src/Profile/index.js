@@ -1,27 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { UserContext } from "./UserContext";
-import ProfileGame from "./ProfileGame";
-import Game from "./Game";
+import { UserContext } from "../UserContext";
+import ProfileGame from "../ProfileGame";
+import Game from "../Game";
 import styled from "styled-components";
-import { Loading } from "./Loading";
-import LogoutButton from "./LogoutButton";
+import { Loading } from "../Loading";
+import LogoutButton from "../LogoutButton";
 import { FiLogOut } from "react-icons/fi";
+import { Outlet, useParams, NavLink } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ showModal, setShowModal }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
   const [games, setGames] = useState({});
   const [likedGames, setLikedGames] = useState([]);
-  const [showGames, setShowGames] = useState("created");
+  // const [showGames, setShowGames] = useState("liked");
   const { logout } = useAuth0();
 
+  const { showGames } = useParams;
+
   const toggleCreate = () => {
-    setShowGames("created");
+    // setShowGames("created");
   };
 
   const toggleLike = () => {
-    setShowGames("liked");
+    // setShowGames("liked");
   };
 
   useEffect(async () => {
@@ -92,7 +95,7 @@ const Profile = () => {
       .then((res) => console.log(res));
   };
 
-  console.log("currentUser", currentUser);
+  console.log("games", games);
 
   // if (isLoading || !currentUser || !Object.values(games).length) {
   //   return <Loading />;
@@ -102,7 +105,7 @@ const Profile = () => {
 
   return (
     <ScrollContainer>
-      {isAuthenticated && currentUser && Object.values(games).length ? (
+      {isAuthenticated && currentUser && games.liked && games.created ? (
         <Container>
           <TopWrapper style={{ margin: "10px 8px 5px" }}>
             <img
@@ -127,44 +130,20 @@ const Profile = () => {
           </TopWrapper>
           <Choose style={{ marginTop: "10px", marginBottom: "0" }}>
             <GamesOption
-              onClick={toggleCreate}
-              style={
-                showGames === "created"
-                  ? { fontWeight: "bolder", color: "#e8e6df" }
-                  : { color: "#9897a1" }
-              }
-            >
-              Created Maps
-            </GamesOption>
-            <span style={{ fontSize: "30px", color: "white" }}>|</span>
-            <GamesOption
-              onClick={toggleLike}
-              style={
-                showGames === "liked"
-                  ? { fontWeight: "bolder", color: "#e8e6df" }
-                  : { color: "#9897a1" }
-              }
+              to="/profile"
+              className={({ active }) => (active ? "active" : null)}
             >
               Liked Maps
             </GamesOption>
+            <span style={{ fontSize: "30px", color: "white" }}>|</span>
+            <GamesOption
+              to="/profile/created"
+              className={({ active }) => (active ? "active" : null)}
+            >
+              Created Maps
+            </GamesOption>
           </Choose>
-          <Games created={showGames}>
-            {games[showGames].map((game) => {
-              if (game) {
-                let isLiked = currentUser.likes.includes(game._id);
-                return (
-                  // <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Game
-                    key={Math.random() * 9999}
-                    game={game}
-                    isLiked={isLiked}
-                    deleteGame={deleteGame}
-                  />
-                  // </div>
-                );
-              }
-            })}
-          </Games>
+          <Outlet context={[games, currentUser, deleteGame]} />
           {/* <Liked created={created}>
           {likedGames.map((game) => {
             if (game) {
@@ -211,24 +190,17 @@ const Choose = styled.div`
   align-self: center;
 `;
 
-const GamesOption = styled.button`
+const GamesOption = styled(NavLink)`
   background: inherit;
   font-size: 24px;
   border: none;
   &:hover {
     cursor: pointer;
   }
-`;
-
-const Games = styled.div`
-  /* display: ${(props) => (props.created ? "block" : "none")}; */
-  /* margin: 30px auto; */
-  width: calc(100% - 40px);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  margin: 15px 0 20px;
-  color: black;
+  &.active {
+    color: "white";
+    font-weight: "bold";
+  }
 `;
 
 const Liked = styled.div`
