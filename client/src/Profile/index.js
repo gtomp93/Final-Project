@@ -9,36 +9,29 @@ import LogoutButton from "../LogoutButton";
 import { FiLogOut } from "react-icons/fi";
 import { Outlet, useParams, NavLink } from "react-router-dom";
 
-const Profile = ({ showModal, setShowModal }) => {
+const Profile = ({ active }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
   const [games, setGames] = useState({});
   // const [showGames, setShowGames] = useState("liked");
   const { logout } = useAuth0();
 
+  // background: inherit;
+  // font-size: 24px;
+  // border: none;
+  // text-decoration: none;
+  //color:"#9897a1"
+
+  const navLinkStyle = {
+    background: "inherit",
+    fontSize: "24px",
+    textDecoration: "none",
+    color: "#9897a1",
+  };
   useEffect(async () => {
     let isCancelled = false;
 
     if (currentUser) {
-      // await currentUser.games.map((game, index) => {
-      //   fetch(`/getGame/${game}`)
-      //     .then((res) => res.json())
-      //     .then((res) => {
-      //       // console.log(res);
-      //       setGames((arr) => [...arr, res.result]);
-      //     });
-      // });
-
-      // await currentUser.likes.map((game) => {
-      //   if (game) {
-      //     fetch(`/getGame/${game}`)
-      //       .then((res) => res.json())
-      //       .then((res) => {
-      //         // console.log(res);
-      //         setLikedGames((arr) => [...arr, res.result]);
-      //       });
-      //   }
-      // });
       if (currentUser && !isCancelled) {
         console.log(currentUser.games);
         const gamesData = await fetch("/getPlayerGames", {
@@ -118,35 +111,27 @@ const Profile = ({ showModal, setShowModal }) => {
             </Logout>
           </TopWrapper>
           <Choose style={{ marginTop: "10px", marginBottom: "0" }}>
-            <GamesOption
+            <NavLink
+              end
               to="/profile"
-              className={({ active }) => (active ? "active" : null)}
+              style={({ isActive }) =>
+                isActive ? { ...navLinkStyle, color: "white" } : navLinkStyle
+              }
             >
               Liked Maps
-            </GamesOption>
+            </NavLink>
             <span style={{ fontSize: "30px", color: "white" }}>|</span>
-            <GamesOption
+            <NavLink
+              end
               to="/profile/created"
-              className={({ active }) => (active ? "active" : null)}
+              style={({ isActive }) =>
+                isActive ? { ...navLinkStyle, color: "white" } : navLinkStyle
+              }
             >
               Created Maps
-            </GamesOption>
+            </NavLink>
           </Choose>
           <Outlet context={[games, currentUser, deleteGame]} />
-          {/* <Liked created={created}>
-          {likedGames.map((game) => {
-            if (game) {
-              let isLiked = currentUser.likes.includes(game._id);
-              return (
-                <Game
-                  game={game}
-                  isLiked={isLiked}
-                  key={Math.random() * 9999}
-                />
-              );
-            }
-          })}
-        </Liked> */}
         </Container>
       ) : (
         <Loading />
@@ -177,23 +162,7 @@ const TopWrapper = styled.div`
 const Choose = styled.div`
   display: flex;
   align-self: center;
-`;
-
-const GamesOption = styled(NavLink)`
-  background: inherit;
-  font-size: 24px;
-  border: none;
-  &:hover {
-    cursor: pointer;
-  }
-  &.active {
-    color: "white";
-    font-weight: "bold";
-  }
-`;
-
-const Liked = styled.div`
-  display: ${(props) => (props.created ? "none" : "block")};
+  align-items: center;
 `;
 
 const Logout = styled.button`

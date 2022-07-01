@@ -33,7 +33,7 @@ function App() {
         <GlobalStyle />
         <Header></Header>
         <Routes>
-          <Route path="/" element={<Homepage />}>
+          <Route exact strict path="/" element={<Homepage />}>
             <Route path="/game/:id" element={<GameModal />} />
           </Route>
 
@@ -51,14 +51,29 @@ function App() {
 
           <Route exact path="/logoutPage" element={<Logout />} />
 
-          <Route exact path="/profile" element={<Profile />}>
-            <Route index element={<LikedGames />}></Route>
-            <Route path="profile/game/:id" element={<GameModal />} />
+          <Route exact path="/profile" element={<Profile active="created" />}>
+            <Route
+              exact
+              strict
+              index
+              element={<LikedGames active="liked" />}
+            ></Route>
+            <Route
+              exact
+              strict
+              path="/profile/game/:id"
+              element={<GameModal />}
+            />
 
-            <Route path="created" element={<GameModal />}>
-              <Route path="game/:id" element={<GameModal />} />
+            <Route
+              exact
+              strict
+              path="/profile/created"
+              element={<CreatedGames />}
+            >
+              <Route path="/profile/created/game/:id" element={<GameModal />} />
             </Route>
-            <Route path="profile/active" element={<GameModal />} />
+            <Route path="/profile/active" element={<GameModal />} />
           </Route>
 
           <Route exact path="/Confirmation" element={<Confirmation />} />

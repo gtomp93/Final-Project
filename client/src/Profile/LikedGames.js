@@ -6,24 +6,30 @@ import styled from "styled-components";
 const LikedGames = () => {
   const [games, currentUser, deleteGame] = useOutletContext();
   return (
-    <GamesContainer>
-      {games.liked.map((game) => {
-        if (game) {
-          let isLiked = currentUser.likes.includes(game._id);
-          return (
-            // <div style={{ display: "flex", flexDirection: "column" }}>
-            <Game
-              key={Math.random() * 9999}
-              game={game}
-              isLiked={isLiked}
-              deleteGame={deleteGame}
-              type="profile"
-            />
-            // </div>
-          );
-        }
-      })}
-    </GamesContainer>
+    <>
+      {games.length ? (
+        <GamesContainer>
+          {games.liked.map((game) => {
+            if (game) {
+              let isLiked = currentUser.likes.includes(game._id);
+              return (
+                // <div style={{ display: "flex", flexDirection: "column" }}>
+                <Game
+                  key={Math.random() * 9999}
+                  game={game}
+                  isLiked={isLiked}
+                  deleteGame={deleteGame}
+                  type="profile"
+                />
+                // </div>
+              );
+            }
+          })}
+        </GamesContainer>
+      ) : (
+        <Message>You haven't liked any maps yet 😢</Message>
+      )}
+    </>
   );
 };
 
@@ -38,4 +44,9 @@ const GamesContainer = styled.div`
   gap: 32px;
   margin: 15px 0 20px;
   color: black;
+`;
+
+const Message = styled.h2`
+  color: white;
+  margin-top: 20px;
 `;
