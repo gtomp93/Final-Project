@@ -9,6 +9,7 @@ import { BiX } from "react-icons/bi";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Loading } from "./Loading";
 import Error from "./Error";
+import { ModalContext } from "./ModalContext";
 export default function GameModal({}) {
   const [comment, setComment] = useState("");
   const { currentUser, status, setStatus } = useContext(UserContext);
@@ -19,7 +20,6 @@ export default function GameModal({}) {
   const [updatePage, setUpdatePage] = useState(false);
   const [
     showModal,
-    setShowModal,
     liked,
     setLiked,
     numLikes,
@@ -27,6 +27,7 @@ export default function GameModal({}) {
     game,
     // likeGame,
   ] = useOutletContext();
+  const { setShowModal } = useContext(ModalContext);
   // const [numLikes, setNumLikes] = useOutletContext();
   const likeGame = async () => {
     if (!currentUser) {
@@ -59,7 +60,6 @@ export default function GameModal({}) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("HEERE");
         if (!liked) {
           setNumLikes(numLikes + 1);
         } else {
@@ -89,20 +89,16 @@ export default function GameModal({}) {
       },
     })
       .then((res) => {
-        console.log("Gotten here");
         res.json();
       })
       .then((res) => {
         setUpdatePage(!updatePage);
-
-        console.log(res);
       });
   };
   useEffect(() => {
     fetch(`/getGame/${id}`)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res, "herez");
         setGameInfo(res.result);
         // setGames((arr) => [...arr, res.result]);
       });
@@ -265,12 +261,18 @@ const ModalContainer = styled.div`
   max-width: 500px;
   z-index: 5;
   background-color: #9ab2d9;
+  background: rgba(194, 188, 188, 0.7);
+
+  /* background: linear-gradient(
+    225deg,
+    rgba(255, 255, 255, 0.4206057422969187) 0%,
+    rgba(147, 147, 147, 0.8) 100%
+  ); */
+
   padding: 5px 10px 10px 10px;
   border-radius: 6px;
   display: ${({ gameInfo }) => (gameInfo ? "block" : "flex")};
   justify-content: center;
-  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/world map stock photo.jpg");
-  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/Mountains.jpg");
 `;
 
 const CommentInput = styled.textarea`

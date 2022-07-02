@@ -33,7 +33,7 @@ const ProfileLinks = () => {
             }}
           />
         </StyledLink>
-        <StyledLink to="/profile/created">
+        <StyledLink to="/profile/active">
           {" "}
           <Title>Active Games</Title>
           <FiMap

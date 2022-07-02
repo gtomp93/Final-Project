@@ -32,6 +32,8 @@ const checkForUser = async (req, res) => {
     client.close();
   } catch (err) {
     res.status(404).json({ status: 404 });
+  } finally {
+    await client.close();
   }
 };
 
@@ -56,12 +58,14 @@ const addUser = async (req, res) => {
       likes,
       games,
       score,
+      maps: [],
     });
     res.status(200).json({ status: 200, updated: _id });
-    client.close();
   } catch (err) {
     console.log(err);
     res.status(404).json({ status: 404 });
+  } finally {
+    await client.close();
   }
 };
 
@@ -81,7 +85,7 @@ const addName = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close;
+    await client.close();
   }
 };
 
@@ -108,11 +112,12 @@ const getLocations = async (req, res) => {
       return locations[num];
     });
 
-    res.status(200).json({ status: 200, randomLocations });
-    client.close();
+    res.status(200).json({ status: 200, randomLocations, name: result.name });
   } catch (err) {
     res.status(404).json({ status: 404, message: "not found" });
     console.log(err.stack);
+  } finally {
+    await client.close();
   }
 };
 
@@ -171,6 +176,8 @@ const getGame = async (req, res) => {
     client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    await client.close();
   }
 };
 
@@ -186,10 +193,10 @@ const updateUserScore = async (req, res) => {
     await db.collection("Users").updateOne({ _id }, { $inc: { score: score } });
 
     res.status(200).json({ status: 200, updated: _id });
-
-    client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    await client.close();
   }
 };
 
@@ -208,10 +215,11 @@ const CreateMap = async (req, res) => {
       .insertOne({ _id, name, description, pic, locations, creator, comments });
 
     res.status(200).json({ status: 200, _id, result });
-    client.close();
   } catch (err) {
     res.status(404).json({ err });
     console.log(err);
+  } finally {
+    await client.close();
   }
 };
 
@@ -230,9 +238,10 @@ const deleteGame = async (req, res) => {
     // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
 
     res.status(204).json({ status: 200, deleted: _id });
-    client.close();
   } catch (err) {
     console.log(err);
+  } finally {
+    await client.close();
   }
 };
 
@@ -240,7 +249,7 @@ const createGame = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const db = client.db("Final_Project");
 
-  const { locations, player, mode, timeMode, icon } = req.body;
+  const { locations, player, mode, timeMode, icon, name } = req.body;
   console.log(locations, mode);
   try {
     await client.connect();
@@ -254,7 +263,10 @@ const createGame = async (req, res) => {
       type: "multi",
       locations: locations,
       timeMode,
-      players: [{ player, icon, gameData: [], guessed: false }],
+      name,
+      players: [
+        { player, icon, gameData: [], guessed: false, time: Date.now() },
+      ],
     };
 
     console.log(newMultiplayerGame);
@@ -271,8 +283,14 @@ const createGame = async (req, res) => {
         locations: locations,
         gameData: [],
         timeMode,
+        name,
+        time: Date.now(),
       });
     }
+
+    await db
+      .collection("Users")
+      .updateOne({ email: player }, { $push: { games: _id } });
 
     res.status(200).json({ status: 200, gameId: _id });
 
@@ -319,7 +337,7 @@ const submitGuess = async (req, res) => {
               midPoint,
             },
           },
-          $set: { guessed: true },
+          $set: { guessed: true, time: Date.now() },
         }
       );
     }
@@ -340,15 +358,17 @@ const submitGuess = async (req, res) => {
           },
           $set: {
             "players.$.guessed": true,
+            "players.$.time": Date.now(),
           },
         }
       );
     }
     // console.log(result);
     res.status(200).json({ status: 200 });
-    client.close();
   } catch (err) {
     console.log(err.stack);
+  } finally {
+    client.close();
   }
 };
 
@@ -363,21 +383,23 @@ const nextLocation = async (req, res) => {
     if (mode === "single") {
       await db
         .collection("Games")
-        .updateOne({ _id }, { $set: { guessed: false } });
+        .updateOne({ _id }, { $set: { guessed: false, time: Date.now() } });
     } else if (mode === "multi") {
       await db.collection("Games").updateOne(
         { _id, "players.player": player },
         {
           $set: {
             "players.$.guessed": false,
+            "players.$.time": Date.now(),
           },
         }
       );
     }
     res.status(200).json({ status: 200 });
-    client.close();
   } catch (err) {
     console.log(err.stack);
+  } finally {
+    await client.close();
   }
 };
 
@@ -405,8 +427,14 @@ const retrieveMap = async (req, res) => {
         gameData: [],
         guessed: false,
         icon: picture,
+        time: Date.now(),
       });
       //player
+
+      const addGameToUser = await db
+        .collection("Users")
+        .updateOne({ email }, { $push: { games: _id } });
+
       const addUser = await db.collection("Games").updateOne(
         { _id },
         {
@@ -421,7 +449,7 @@ const retrieveMap = async (req, res) => {
         }
       );
     }
-
+    //uuid
     let guessed = false;
     let locationIndex = 0;
     let points = 0;
@@ -547,7 +575,29 @@ const retrieveMap = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
+  }
+};
+
+const retrieveMaps = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const db = client.db("Final_Project");
+
+  try {
+    const { games } = req.body;
+
+    await client.connect();
+
+    const myGames = await db
+      .collection("Games")
+      .find({ _id: { $in: games } })
+      .toArray();
+
+    res.status(200).json({ status: 200, data: myGames });
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    await client.close();
   }
 };
 
@@ -576,11 +626,11 @@ const loadOtherPlayers = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
-const AddGameToUser = async (req, res) => {
+const AddMapToUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const db = client.db("Final_Project");
 
@@ -590,7 +640,7 @@ const AddGameToUser = async (req, res) => {
 
     await client.connect();
 
-    const newGame = { $push: { games: gameid } };
+    const newGame = { $push: { maps: gameid } };
 
     const result = await db.collection("Users").updateOne({ _id }, newGame);
 
@@ -598,7 +648,7 @@ const AddGameToUser = async (req, res) => {
   } catch (err) {
     console.log(err);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -620,7 +670,7 @@ const removeGameFromUser = async (req, res) => {
   } catch (err) {
     console.log(err);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -650,7 +700,7 @@ const getGames = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -676,7 +726,7 @@ const getFeaturedMaps = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -707,7 +757,7 @@ const likeGame = async (req, res) => {
     res.status(404).json({ status: 404, message: "not found" });
     console.log(err);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -727,7 +777,7 @@ const comment = async (req, res) => {
   } catch (err) {
     res.status(200).json({ err });
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -759,7 +809,7 @@ const addToLikes = async (req, res) => {
     res.status(404).json({ status: 404, message: "Not Found" });
     console.log(err);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -780,7 +830,7 @@ const getPlayerGames = async (req, res) => {
     res.status(404).json({ status: 404, message: "Not Found" });
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -824,7 +874,7 @@ const searchMaps = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -839,6 +889,7 @@ module.exports = {
   addName,
   getFeaturedMaps,
   retrieveMap,
+  retrieveMaps,
   submitGuess,
   nextLocation,
   searchOpponent,
@@ -848,7 +899,7 @@ module.exports = {
   createGame,
   getGame,
   getGames,
-  AddGameToUser,
+  AddMapToUser,
   likeGame,
   comment,
   addToLikes,

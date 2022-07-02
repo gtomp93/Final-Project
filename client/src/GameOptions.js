@@ -6,11 +6,12 @@ import { BiAlarm, BiAlarmOff } from "react-icons/bi";
 
 import styled from "styled-components";
 import { UserContext } from "./UserContext";
+import { ModalContext } from "./ModalContext";
 
 const GameOptions = () => {
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
-
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [playerMode, setPlayerMode] = useState(null);
   const [timeMode, setTimeMode] = useState(null);
   let navigate = useNavigate();
@@ -25,10 +26,12 @@ const GameOptions = () => {
   const createGame = async (id, timeMode) => {
     let randomLocations = null;
     let _id = null;
+    let mapName = null;
     await fetch(`/locations/${id}`)
       .then((res) => res.json())
       .then((res) => {
         randomLocations = res.randomLocations;
+        mapName = res.name;
       })
       .catch((err) => {
         dispatch({ type: "error", error: err.stack });
@@ -41,6 +44,7 @@ const GameOptions = () => {
         icon: currentUser.picture,
         locations: randomLocations,
         mode: playerMode,
+        name: mapName,
         timeMode,
       }),
       headers: {

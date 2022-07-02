@@ -20,6 +20,7 @@ import LikedGames from "./Profile/LikedGames";
 import CreatedGames from "./Profile/CreatedGames";
 import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
+import ActiveGames from "./Profile/ActiveGames";
 
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
@@ -56,28 +57,13 @@ function App() {
           <Route exact path="/logoutPage" element={<Logout />} />
 
           <Route exact path="/profile" element={<Profile active="liked" />}>
-            <Route
-              exact
-              strict
-              index
-              element={<LikedGames active="liked" />}
-            ></Route>
-            <Route
-              exact
-              strict
-              path="/profile/game/:id"
-              element={<GameModal />}
-            />
+            <Route index element={<LikedGames active="liked" />}></Route>
+            <Route path="/profile/game/:id" element={<GameModal />} />
 
-            <Route
-              exact
-              strict
-              path="/profile/created"
-              element={<CreatedGames />}
-            >
+            <Route path="/profile/created" element={<CreatedGames />}>
               <Route path="/profile/created/game/:id" element={<GameModal />} />
             </Route>
-            <Route path="/profile/active" element={<GameModal />} />
+            <Route path="/profile/active" element={<ActiveGames />} />
           </Route>
 
           <Route exact path="/Confirmation" element={<Confirmation />} />

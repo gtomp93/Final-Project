@@ -120,7 +120,6 @@ const Map = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
           const { data } = res;
           dispatch({
             type: "loadGame",
@@ -151,8 +150,6 @@ const Map = () => {
 
   useEffect(() => {
     if (timeMode === "timed") {
-      console.log(timer, "TIMER");
-
       if (timer === 0) {
         submitGuess(
           midpoint.lat(),

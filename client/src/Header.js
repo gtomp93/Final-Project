@@ -35,10 +35,11 @@ const Header = ({ handleTest, showModal, setShowModal }) => {
           <BiWorld size={"40px"} style={{ color: "#5a7bb0" }} />
           <h1 style={{ marginBottom: "0", color: "#5a7bb0" }}> MapGuesser</h1>
         </Link>
-        <SearchWrapper>
-          <Search showModal={showModal} setShowModal={setShowModal} />
+        <SearchWrapper to="/explore">
+          {/* <Search showModal={showModal} setShowModal={setShowModal} /> */}
+          <FiSearch style={{ color: "#5a7bb0" }} size={25} />
+          <NavName2>Explore</NavName2>
 
-          <FiSearch style={{ color: "#5a7bb0" }} />
           {/* )} */}
         </SearchWrapper>
         {isAuthenticated && (
@@ -88,8 +89,9 @@ const NavName = styled.span`
 const NavName2 = styled.span`
   color: #5a7bb0;
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 25px;
   display: block;
+  text-decoration: none;
 `;
 
 const Home = styled(NavLink)`
@@ -155,12 +157,13 @@ const Suggestion = styled.div`
   }
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled(Link)`
   display: flex;
   position: relative;
   margin-left: 3px;
   align-items: center;
   font-weight: bold;
+  text-decoration: none;
 `;
 
 const SearchButton = styled.button`

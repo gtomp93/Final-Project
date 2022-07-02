@@ -38,7 +38,11 @@ const Search = ({ showModal, setShowModal }) => {
 
   return (
     <Container>
-      <Searchbar onChange={updateText} value={inputValue} />
+      <Searchbar
+        onChange={updateText}
+        value={inputValue}
+        placeholder="Enter Search Term"
+      />
       {!!suggestions.length && (
         <Suggestions ref={ref}>
           {suggestions.map((suggestion) => {
@@ -67,16 +71,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 0;
+  z-index: 2;
   opacity: 0.8;
 `;
 
 const Searchbar = styled.input`
-  width: 160px;
-  background-color: #d3d2d9;
+  position: relative;
+  z-index: 2;
+  width: 200px;
+  background-color: #eae9ebbb;
   border-radius: 4px;
-  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
-  height: 21px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 10%);
+  height: 30px;
 `;
 
 const Suggestion = styled(Link)`
@@ -94,7 +100,7 @@ const Suggestion = styled(Link)`
 
 const Suggestions = styled.div`
   position: absolute;
-  top: 21px;
+  top: 30px;
   left: 2px;
   z-index: 20;
   width: 98%;

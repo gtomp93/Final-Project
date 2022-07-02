@@ -14,7 +14,6 @@ const Game = ({ game, isLiked, index, setUpdatePage, type }) => {
   const [liked, setLiked] = useState(isLiked);
   const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
-  console.log({ type });
   const navigate = useNavigate();
   if (!game.comments) {
     return "loading";
@@ -51,7 +50,6 @@ const Game = ({ game, isLiked, index, setUpdatePage, type }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("HEERE");
         if (!liked) {
           setNumLikes(numLikes + 1);
         } else {
@@ -66,7 +64,6 @@ const Game = ({ game, isLiked, index, setUpdatePage, type }) => {
       index={index}
       onClick={() => {
         if (!showModal) {
-          console.log("helllo");
           navigate(`game/${game._id}`);
           setShowModal(game._id);
         }
@@ -102,7 +99,7 @@ const GameContainer = styled.div`
   /* margin-top: 20px; */
   /* position: relative; */
   /* width: 100% */
-  z-index: 4;
+  /* z-index: 4; */
   /* min-width: 350px; */
   display: flex;
   justify-content: center;
@@ -178,7 +175,9 @@ const Description = styled.h3`
 const Creator = styled.h4`
   font-size: 13px;
   /* width: 93%; */
-  color: #030129;
+  color: ${({ type }) => (type === "profile" ? "black" : "rgb(177, 180, 184)")};
+
+  /* color: #030129; */
   /* color: rgb(53, 56, 59); */
   font-weight: bolder;
   margin-bottom: 10px;

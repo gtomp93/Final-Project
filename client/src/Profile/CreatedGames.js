@@ -3,11 +3,11 @@ import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import Game from "../Game";
 
-const LikedGames = () => {
+const CreatedGames = () => {
   const [games, currentUser, deleteGame] = useOutletContext();
   return (
     <>
-      {games.length ? (
+      {games.created.length ? (
         <GamesContainer>
           {games.created.map((game) => {
             if (game) {
@@ -39,7 +39,7 @@ const LikedGames = () => {
   );
 };
 
-export default LikedGames;
+export default CreatedGames;
 
 const GamesContainer = styled.div`
   /* display: ${(props) => (props.created ? "block" : "none")}; */

@@ -5,9 +5,10 @@ import styled from "styled-components";
 
 const LikedGames = () => {
   const [games, currentUser, deleteGame] = useOutletContext();
+  console.log(games, "games on prof page");
   return (
     <>
-      {games.length ? (
+      {games.liked.length ? (
         <GamesContainer>
           {games.liked.map((game) => {
             if (game) {

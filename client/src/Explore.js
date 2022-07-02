@@ -25,9 +25,11 @@ const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page"));
   console.log(page, "page");
+  console.log({ showModal });
 
   useEffect(() => {
     if (id) setShowModal(id);
+    return () => setShowModal(null);
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,11 @@ const Explore = () => {
           {games ? (
             <GamesWrapper>
               {" "}
-              <Search setShowModal={setShowModal} />
+              <TopWrapper>
+                <Title>Search Maps</Title>{" "}
+                <Search setShowModal={setShowModal} />
+                {/* <GlobeSpinner speed={10000} /> */}
+              </TopWrapper>
               <GamesGrid
               // onLoad={calculateHeight}
               >
@@ -136,6 +142,7 @@ const Container = styled.div`
 const GamesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const GamesGrid = styled.div`
@@ -174,6 +181,25 @@ const PageContainer = styled.div`
   button {
     margin: 0 8px;
   }
+`;
+
+const Title = styled.h1`
+  color: black;
+  font-size: 40px;
+  text-align: center;
+  font-weight: 800;
+`;
+
+const TopWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
 `;
 
 const Page = styled.button`

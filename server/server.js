@@ -16,7 +16,7 @@ const {
   createGame,
   getGame,
   CreateMap,
-  AddGameToUser,
+  AddMapToUser,
   getGames,
   likeGame,
   addToLikes,
@@ -28,6 +28,7 @@ const {
   submitGuess,
   nextLocation,
   searchMaps,
+  retrieveMaps,
 } = require("./handlers");
 
 // const {getS3url} = require("./s3");
@@ -53,13 +54,14 @@ express()
   .get("/getTopPlayers", getTopPlayers)
   .get("/searchOpponent", searchOpponent)
   .patch("/getMap/:_id", retrieveMap)
+  .patch("/getMaps", retrieveMaps)
   .get("/loadOtherPlayers/:_id/:player", loadOtherPlayers)
   .post("/CreateMap", CreateMap)
   .post("/createGame", createGame)
   .patch("/submitGuess", submitGuess)
   .patch("/nextLocation", nextLocation)
   .delete("/deleteGame/:_id", deleteGame)
-  .put("/addGameToUser", AddGameToUser)
+  .put("/addMapToUser", AddMapToUser)
   .put("/removeFromUser", removeGameFromUser)
   .put("/addLikeToUser/:_id", addToLikes)
   .patch("/likeGame/:_id", likeGame)

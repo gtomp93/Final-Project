@@ -8,14 +8,16 @@ import { Loading } from "../Loading";
 import LogoutButton from "../LogoutButton";
 import { FiLogOut } from "react-icons/fi";
 import { Outlet, useParams, NavLink } from "react-router-dom";
+import { ModalContext } from "../ModalContext";
 
 const Profile = ({ active }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
   const [games, setGames] = useState({});
+  const { setShowModal } = useContext(ModalContext);
   // const [showGames, setShowGames] = useState("liked");
   const { logout } = useAuth0();
-
+  console.log("currentUser", currentUser);
   // background: inherit;
   // font-size: 24px;
   // border: none;
@@ -37,7 +39,7 @@ const Profile = ({ active }) => {
         const gamesData = await fetch("/getPlayerGames", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ games: currentUser.games }),
+          body: JSON.stringify({ games: currentUser.maps }),
         });
         const parsedGamesData = await gamesData.json();
 
@@ -55,7 +57,9 @@ const Profile = ({ active }) => {
         });
       }
     }
-    return () => (isCancelled = true);
+    return () => {
+      setShowModal(false);
+    };
   }, [currentUser]);
 
   const deleteGame = async (_id) => {
@@ -129,6 +133,17 @@ const Profile = ({ active }) => {
               }
             >
               Created Maps
+            </NavLink>
+            <span style={{ fontSize: "30px", color: "white" }}>|</span>
+
+            <NavLink
+              end
+              to="/profile/active"
+              style={({ isActive }) =>
+                isActive ? { ...navLinkStyle, color: "white" } : navLinkStyle
+              }
+            >
+              Active Games{" "}
             </NavLink>
           </Choose>
           <Outlet context={[games, currentUser, deleteGame]} />
