@@ -14,17 +14,36 @@ const ExploreMaps = () => {
         <CompassIcon style={{ margin: "" }} /> Explore Maps
         <CompassIcon />
       </SubTitle>
-      <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
+      <ImgContainer>
+        <Message>Click to explore all maps </Message>
+        <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
+      </ImgContainer>
     </ExploreContainer>
   );
 };
 
-const Image = styled.img`
+const ImgContainer = styled.div`
+  position: relative;
   width: 95%;
   height: 90%;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  position: relative;
   /* max-width: 500px; */
   object-fit: cover;
   border-radius: 6px;
+`;
+
+const Message = styled.h2`
+  font-size: 30px;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  font-style: italic;
+  /* color: rgba(230, 230, 230, 0.9); */
 `;
 
 const movingBackground = keyframes`
@@ -41,20 +60,16 @@ const ExploreContainer = styled(Container)`
   background-image: linear-gradient(
     225deg,
     rgba(255, 255, 255, 0.5) 0%,
-    rgba(147, 147, 147, 0.6) 50%,
+    rgba(160, 160, 160, 0.6) 50%,
     rgba(255, 255, 255, 0.5) 100%
   );
-  /* background-image: linear-gradient(
-    225deg,
-    rgba(255, 253, 29, 0.39539565826330536) 21%,
-    rgba(255, 255, 255, 0.05) 40%
-  ); */
+
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
   background-size: 200%;
   transition: transform 500ms;
-  animation: ${movingBackground} 7s forwards infinite;
+  animation: ${movingBackground} 6s forwards infinite;
 `;
 
 const spinning = keyframes`
@@ -63,7 +78,7 @@ const spinning = keyframes`
 `;
 
 const CompassIcon = styled(MdExplore)`
-  animation: ${spinning} 5000ms forwards linear infinite;
+  animation: ${spinning} 7000ms forwards linear infinite;
 `;
 
 export default ExploreMaps;

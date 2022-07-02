@@ -41,10 +41,10 @@ const Container = styled.div`
 
 const Title = styled.h2`
   /* background-color: rgba(47, 90, 233, 0.25); */
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(98, 88, 241, 0.15);
 
-  color: #155a08;
-  color: darkblue;
+  /* color: #155a08; */
+  color: #1256d4;
   font-size: 33px;
   @media (max-width: 1240px) {
     font-size: 28px;
@@ -52,7 +52,7 @@ const Title = styled.h2`
 `;
 const Description = styled.h3`
   /* background-color: rgba(47, 90, 233, 0.25); */
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(98, 88, 241, 0.15);
 
   font-size: 20px;
   @media (max-width: 1414px) {
@@ -60,7 +60,7 @@ const Description = styled.h3`
   }
 `;
 const Author = styled.p`
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(98, 88, 241, 0.15);
 
   font-size: 20px;
   @media (max-width: 1414px) {

@@ -71,13 +71,11 @@ const ActiveGames = () => {
                     </div>
                   </Flex>
                   <div>
-                    <LastPlayed style={{ color: "yellow", fontSize: "30px" }}>
+                    <LastPlayed style={{ color: "yellow" }}>
                       Last Played
                     </LastPlayed>
 
-                    <LastPlayed style={{ color: "white", fontSize: "30px" }}>
-                      {date}
-                    </LastPlayed>
+                    <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
                   </div>
                 </GameDiv>
               );
@@ -124,13 +122,11 @@ const ActiveGames = () => {
                     </div>
                   </Flex>
                   <div>
-                    <LastPlayed style={{ color: "yellow", fontSize: "30px" }}>
+                    <LastPlayed style={{ color: "yellow" }}>
                       Last Played
                     </LastPlayed>
 
-                    <LastPlayed style={{ color: "white", fontSize: "30px" }}>
-                      {date}
-                    </LastPlayed>
+                    <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
                   </div>
                 </GameDiv>
               );
@@ -169,6 +165,9 @@ const GameDiv = styled(Link)`
 const Info = styled.p`
   font-size: 25px;
   max-width: 215px;
+  @media (max-width: 800px) {
+    font-size: 18px;
+  }
 `;
 
 const Flex = styled.div`
@@ -176,4 +175,10 @@ const Flex = styled.div`
   align-items: center;
 `;
 
-const LastPlayed = styled.p``;
+const LastPlayed = styled.p`
+  font-size: 30px;
+
+  @media (max-width: 800px) {
+    font-size: 16px;
+  }
+`;

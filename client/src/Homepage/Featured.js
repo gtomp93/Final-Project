@@ -10,7 +10,10 @@ const Featured = ({ showModal, setShowModal, maps }) => {
 
   return (
     <StyledContainer>
-      <SubTitle style={{ color: "#1256d4" }}> Featured Maps </SubTitle>
+      <SubTitle style={{ color: "#1256d4", color: "darkblue" }}>
+        {" "}
+        Featured Maps{" "}
+      </SubTitle>
       <StyledWrapper>
         {maps?.map((game, index) => {
           let isLiked = false;

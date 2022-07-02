@@ -20,7 +20,7 @@ const Header = ({ handleTest, showModal, setShowModal }) => {
         {isAuthenticated && (
           <Create to={"/CreateMapForm"}>
             <BiMap size={"25px"} />
-            <NavName2>{isAuthenticated ? "Create Map" : "MapGuesser"}</NavName2>
+            <Nav>{isAuthenticated ? "Create Map" : "MapGuesser"}</Nav>
           </Create>
         )}
         <Link
@@ -38,14 +38,14 @@ const Header = ({ handleTest, showModal, setShowModal }) => {
         <SearchWrapper to="/explore">
           {/* <Search showModal={showModal} setShowModal={setShowModal} /> */}
           <FiSearch style={{ color: "#5a7bb0" }} size={25} />
-          <NavName2>Explore</NavName2>
+          <Nav>Explore</Nav>
 
           {/* )} */}
         </SearchWrapper>
         {isAuthenticated && (
           <ProfileLink to="/profile">
             <ProfileIcon size={"25px"} />
-            <NavName2>Profile</NavName2>
+            <Nav>Profile</Nav>
           </ProfileLink>
         )}
 
@@ -76,22 +76,25 @@ const HeaderContainer = styled.div`
     height: 44px;
   }
 `;
-const NavName = styled.span`
-  color: #5a7bb0;
-  font-weight: bolder;
-  font-size: 20px;
-  display: none;
-  @media (min-width: 700px) {
-    display: block;
-  }
-`;
+// const NavName = styled.span`
+//   color: #5a7bb0;
+//   font-weight: bolder;
+//   font-size: 20px;
+//   display: none;
+//   @media (min-width: 700px) {
+//     display: block;
+//   }
+// `;
 
-const NavName2 = styled.span`
+const Nav = styled.span`
   color: #5a7bb0;
   font-weight: bolder;
   font-size: 25px;
-  display: block;
+  display: none;
   text-decoration: none;
+  @media (min-width: 800px) {
+    display: block;
+  }
 `;
 
 const Home = styled(NavLink)`
