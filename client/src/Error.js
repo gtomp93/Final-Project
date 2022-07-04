@@ -10,10 +10,11 @@ import LoginButton from "./LoginButton";
 const Error = () => {
   const { setStatus, status } = useContext(UserContext);
   console.log("Hello?");
-  const navigate = useNavigate();
   return ReactDOM.createPortal(
     <Container>
-      <div>Please sign up or log in in order to {status.error} a map 😊</div>{" "}
+      <Message>
+        Please sign up or log in in order to {status.error} a map 😊
+      </Message>{" "}
       <LoginButton />
       <CloseModal
         onClick={(ev) => {
@@ -29,15 +30,24 @@ const Error = () => {
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: fit-content;
+  max-width: 95vw;
   padding: 12px;
   font-weight: bold;
   transform: translate(-50%, -50%);
   z-index: 100;
-  background-color: rgba(247, 45, 42, 0.72);
+  background-color: rgba(247, 45, 42, 0.75);
+`;
+
+const Message = styled.p`
+  font-size: 18px;
+  @media (min-width: 800px) {
+    font-size: 24px;
+  }
 `;
 
 const CloseModal = styled.button`

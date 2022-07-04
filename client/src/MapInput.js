@@ -55,7 +55,7 @@ const MapInput = ({ dispatch, index, address }) => {
         }}
       />
 
-      <button
+      <Button
         onClick={() => {
           if (value?.label) {
             dispatch({
@@ -69,7 +69,7 @@ const MapInput = ({ dispatch, index, address }) => {
         }}
       >
         Add Location
-      </button>
+      </Button>
     </Container>
   );
 };
@@ -82,6 +82,11 @@ const Option = styled(GooglePlacesAutocomplete)`
 const Container = styled.div`
   width: 85%;
   max-width: 500px;
+`;
+
+const Button = styled.button`
+  padding: 4px;
+  font-size: 16px;
 `;
 
 export default MapInput;

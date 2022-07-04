@@ -14,10 +14,10 @@ const ExploreMaps = () => {
         <CompassIcon style={{ margin: "" }} /> Explore Maps
         <CompassIcon />
       </SubTitle>
-      <ImgContainer>
-        <Message>Click to explore all maps </Message>
-        <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
-      </ImgContainer>
+      {/* <ImgContainer>
+        <Message>Click to explore all maps </Message> */}
+      <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
+      {/* </ImgContainer> */}
     </ExploreContainer>
   );
 };
@@ -29,8 +29,9 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
   height: 100%;
+  width: 100%;
+  height: 90%;
   position: relative;
   /* max-width: 500px; */
   object-fit: cover;

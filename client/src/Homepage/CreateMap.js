@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { UserContext } from "../UserContext";
 import { Container } from "./styledComponents";
 import { SubTitle } from "./styledComponents";
 const CreateMap = () => {
+  let Navigate = useNavigate();
+
+  const { currentUser, setStatus } = useContext(UserContext);
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        if (currentUser) {
+          Navigate("/CreateMapForm");
+        } else {
+          setStatus({ error: "create" });
+        }
+      }}
+      style={{ cursor: "pointer" }}
+    >
       <SubTitle>Create Map</SubTitle>
       <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1932939785.jpg" />
     </Container>

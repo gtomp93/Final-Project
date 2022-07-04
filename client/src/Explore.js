@@ -65,10 +65,7 @@ const Explore = () => {
               // onLoad={calculateHeight}
               >
                 {games.map((game, index) => {
-                  let isLiked = false;
-                  if (currentUser?.likes.includes(game._id)) {
-                    isLiked = true;
-                  }
+                  let isLiked = currentUser?.likes.includes(game._id);
                   return (
                     <Game
                       game={game}
@@ -123,12 +120,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: solid pink 10px; */
-  /* background-image: url("https://www.istockphoto.com/photo/twilight-at-spirit-island-gm485371557-38624866"); */
-  /* background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center; */
   height: calc(100vh - 44px);
   width: 100vw;
   overflow-y: auto;
@@ -342,6 +333,10 @@ const Background = styled.img`
       /* top: -150px; */
       height: 72%;
     }
+  }
+  @media screen and (min-width: 1905px) {
+    height: 75%;
+    top: -270px;
   }
 `;
 

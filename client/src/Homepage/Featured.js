@@ -16,10 +16,8 @@ const Featured = ({ showModal, setShowModal, maps }) => {
       </SubTitle>
       <StyledWrapper>
         {maps?.map((game, index) => {
-          let isLiked = false;
-          if (currentUser?.likes.includes(game._id)) {
-            isLiked = true;
-          }
+          let isLiked = currentUser?.likes.includes(game._id);
+
           return (
             <FeaturedMap
               type="featured"

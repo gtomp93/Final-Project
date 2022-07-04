@@ -11,6 +11,7 @@ import { Loading } from "./Loading";
 import Error from "./Error";
 import { ModalContext } from "./ModalContext";
 export default function GameModal({}) {
+  console.log("heyall");
   const [comment, setComment] = useState("");
   const { currentUser, status, setStatus } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");
@@ -260,8 +261,9 @@ const ModalContainer = styled.div`
   width: 90%;
   max-width: 500px;
   z-index: 5;
-  background-color: #9ab2d9;
-  background: rgba(194, 188, 188, 0.7);
+  /* background-color: #9ab2d9; */
+  /* background: rgba(194, 188, 188, 0.7); */
+  background: rgba(102, 175, 243, 0.753);
 
   /* background: linear-gradient(
     225deg,

@@ -6,6 +6,7 @@ import ExploreMaps from "./ExploreMaps";
 import Featured from "./Featured";
 import CreateMap from "./CreateMap";
 import { Loading } from "../Loading";
+import Error from "../Error";
 import GlobeSpinner from "../Globe";
 import { ModalContext } from "../ModalContext";
 import ProfileLinks from "./ProfileLinks";
@@ -15,7 +16,7 @@ import { UserContext } from "../UserContext";
 const Homepage = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const [maps, setMaps] = useState(null);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, status, setStatus } = useContext(UserContext);
   const [users, setUsers] = useState(null);
   useEffect(() => {
     fetch("/getTopPlayers")
@@ -36,6 +37,8 @@ const Homepage = () => {
 
   return (
     <Container users={users} maps={maps}>
+      {status && <Error status={status} setStatus={setStatus} />}
+
       {users && maps ? (
         <>
           <TopWrapper>

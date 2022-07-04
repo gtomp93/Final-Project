@@ -18,9 +18,10 @@ const MapItem = ({ address, dispatch, index }) => {
 
 const Container = styled.div`
   display: flex;
-  background: white;
+  /* background: rgba(175, 171, 171, 0.49); */
   width: 100%;
   justify-content: space-between;
+  color: rgba(111, 109, 109, 1);
 `;
 
 export default MapItem;
