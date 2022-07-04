@@ -23,7 +23,7 @@ const Explore = () => {
   const [fullList, setFullList] = useState(null);
   const { status, setStatus } = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get("page"));
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
   console.log(page, "page");
   console.log({ showModal });
 
@@ -127,7 +127,7 @@ const Container = styled.div`
   perspective: 10px;
   perspective-origin: bottom;
   /* position: relative; */
-  background: black;
+  /* background: black; */
 `;
 
 const GamesWrapper = styled.div`
