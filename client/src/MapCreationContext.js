@@ -120,7 +120,7 @@ export const MapCreationContextProvider = ({ children }) => {
         gameid = res._id;
       });
 
-    await fetch("/addGameToUser", {
+    await fetch("/addMapToUser", {
       method: "PUT",
       body: JSON.stringify({ gameid, user: currentUser._id }),
       headers: {

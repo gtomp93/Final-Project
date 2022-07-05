@@ -217,127 +217,73 @@ const Background = styled.img`
   overflow: hidden;
   transform: translateZ(-30px) scale(4);
   top: 12%;
-  height: 35.5%;
+  height: 35.3%;
   /*  HERE top: 500px;
   height: 37%; */
 
-  @media screen and (min-height: 815px) {
-    /* top: 0.5%; */
+  @media (min-width: 680px) {
+    top: 2000px;
+    height: 33.3%;
   }
 
-  @media (min-width: 395px) {
-    /* top: 6%; */
-    /* top: 100vh; */
-    height: 30%;
-  }
-
-  @media (min-width: 412px) {
-    /* top: 7%; */
-    /* top: 100vh; */
-    height: 30%;
-    @media screen and (min-height: 815px) {
-      /* top: 2.5%; */
-    }
-    @media screen and (min-height: 850px) {
-      /* top: 0%; */
-    }
-  }
-
-  @media (min-width: 425px) {
-    /* top: 7.5%; */
-    /* top: 100vh; */
-    height: 30%;
-    @media screen and (min-height: 815px) {
-      /* top: 4%; */
-    }
-  }
-
-  @media (min-width: 435px) {
-    /* top: 8%; */
-    /* top: 100vh; */
-    height: 30%;
-    @media screen and (min-height: 815px) {
-      /* top: 4.5%; */
-    }
-  }
-
-  @media (min-width: 450px) {
-    /* top: 8.5%; */
-    /* top: 100vh; */
-    height: 30%;
-    @media screen and (min-height: 815px) {
-      /* top: 5%; */
-    }
-  }
-
-  @media (min-width: 460px) {
-    /* top: 9%; */
-    /* top: 100vh; */
-    height: 30%;
-    @media screen and (min-height: 825px) {
-      /* top: 5.5%; */
-    }
-  }
-
-  @media (min-width: 475px) {
-    /* top: 12%; */
-    /* top: 100vh; */
-    height: 30%;
-  }
-
-  @media (min-width: 725px) {
+  @media (min-width: 756px) {
     /* top: 200px; */
+    top: 0px;
     transform: translateZ(-20px) scale(3);
-    height: calc(50.5% - 30px);
+    /* height: calc(50.5% - 30px); */
     /* @media (min-height: 750px) { */
     /* top: 1400px; */
     /* height: 32%; */
     /* } */
+    height: 50.3%;
   }
-  @media (min-width: 756px) {
+  /* @media (min-width: 756px) {
     /* top: 300px; */
-    transform: translateZ(-20px) scale(3);
-    height: calc(48% - 30px);
-    @media (min-height: 750px) {
-      /* top: -300px; */
-      height: 52%;
-    }
+
+  @media (min-width: 1148px) {
+    height: 66%;
+    /* top: auto; */
+    top: -400px;
+    height: 56.4%;
+  }
+  @media (min-height: 900px) and (min-width: 1148px) and (max-width: 1400px) {
+    top: -400px;
+    /* top: -1000px; */
+    height: 56.5%;
   }
 
-  @media screen and (min-width: 800px) {
-    /* top: 300px; */
-    transform: translateZ(-20px) scale(3);
-    height: calc(48% - 30px);
-    @media (min-height: 900px) {
-      /* top: -200px; */
-      height: 52%;
-    }
+  @media (min-height: 900px) and (min-width: 1400px) and (max-width: 1525px) {
+    top: -450px;
+    /* top: -1000px; */
+    height: 57%;
   }
 
-  @media screen and (min-width: 1000px) {
-    /* top: 220px; */
-    transform: translateZ(-20px) scale(3);
-    height: calc(48% - 30px);
-    top: -200px;
-
-    @media (min-height: 900px) {
-      height: 52%;
-    }
+  @media (min-width: 1526px) {
+    height: 59%;
   }
 
-  @media (min-width: 1147px) {
+  @media (min-height: 920px) and (min-width: 1526px) {
+    top: -700px;
+    /* top: -400px; */
+    /* top: -1000px; */
+    height: 65.5%;
+  }
+
+  @media (min-width: 1906px) {
+    top: -900px;
+    height: 74%;
     /* top: 0px; */
-    height: 67%;
-    transform: translateZ(-10px) scale(2);
-    @media (min-height: 780px) {
-      /* top: -150px; */
-      height: 72%;
-    }
+    /* height: 67%; */
+    /* transform: translateZ(-10px) scale(2); */
+    /* @media (min-height: 780px) { */
+    /* top: -150px; */
+    /* height: 72%; */
   }
-  @media screen and (min-width: 1905px) {
-    height: 75%;
-    top: -270px;
-  }
+  /* } */
+  /* @media screen and (min-width: 1905px) { */
+  /* height: 75%; */
+  /* top: -270px; */
+  /* } */
 `;
 
 const Likes = styled.span``;
