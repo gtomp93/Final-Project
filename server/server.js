@@ -77,6 +77,6 @@ express()
     });
   })
 
-  .listen(PORT, () => {
+  .listen(process.env.PORT || PORT, () => {
     console.log(`listen on PORT${PORT}`);
   });

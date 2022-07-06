@@ -9,7 +9,7 @@ const CreateMap = () => {
 
   const { currentUser, setStatus } = useContext(UserContext);
   return (
-    <Container
+    <CreateContainer
       onClick={() => {
         if (currentUser) {
           Navigate("/CreateMapForm");
@@ -21,7 +21,7 @@ const CreateMap = () => {
     >
       <SubTitle>Create Map</SubTitle>
       <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1932939785.jpg" />
-    </Container>
+    </CreateContainer>
   );
 };
 
@@ -33,4 +33,11 @@ const Image = styled.img`
   object-fit: cover;
   /* object-position: ; */
   border-radius: 6px;
+`;
+
+const CreateContainer = styled(Container)`
+  &:hover {
+    transform: scale(1.01);
+  }
+  transition: 400ms;
 `;
