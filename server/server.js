@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
-const PORT = 4000;
+// const PORT = 4000;
+const PORT = process.env.PORT || 5000;
+
 const cors = require("cors");
 const {
   addUser,
@@ -77,6 +79,6 @@ express()
     });
   })
 
-  .listen(process.env.PORT || PORT, () => {
+  .listen(PORT, () => {
     console.log(`listen on PORT${PORT}`);
   });
