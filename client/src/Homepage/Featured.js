@@ -43,7 +43,8 @@ const StyledWrapper = styled.div`
   height: calc(100% - 48px);
   display: flex;
   gap: 25px;
-  @media (max-width: 1149px) {
+
+  @media (max-width: 650px) {
     flex-direction: column;
   }
 `;

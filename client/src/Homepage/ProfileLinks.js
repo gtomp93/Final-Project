@@ -66,7 +66,7 @@ const StyledLink = styled(Link)`
     height: 33%;
     flex-direction: row;
   }
-  @media (max-width: 1149px) {
+  @media (max-width: 1150px) {
     flex-direction: column;
     height: 100%;
   }
@@ -98,7 +98,7 @@ const Wrapper = styled.div`
   }
   justify-content: space-between;
   align-items: center;
-  @media (max-width: 1149px) {
+  @media (max-width: 1150px) {
     height: 180px;
     width: 100%;
     flex-direction: row;
