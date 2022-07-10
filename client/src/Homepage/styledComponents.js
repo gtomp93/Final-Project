@@ -11,6 +11,9 @@ export const SubTitle = styled.h2`
   align-items: center;
   text-align: center;
   /* place-items: center; */
+  @media (max-width: 412px) {
+    font-size: 35px;
+  }
 `;
 
 export const Container = styled.div`

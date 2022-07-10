@@ -33,19 +33,17 @@ const Featured = ({ showModal, setShowModal, maps }) => {
 export default Featured;
 
 const StyledContainer = styled(Container)`
-  /* min-height: 90%; */
   justify-content: flex-start;
-  /* > div {
-    width: 100%;
-  } */
-  /* height: auto; */
+
   max-height: 100%;
   padding-bottom: 0;
 `;
 
 const StyledWrapper = styled.div`
-  /* flex: 1; */
   height: calc(100% - 48px);
   display: flex;
   gap: 25px;
+  @media (max-width: 1149px) {
+    flex-direction: column;
+  }
 `;

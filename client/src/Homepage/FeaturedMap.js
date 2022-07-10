@@ -101,7 +101,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* overflow: hidden; */
+  @media (max-width: 1149px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h2`

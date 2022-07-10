@@ -48,7 +48,6 @@ const ProfileLinks = () => {
 export default ProfileLinks;
 
 const StyledContainer = styled(Container)`
-  /* box-sizing: content-box; */
   padding-bottom: 10px;
 `;
 
@@ -59,19 +58,20 @@ const StyledLink = styled(Link)`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  /* display: block; */
-  /* border: 1px solid red; */
+
   &:hover {
     transform: scale(1.04);
   }
   @media (max-width: 1499px) {
     height: 33%;
     flex-direction: row;
-    /* width: auto; */
   }
   @media (max-width: 1149px) {
     flex-direction: column;
     height: 100%;
+  }
+  @media (max-width: 450px) {
+    height: 70%;
   }
 `;
 const Title = styled.h2`
@@ -79,6 +79,11 @@ const Title = styled.h2`
   text-align: center;
   @media (max-width: 1499px) {
     font-size: 40px;
+  }
+  @media (max-width: 450px) {
+    height: 180px;
+    width: 100%;
+    font-size: 29px;
   }
 `;
 
@@ -95,6 +100,7 @@ const Wrapper = styled.div`
   align-items: center;
   @media (max-width: 1149px) {
     height: 180px;
+    width: 100%;
     flex-direction: row;
   }
 `;

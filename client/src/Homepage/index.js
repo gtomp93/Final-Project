@@ -91,9 +91,12 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: white;
-  font-size: 60px;
+  font-size: 30px;
   text-align: center;
   font-weight: 800;
+  @media (min-width: 500px) {
+    font-size: 60px;
+  }
 `;
 
 const TopWrapper = styled.div`
@@ -101,6 +104,7 @@ const TopWrapper = styled.div`
   width: fit-content;
   align-items: center;
   gap: 10px;
+  max-width: 100vw;
   margin: 0 auto;
 `;
 
