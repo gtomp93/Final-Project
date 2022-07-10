@@ -230,6 +230,8 @@ const Map = () => {
     }, 200);
   };
 
+  console.log(guess?.lat, !guessed, "ehhlo");
+
   if (!locations) {
     return <Loading />;
   }
@@ -248,10 +250,19 @@ const Map = () => {
               tabIndex="0"
               className="okay"
             >
-              <Testing
+              <GuessMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={center.lat ? zoom : 1}
-                center={center.lat && guessed ? center : { lat: 0, lng: 0 }}
+                // center={
+                //   !guessed ? center : midpoint ? center : { lat: 0, lng: 0 }
+                // }
+                center={
+                  !guessed
+                    ? center
+                    : midpoint || guess
+                    ? center
+                    : { lat: 0, lng: 0 }
+                }
                 onClick={(ev) => {
                   if (!guessed) {
                     mapClickHandler(ev);
@@ -340,7 +351,7 @@ const Map = () => {
                     )}
                   </>
                 )}
-              </Testing>
+              </GuessMap>
             </MapWrapper>
             {answerCoords && (
               <GoogleMap
@@ -438,7 +449,7 @@ const Map = () => {
 
 export default Map;
 
-const Testing = styled(GoogleMap)`
+const GuessMap = styled(GoogleMap)`
   position: absolute;
   bottom: 0;
   right: 0;
