@@ -7,14 +7,8 @@ const AddNameModal = () => {
   const [name, setName] = useState({});
   const [error, setError] = useState(false);
   const { user } = useAuth0();
-  const {
-    status,
-    setStatus,
-    currentUser,
-    setCurrentUser,
-    setReloadUser,
-    reloadUser,
-  } = useContext(UserContext);
+  const { setStatus, currentUser, setCurrentUser, setReloadUser, reloadUser } =
+    useContext(UserContext);
   const closeModal = (ev) => {
     ev.preventDefault();
     if (name.firstName?.length > 0 && name.lastName?.length > 0) {

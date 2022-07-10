@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useRef,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import { GameContext } from "./GameContext";
 import styled, { css } from "styled-components";
@@ -14,7 +8,6 @@ import "./map.css";
 
 import {
   GoogleMap,
-  useLoadScript,
   useJsApiLoader,
   Marker,
   Polyline,
@@ -26,21 +19,17 @@ import { Loading } from "./Loading";
 /* global google */
 
 const mapContainerStyle = {
-  // boxShadow: "0px -2px 2px rgba(34,34,34,0.6)",
-  // borderRadius: "6px",
   width: "100%",
   height: "100%",
 };
 
 const streetViewStyle = {
   height: "100%",
-  // aspectRatio: "10/5",
-  // position: "relative",
+
   position: "absolute",
   top: "0",
   left: "0",
   width: "100%",
-  // display: "none",
 };
 
 const options = {
@@ -79,7 +68,6 @@ const Map = () => {
   const [hide, setHide] = useState(true);
   const [distance, setDistance] = useState(null);
   const [expand, setExpand] = useState(false);
-  const [counter, setCounter] = useState(60);
 
   const {
     midpoint,
@@ -243,7 +231,7 @@ const Map = () => {
   };
 
   if (!locations) {
-    return "loading";
+    return <Loading />;
   }
 
   return (
@@ -306,15 +294,6 @@ const Map = () => {
                           clickable={false}
                         />
 
-                        {/* <IconMarker
-                          position={guess}
-                          clickable={false}
-                          // icon={{
-                          //   url: currentUser.picture,
-                          //   scaledSize: new google.maps.Size(30, 30),
-                          // }}
-                          markerShape={{ coords: [25, 25, 25], type: "circle" }}
-                        /> */}
                         {otherPlayerData &&
                           otherPlayerData.map((player) => {
                             let playerData = player.gameData[locationIndex];
@@ -330,7 +309,6 @@ const Map = () => {
                                     ]}
                                   ></Polyline>
                                 )}
-                                {/* <Marker position={playerData.guess}></Marker> */}
                                 {guess && (
                                   <OverlayView
                                     mapPaneName="markerLayer"
@@ -403,7 +381,6 @@ const Map = () => {
                   testPoint,
                   id
                 );
-                // setguessed(!guessed);
                 setExpand(false);
                 setHide(true);
               }}
@@ -496,19 +473,6 @@ const Testing = styled(GoogleMap)`
     display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
     height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
-  }
-`;
-
-const MarkerContainer = styled(OverlayView)`
-  img {
-    border-radius: 50%;
-  }
-`;
-
-const IconMarker = styled(Marker)`
-  border-radius: 50%;
-  img {
-    border-radius: 50%;
   }
 `;
 
@@ -650,29 +614,25 @@ const TimerDisplay = styled.div`
 
 const StyledButton = styled.button`
   background-color: rgba(0, 0, 0, 0.87);
-  /* color: #b9bec7; */
   margin-top: 4px;
-  /* border: solid grey 1px; */
   border: none;
   border-radius: 4px;
   color: #5a7bb0;
   box-shadow: 0 0 10px rgb(255 255 255 / 10%);
   font-weight: bold;
   padding: 3px 7px 4px;
+  font-size: 22px;
   &:disabled {
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: none;
   }
 `;
 
-const HideButton = styled.button``;
-
 const ExpandButton = styled.button`
   display: none;
   background-color: rgba(0, 0, 0, 0.87);
   color: #b9bec7;
   margin-top: 4px;
-  /* border: solid grey 1px; */
   border: none;
   border-radius: 4px;
   color: #5a7bb0;
@@ -687,5 +647,3 @@ const ExpandButton = styled.button`
 `;
 
 const ExpandArrows = styled(BsArrowsFullscreen)``;
-
-// //  width: ${(props) => (props.fullSize ? "100%" : "38%")};

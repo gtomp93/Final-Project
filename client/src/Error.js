@@ -3,8 +3,6 @@ import styled from "styled-components";
 import ReactDOM from "react-dom";
 import { UserContext } from "./UserContext";
 import { BiX } from "react-icons/bi";
-import { Navigate, useNavigate } from "react-router-dom";
-import Login from "./Login";
 import LoginButton from "./LoginButton";
 
 const Error = () => {

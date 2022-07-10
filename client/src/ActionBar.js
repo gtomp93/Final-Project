@@ -14,7 +14,7 @@ const ActionBar = ({
   type,
   featured,
 }) => {
-  const { currentUser, setStatus, status } = useContext(UserContext);
+  const { currentUser, setStatus } = useContext(UserContext);
   const { setShowModal } = useContext(ModalContext);
   return (
     <ActionBarContainer featured={featured}>
@@ -126,24 +126,6 @@ const Play = styled.span`
 
 const Likes = styled.span`
   margin-bottom: 4px;
-`;
-
-const StyledButton = styled.button`
-  background-color: rgba(0, 0, 0, 0.87);
-  /* color: #b9bec7; */
-  margin-top: 4px;
-  /* border: solid grey 1px; */
-  border: none;
-  border-radius: 4px;
-  color: #5a7bb0;
-  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
-
-  font-weight: bold;
-  padding: 4px 7px 4px;
-  &:disabled {
-    background-color: rgba(0, 0, 0, 0.2);
-    box-shadow: none;
-  }
 `;
 
 const ActionBarContainer = styled.div`

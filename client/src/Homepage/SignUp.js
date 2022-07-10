@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import styled from "styled-components";
-import { Container, SubTitle } from "./styledComponents";
+import { Container } from "./styledComponents";
 import { FiLogIn } from "react-icons/fi";
 
 const SignUp = () => {

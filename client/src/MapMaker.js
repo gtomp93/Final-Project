@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, { useContext } from "react";
 import MapInput from "./MapInput";
 import MapItem from "./MapItem";
 import styled from "styled-components";
@@ -11,7 +11,6 @@ import {
   StreetViewPanorama,
 } from "@react-google-maps/api";
 import { MapCreationContext } from "./MapCreationContext";
-import { Container } from "./Homepage/styledComponents";
 
 const streetViewStyle = {
   width: "75%",

@@ -3,14 +3,13 @@ import styled from "styled-components";
 import Comment from "./Comment";
 import { UserContext } from "./UserContext";
 import ReactDOM from "react-dom";
-import Game from "./Game";
 import ActionBar from "./ActionBar";
 import { BiX } from "react-icons/bi";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Loading } from "./Loading";
 import Error from "./Error";
 import { ModalContext } from "./ModalContext";
-export default function GameModal({}) {
+export default function GameModal() {
   const [comment, setComment] = useState("");
   const { currentUser, status, setStatus } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");
@@ -19,7 +18,6 @@ export default function GameModal({}) {
   const [gameInfo, setGameInfo] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
   const [
-    showModal,
     liked,
     setLiked,
     numLikes,
@@ -100,9 +98,8 @@ export default function GameModal({}) {
       .then((res) => res.json())
       .then((res) => {
         setGameInfo(res.result);
-        // setGames((arr) => [...arr, res.result]);
       });
-  }, []);
+  }, [id]);
 
   const { name, description, creator, pic } = gameInfo
     ? gameInfo
@@ -192,7 +189,6 @@ export default function GameModal({}) {
       </ModalContainer>
     </Overlay>,
     document.getElementById("portal")
-    //
   );
 }
 const Overlay = styled.div`
@@ -231,16 +227,12 @@ const MapImage = styled.img`
   width: 100%;
   max-height: 300px;
   object-fit: cover;
-  /* display: block;
-  margin: 0 auto; */
 `;
 
 const CommentsSection = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* width: 100%; */
-  /* justify-content: space-between; */
 `;
 
 const CreateComment = styled.div`
@@ -251,7 +243,6 @@ const CreateComment = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  /* overflow: auto; */
   position: fixed;
   max-height: ${({ gameInfo }) => (gameInfo ? "90%" : "50%")};
   top: 50%;
@@ -260,15 +251,8 @@ const ModalContainer = styled.div`
   width: 90%;
   max-width: 500px;
   z-index: 5;
-  /* background-color: #9ab2d9; */
-  /* background: rgba(194, 188, 188, 0.7); */
-  background: rgba(102, 175, 243, 0.753);
 
-  /* background: linear-gradient(
-    225deg,
-    rgba(255, 255, 255, 0.4206057422969187) 0%,
-    rgba(147, 147, 147, 0.8) 100%
-  ); */
+  background: rgba(102, 175, 243, 0.753);
 
   padding: 5px 10px 10px 10px;
   border-radius: 6px;
@@ -281,7 +265,6 @@ const CommentInput = styled.textarea`
   width: 100%;
   resize: none;
   @media (min-width: 769px) {
-    /* width: 70%; */
   }
 `;
 
@@ -295,7 +278,6 @@ const Submit = styled.button`
   background-color: rgba(0, 0, 0, 0.7);
   background-color: #07024d;
   border-radius: 9px 9px 9px 0;
-  /* color: #5a7bb0; */
   padding: 0 5px 0;
   color: #d3d2d9;
 `;
@@ -307,10 +289,6 @@ const View = styled.button`
   background: none;
   border: none;
   font-size: 14px;
-  /* padding: 0 10px; */
-
-  /* margin: 0; */
-  /* align-self: center; */
 
   &:hover {
     cursor: pointer;

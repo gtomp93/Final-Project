@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import Game from "../Game";
 import { UserContext } from "../UserContext";
 import { Container, SubTitle } from "./styledComponents";
 import FeaturedMap from "./FeaturedMap";
@@ -12,7 +11,7 @@ const Featured = ({ showModal, setShowModal, maps }) => {
     <StyledContainer>
       <SubTitle style={{ fontSize: "38px" }}> Featured Maps </SubTitle>
       <StyledWrapper>
-        {maps?.map((game, index) => {
+        {maps?.map((game) => {
           let isLiked = currentUser?.likes.includes(game._id);
 
           return (

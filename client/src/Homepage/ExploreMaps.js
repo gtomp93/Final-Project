@@ -4,7 +4,6 @@ import styled, { keyframes } from "styled-components";
 import { SubTitle } from "./styledComponents";
 import { Container } from "./styledComponents";
 import { MdExplore } from "react-icons/md";
-import { FaMedal } from "react-icons/fa";
 const ExploreMaps = () => {
   const navigate = useNavigate();
 
@@ -14,19 +13,10 @@ const ExploreMaps = () => {
         <CompassIcon style={{ margin: "" }} /> Explore Maps
         <CompassIcon />
       </SubTitle>
-      {/* <ImgContainer>
-        <Message>Click to explore all maps </Message> */}
       <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_152295734.jpg" />{" "}
-      {/* </ImgContainer> */}
     </ExploreContainer>
   );
 };
-
-const ImgContainer = styled.div`
-  position: relative;
-  width: 95%;
-  height: 90%;
-`;
 
 const Image = styled.img`
   height: 100%;
@@ -36,15 +26,6 @@ const Image = styled.img`
   /* max-width: 500px; */
   object-fit: cover;
   border-radius: 6px;
-`;
-
-const Message = styled.h2`
-  font-size: 30px;
-  position: absolute;
-  top: 0;
-  z-index: 5;
-  font-style: italic;
-  /* color: rgba(230, 230, 230, 0.9); */
 `;
 
 const movingBackground = keyframes`

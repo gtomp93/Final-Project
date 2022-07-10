@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Leaderboard from "./Leaderboard";
 import ExploreMaps from "./ExploreMaps";
@@ -12,7 +11,6 @@ import { ModalContext } from "../ModalContext";
 import ProfileLinks from "./ProfileLinks";
 import SignUp from "./SignUp";
 import { UserContext } from "../UserContext";
-import { GameContext } from "../GameContext";
 
 const Homepage = () => {
   const { showModal, setShowModal } = useContext(ModalContext);

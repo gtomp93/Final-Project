@@ -1,10 +1,8 @@
 import { MapCreationContext } from "./MapCreationContext";
 import { Link } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { GameContext } from "./GameContext";
 const CreateMapForm = () => {
-  const { setTimer } = useContext(GameContext);
   const { dispatch } = useContext(MapCreationContext);
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
@@ -14,14 +12,9 @@ const CreateMapForm = () => {
     description: "",
     pic: "",
   });
-  const [state, setState] = useState("Hello");
   const fillForm = (key, value) => {
     setMapForm({ ...mapForm, [key]: value });
   };
-
-  useEffect(() => {
-    setTimer(60);
-  }, []);
 
   return (
     <Background>
@@ -161,26 +154,9 @@ const Submit = styled.button`
   }
 `;
 
-const StyledButton = styled.button`
-  background-color: rgba(0, 0, 0, 0.87);
-  margin-top: 4px;
-  border: none;
-  border-radius: 4px;
-  color: #5a7bb0;
-  box-shadow: 0 0 10px rgb(255 255 255 / 10%);
-  font-weight: bold;
-  padding: 4px 7px 4px;
-  &:disabled {
-    background-color: rgba(0, 0, 0, 0.2);
-    box-shadow: none;
-  }
-`;
-
 const Next = styled(Link)`
   background-color: rgba(0, 0, 0, 0.87);
-  /* color: #b9bec7; */
   margin-top: 4px;
-  /* border: solid grey 1px; */
   margin-left: 8px;
 
   text-decoration: none;

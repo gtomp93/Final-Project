@@ -1,28 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { GameContext } from "./GameContext";
-import { FiUser, FiUsers, FiClock } from "react-icons/fi";
+import React, { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { FiUser, FiUsers } from "react-icons/fi";
 import { BiAlarm, BiAlarmOff } from "react-icons/bi";
 
 import styled from "styled-components";
 import { UserContext } from "./UserContext";
-import { ModalContext } from "./ModalContext";
 
 const GameOptions = () => {
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
-  const { showModal, setShowModal } = useContext(ModalContext);
   const [playerMode, setPlayerMode] = useState(null);
   const [timeMode, setTimeMode] = useState(null);
-  // const [gameLoaded, setGameLoaded] = useState(false);
   let navigate = useNavigate();
-  const [gameLink, setGameLink] = useState(null); // const {
-  //   gameState: { error, locations, _id, gameLink },
-  //   dispatch,
-  //   setSelected,
-  //   timed,
-  // } = useContext(GameContext);
-
+  const [gameLink, setGameLink] = useState(null);
+  const [newGameId, setNewGameId] = useState(null);
   const createGame = async (timeMode) => {
     let randomLocations = null;
     let mapName = null;
@@ -55,17 +46,12 @@ const GameOptions = () => {
       .then((res) => res.json())
       .then((res) => {
         gameId = res.gameId;
-        // dispatch({
-        //   type: "createGame",
-        //   locations: randomLocations,
-        //   timeMode,
-        //   playerMode,
-        //   _id: res.gameId,
-        // });
+
         if (playerMode === "single") {
           navigate(`/map/${gameId}`);
         } else {
           setGameLink(`https://mapguesser-server.herokuapp.com/map/${gameId}`);
+          setNewGameId(gameId);
           return gameId;
         }
       });
@@ -75,7 +61,6 @@ const GameOptions = () => {
     <Container>
       <Wrapper
         style={{
-          // width: "100vw",
           marginTop: "25px",
           display: "flex",
           flexDirection: "column",
@@ -105,24 +90,6 @@ const GameOptions = () => {
           </ModeButton>
         </Mode>
 
-        {/* <Multiplayer>
-        <div>Multiplayer</div>
-        <label>Search opponent by username</label>
-        <input
-          onChange={(ev) => {
-            setSearch(ev.target.value);
-          }}
-        ></input>
-        <Search onClick={() => searchOpponent(search)}>Search</Search>
-        {error && <span>User not found</span>}
-        {opponent && (
-          <div>
-            {" "}
-            <span>Opponent found</span> <button>Start Game</button>
-          </div>
-        )}
-
-      </Multiplayer> */}
         <h2 style={{ color: "#5e5e5e", marginBottom: "5px" }}>Select One</h2>
 
         <Mode>
@@ -181,7 +148,7 @@ const GameOptions = () => {
         {gameLink && (
           <StartGame
             onClick={() => {
-              navigate(`/map/${id}`);
+              navigate(`/map/${newGameId}`);
             }}
           >
             Start
@@ -210,13 +177,6 @@ const Wrapper = styled.div`
   border-radius: 8px;
 `;
 
-const Multiplayer = styled.div`
-  width: 280px;
-  height: 75px;
-  border: solid black 1px;
-  margin: 5px 0 5px;
-`;
-
 const Mode = styled.div`
   display: flex;
   width: 200px;
@@ -232,10 +192,6 @@ const StartGame = styled.button`
   padding: 1px 10px 1px;
   margin-top: 16px;
   background-color: rgba(0, 0, 0, 0.87);
-  /* color: #b9bec7; */
-  /* margin-top: 4px; */
-  /* border: solid grey 1px; */
-  /* margin-left: 8px; */
 
   text-decoration: none;
   border: none;
@@ -247,20 +203,10 @@ const StartGame = styled.button`
   padding: 3px 8px 3px 7px;
 `;
 
-const Search = styled.button`
-  width: 80px;
-  height: 20px;
-`;
-
 const ModeButton = styled.button`
   width: 80px;
   font-weight: bolder;
   border-radius: 6px;
-`;
-
-const Timed = styled.button`
-  width: 80px;
-  font-weight: bolder;
 `;
 
 const Untimed = styled.button`
@@ -268,14 +214,5 @@ const Untimed = styled.button`
   font-weight: bolder;
   border-radius: 6px;
 `;
-{
-  /* <button
-          onClick={() => {
-            setSelected("multi");
-          }}
-        >
-          Multi-Player
-        </button> */
-}
 
 export default GameOptions;

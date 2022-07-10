@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useReducer,
-} from "react";
+import React, { createContext, useContext, useState, useReducer } from "react";
 import { UserContext } from "./UserContext";
 
 export const GameContext = createContext(null);

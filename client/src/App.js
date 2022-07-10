@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import logo from "./logo.svg";
+import React, { useContext } from "react";
 import Homepage from "./Homepage";
 import CreateMapForm from "./CreateMapForm";
-import Map from "./Map";
 import Login from "./Login";
 import Logout from "./Logout";
 import Header from "./Header";
@@ -11,8 +9,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Profile from "./Profile";
 import Explore from "./Explore";
 import GlobalStyle from "./GlobalStyle";
-// import {useAuth0} from "@auth0/auth0-react";
-import CreateMap from "./CreateMap";
 import MapMaker from "./MapMaker";
 import Confirmation from "./Confirmation";
 import GameModal from "./GameModal";
@@ -21,15 +17,9 @@ import CreatedGames from "./Profile/CreatedGames";
 import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
 import ActiveGames from "./Profile/ActiveGames";
-import { GameContextProvider } from "./GameContext";
 import GameMap from "./GameMap";
-// import {Auth0Provider} from "@auth0/auth0-react";
-// import LoginButton from "./LoginButton";
 
 function App() {
-  //  const {domain, clientId, redirectUri} = useContext(Auth0Provider);
-  // const {user, isAuthenticated, isLoading} = useAuth0();
-  // const [showModal, setShowModal] = useState(null);
   const { status } = useContext(UserContext);
 
   return (
