@@ -76,12 +76,12 @@ const MapInput = ({ dispatch, index, address }) => {
 
 const Option = styled(GooglePlacesAutocomplete)`
   width: 200px;
-  background: red;
 `;
 
 const Container = styled.div`
   width: 85%;
   max-width: 500px;
+  color: black;
 `;
 
 const Button = styled.button`

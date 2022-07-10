@@ -3,12 +3,21 @@ import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { ModalContext } from "./ModalContext";
 
-const ActionBar = ({ likeGame, game, numLikes, setNumLikes, liked, type }) => {
+const ActionBar = ({
+  likeGame,
+  game,
+  numLikes,
+  setNumLikes,
+  liked,
+  type,
+  featured,
+}) => {
   const { currentUser, setStatus, status } = useContext(UserContext);
-
+  const { setShowModal } = useContext(ModalContext);
   return (
-    <ActionBarContainer>
+    <ActionBarContainer featured={featured}>
       <LikeBox>
         <LikeButton
           onClick={(ev) => {
@@ -50,10 +59,17 @@ const ActionBar = ({ likeGame, game, numLikes, setNumLikes, liked, type }) => {
       </CommentBox>
       <StartGame
         onClick={(ev) => {
+          // if (featured) {
+          //   console.log("hello");
+          //   ev.stopPropagation();
+          // }
+          setShowModal(false);
+
           if (!currentUser) {
             setStatus({ error: "play" });
             ev.preventDefault();
             ev.stopPropagation();
+            console.log("hello?");
             return;
           }
         }}
@@ -138,10 +154,11 @@ const StyledButton = styled.button`
 const ActionBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: ${({ featured }) => (featured ? "4px" : "10px")};
   @media (min-width: 769px) {
     /* width: 93%; */
   }
+  /* height: 100%; */
 `;
 
 export default ActionBar;

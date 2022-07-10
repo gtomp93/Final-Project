@@ -21,7 +21,8 @@ import CreatedGames from "./Profile/CreatedGames";
 import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
 import ActiveGames from "./Profile/ActiveGames";
-
+import { GameContextProvider } from "./GameContext";
+import GameMap from "./GameMap";
 // import {Auth0Provider} from "@auth0/auth0-react";
 // import LoginButton from "./LoginButton";
 
@@ -46,7 +47,7 @@ function App() {
             <Route path="/explore/game/:id" element={<GameModal />} />
           </Route>
           <Route exact path="/gameOptions/:id" element={<GameOptions />} />
-          <Route exact path="/map/:id" element={<Map />} />
+          <Route exact path="/map/:id" element={<GameMap />} />
 
           <Route exact path="/CreateMapForm" element={<CreateMapForm />} />
 

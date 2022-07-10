@@ -9,6 +9,7 @@ import LogoutButton from "../LogoutButton";
 import { FiLogOut } from "react-icons/fi";
 import { Outlet, useParams, NavLink } from "react-router-dom";
 import { ModalContext } from "../ModalContext";
+import { GameContext } from "../GameContext";
 
 const Profile = ({ active }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -23,6 +24,10 @@ const Profile = ({ active }) => {
   // border: none;
   // text-decoration: none;
   //color:"#9897a1"
+
+  useEffect(() => {
+    // setShowModal(false);
+  }, []);
 
   const navLinkStyle = {
     background: "inherit",

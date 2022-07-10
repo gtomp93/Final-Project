@@ -48,7 +48,6 @@ const MapMaker = () => {
     <BackgroundContainer>
       <InnerContainer>
         <h1>Map Creator- Part 2</h1>
-
         <Info>
           Enter an address and hit "Add Location" to add a location to your map.
         </Info>
@@ -72,17 +71,17 @@ const MapMaker = () => {
               </div>
             );
           })}
-          {mapState.addresses.length >= 5 && (
-            <button
-              onClick={async () => {
-                await addLocations(mapState.locations);
-                navigate("/Confirmation");
-              }}
-            >
-              Create Map
-            </button>
-          )}
-        </ListContainer>
+        </ListContainer>{" "}
+        {mapState.addresses.length >= 5 && (
+          <StyledButton
+            onClick={async () => {
+              await addLocations(mapState.locations);
+              navigate("/Confirmation");
+            }}
+          >
+            Create Map
+          </StyledButton>
+        )}
         {mapState.visibleLocation && (
           <GoogleMap
             mapContainerStyle={streetViewStyle}
@@ -116,7 +115,7 @@ const BackgroundContainer = styled.div`
   background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg");
   background-size: cover;
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100% - 44px);
   display: grid;
   place-items: center;
 `;
@@ -128,5 +127,12 @@ const InnerContainer = styled.div`
   flex-direction: column;
   max-width: 95%;
   color: rgba(193, 190, 190, 1);
+`;
+
+const StyledButton = styled.button`
+  font-size: 20px;
+  padding: 5px;
+  font-weight: bold;
+  width: fit-content;
 `;
 export default MapMaker;

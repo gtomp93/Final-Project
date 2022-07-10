@@ -30,20 +30,19 @@ const ActiveGames = () => {
     <Container>
       <Active>
         <Subtitle>Active Games</Subtitle>
-
         {activeGames &&
           activeGames.map((game) => {
             console.log({ game });
             let date = "";
             if (game.type === "single") {
               console.log({ thing: game.time });
-              date = format(game.time, "MMM do y 'at' h:m");
+              date = format(game.time, "MMM do y 'at' h:mm");
               //
             } else {
               let timestamp = game.players?.find(
                 (i) => i.player === currentUser.email
               ).time;
-              date = format(timestamp, "MMM do y 'at' h:m");
+              date = format(timestamp, "MMM do y 'at' hh:mm");
             }
             if (
               game.gameData?.length < 5 ||
@@ -90,13 +89,13 @@ const ActiveGames = () => {
 
             if (game.type === "single") {
               console.log({ thing: game.time });
-              date = format(game.time, "MMM do y 'at' h:m");
+              date = format(game.time, "MMM do y 'at' h:mm");
               //
             } else {
               let timestamp = game.players?.find(
                 (i) => i.player === currentUser.email
               ).time;
-              date = format(timestamp, "MMM do y 'at' h:m");
+              date = format(timestamp, "MMM do y 'at' h:mm");
             }
 
             if (

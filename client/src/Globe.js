@@ -2,7 +2,6 @@ import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
 const GlobeSpinner = ({ speed }) => {
-  console.log("okay");
   return <Globe speed={speed} />;
 };
 
@@ -14,8 +13,8 @@ const spin = keyframes`
 `;
 
 const Globe = styled.div`
-  width: 143px;
-  height: 143px;
+  width: 140px;
+  height: 140px;
   margin: 20px auto 0;
   position: relative;
   z-index: 10;

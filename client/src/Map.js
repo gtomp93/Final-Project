@@ -78,12 +78,14 @@ const Map = () => {
   const [clickedLng, setClickedLng] = useState(null);
   const [hide, setHide] = useState(true);
   const [distance, setDistance] = useState(null);
-  const [midpoint, setMidpoint] = useState(null);
   const [expand, setExpand] = useState(false);
-  const [testPoint, setTestPoint] = useState(null);
   const [counter, setCounter] = useState(60);
 
   const {
+    midpoint,
+    setMidpoint,
+    testPoint,
+    setTestPoint,
     gameState: {
       zoom,
       guessed,
@@ -107,8 +109,24 @@ const Map = () => {
     dispatch,
   } = useContext(GameContext);
 
+  console.log({
+    zoom,
+    guessed,
+    locations,
+    thirdPoint,
+    center,
+    locationIndex,
+    points,
+    gameScore,
+    endGame,
+    stop,
+    guessDistance,
+    guess,
+    otherPlayerData,
+    timeMode,
+  });
   const { currentUser } = useContext(UserContext);
-
+  console.log(center);
   useEffect(() => {
     if (!locations && currentUser) {
       fetch(`/getMap/${id}`, {
@@ -141,19 +159,39 @@ const Map = () => {
             locationIndex: data.locationIndex,
             otherPlayerData: data.otherPlayerData,
           });
-          if (res.timeMode === "timed") {
-            setTimer(60);
+          console.log({ res, data });
+          if (data.guessed && data.timeMode === "timed") {
+            setTimer(0);
+          } else if (!data.guessed && data.timeMode === "timed") {
+            setTimer((timer) => timer - 1);
           }
         });
     }
   }, [currentUser]);
 
   useEffect(() => {
-    if (timeMode === "timed") {
-      if (timer === 0) {
+    return () => setTimer(60);
+  }, []);
+
+  useEffect(() => {
+    console.log("zin2");
+
+    if (guessed) {
+      console.log("zin3");
+      setTimer(60);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("xen1", { timeMode, guessed });
+    if (timeMode === "timed" && guessed === false) {
+      console.log("xen2");
+
+      if (timer === 0 && guessed === false) {
+        console.log("testing");
         submitGuess(
-          midpoint.lat(),
-          midpoint.lng(),
+          midpoint ? midpoint.lat() : null,
+          midpoint ? midpoint.lng() : null,
           distance,
           clickedLat,
           clickedLng,
@@ -163,12 +201,7 @@ const Map = () => {
       }
       timer > 0 && !stop && setTimeout(() => setTimer(timer - 1), 1000);
     }
-
-    // return () => {
-    //   setTimer(null);
-    //   console.log("component unmounted");
-    // };
-  }, [timer, timeMode, stop]);
+  }, [timer]);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -258,8 +291,8 @@ const Map = () => {
             >
               <Testing
                 mapContainerStyle={mapContainerStyle}
-                zoom={zoom}
-                center={center}
+                zoom={center.lat ? zoom : 1}
+                center={center.lat && guessed ? center : { lat: 0, lng: 0 }}
                 onClick={(ev) => {
                   if (!guessed) {
                     mapClickHandler(ev);
@@ -279,20 +312,24 @@ const Map = () => {
 
                     {guessed && (
                       <>
-                        <OverlayView mapPaneName="markerLayer" position={guess}>
-                          <img
-                            className="yoo"
-                            src={currentUser.picture}
-                            style={{
-                              marginRight: "0",
-                              marginBottom: "0",
-                              borderRadius: "50%",
-                              width: "30px",
-                              transform: "translate(-15px,-15px)",
-                            }}
-                          />
-                        </OverlayView>
-
+                        {guess && (
+                          <OverlayView
+                            mapPaneName="markerLayer"
+                            position={guess}
+                          >
+                            <img
+                              className="yoo"
+                              src={currentUser.picture}
+                              style={{
+                                marginRight: "0",
+                                marginBottom: "0",
+                                borderRadius: "50%",
+                                width: "30px",
+                                transform: "translate(-15px,-15px)",
+                              }}
+                            />
+                          </OverlayView>
+                        )}
                         <Marker
                           position={locations[locationIndex]}
                           clickable={false}
@@ -317,37 +354,43 @@ const Map = () => {
                             ]);
                             return playerData ? (
                               <>
-                                <Polyline
-                                  path={[
-                                    playerData.guess,
-                                    playerData.thirdPoint,
-                                    locations[locationIndex],
-                                  ]}
-                                ></Polyline>
+                                {guess && (
+                                  <Polyline
+                                    path={[
+                                      playerData.guess,
+                                      playerData.thirdPoint,
+                                      locations[locationIndex],
+                                    ]}
+                                  ></Polyline>
+                                )}
                                 {/* <Marker position={playerData.guess}></Marker> */}
-                                <OverlayView
-                                  mapPaneName="markerLayer"
-                                  position={playerData.guess}
-                                >
-                                  <img
-                                    className="yoo"
-                                    src={player.icon}
-                                    style={{
-                                      marginRight: "0",
-                                      marginBottom: "0",
-                                      borderRadius: "50%",
-                                      width: "30px",
-                                      transform: "translate(-15px,-15px)",
-                                    }}
-                                  />
-                                </OverlayView>
+                                {guess && (
+                                  <OverlayView
+                                    mapPaneName="markerLayer"
+                                    position={playerData.guess}
+                                  >
+                                    <img
+                                      className="yoo"
+                                      src={player.icon}
+                                      style={{
+                                        marginRight: "0",
+                                        marginBottom: "0",
+                                        borderRadius: "50%",
+                                        width: "30px",
+                                        transform: "translate(-15px,-15px)",
+                                      }}
+                                    />
+                                  </OverlayView>
+                                )}
                               </>
                             ) : null;
                           })}
-                        <Polyline
-                          path={[guess, thirdPoint, locations[locationIndex]]}
-                          options={lineOptions}
-                        ></Polyline>
+                        {guess && (
+                          <Polyline
+                            path={[guess, thirdPoint, locations[locationIndex]]}
+                            options={lineOptions}
+                          ></Polyline>
+                        )}
                       </>
                     )}
                   </>
@@ -370,8 +413,12 @@ const Map = () => {
           </MapsWrapper>
           {guessed && (
             <Message>
-              Your guess was {(guessDistance / 1000).toFixed(2)} km away! You
-              scored {points} points!
+              {guess !== null
+                ? `Your guess was ${(guessDistance / 1000).toFixed(
+                    2
+                  )} km away! You
+              scored ${points} points!`
+                : "You did not submit a guess. You scored 0 points"}
             </Message>
           )}
           {endGame && (
@@ -426,8 +473,8 @@ const Map = () => {
             )}
             {guessed && !endGame && (
               <StyledButton
-                onClick={() => {
-                  resetMap();
+                onClick={async () => {
+                  await resetMap();
                   setClickedLat(null);
                   setClickedLng(null);
                   setExpand(false);
@@ -607,6 +654,7 @@ const Home = styled(Link)`
   text-align: center;
   text-decoration: none;
   /* color: black; */
+  width: fit-content;
   padding: 1px 10px 2px;
   background-color: rgba(0, 0, 0, 0.87);
   color: #5a7bb0;
@@ -626,6 +674,7 @@ const BottomContainer = styled.div`
 
 const TimerDisplay = styled.div`
   font-weight: bolder;
+  font-size: 22px;
   position: absolute;
   left: 50%;
   color: white;

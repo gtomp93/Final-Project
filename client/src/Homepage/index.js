@@ -12,12 +12,14 @@ import { ModalContext } from "../ModalContext";
 import ProfileLinks from "./ProfileLinks";
 import SignUp from "./SignUp";
 import { UserContext } from "../UserContext";
+import { GameContext } from "../GameContext";
 
 const Homepage = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const [maps, setMaps] = useState(null);
   const { currentUser, status, setStatus } = useContext(UserContext);
   const [users, setUsers] = useState(null);
+
   useEffect(() => {
     fetch("/getTopPlayers")
       .then((res) => res.json())
@@ -46,39 +48,25 @@ const Homepage = () => {
             <GlobeSpinner speed={10000} />
           </TopWrapper>
           <Wrapper>
-            <Section style={{ gridColumn: "1 / 15", gridRow: "1 / 12" }}>
+            <Section1>
               <ExploreMaps />
-            </Section>{" "}
-            <Section style={{ gridColumn: "16 / -1", gridRow: "1 / 12" }}>
+            </Section1>{" "}
+            <Section2>
               {/* <Link to="/explore?page=1">Leaderboard</Link> */}
               <Leaderboard users={users} setUsers={setUsers} />
-            </Section>
-            <Section style={{ gridColumn: "1 / 9", gridRow: "12 / 21" }}>
+            </Section2>
+            <Section3>
               <CreateMap />
-            </Section>
-            <Section
-              style={{
-                // gridColumn: "span 3",
-                gridColumn: "10 / -1",
-                gridRow: "12 / 15",
-              }}
-            >
-              {currentUser ? <ProfileLinks /> : <SignUp />}
-            </Section>
-            <Section
-              style={{
-                // gridColumn: "span 3",
-                gridColumn: "10 / -1",
-                gridRow: "15 / -1",
-              }}
-            >
+            </Section3>
+            <Section4>{currentUser ? <ProfileLinks /> : <SignUp />}</Section4>
+            <Section5>
               <Featured
                 showModal={showModal}
                 setShowModal={setShowModal}
                 maps={maps}
                 setMaps={setMaps}
               />{" "}
-            </Section>{" "}
+            </Section5>{" "}
           </Wrapper>
         </>
       ) : (
@@ -90,10 +78,12 @@ const Homepage = () => {
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   height: ${({ users, maps }) => (users && maps ? "100%" : "100vh")};
   background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg");
   background-size: cover;
-
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg");
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg");
   justify-content: space-around;
   a {
     color: black;
@@ -102,7 +92,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: black;
+  color: white;
   font-size: 60px;
   text-align: center;
   font-weight: 800;
@@ -117,21 +107,79 @@ const TopWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  height: 100%;
-  padding: 1.5rem;
-  justify-content: space-between;
-  @media screen and (min-width: 450px) {
-    flex-direction: row;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  @media (min-width: 1150px) {
+    display: grid;
+    grid-template-rows: repeat(20, 5%);
+    grid-template-columns: repeat(20, 5%);
+    height: 120vw;
   }
-  display: grid;
-  grid-template-rows: repeat(20, 5%);
-  grid-template-columns: repeat(20, 5%);
-  /* gap: 4rem; */
-  /* grid-row-gap: 35px; */
+
+  @media (min-width: 1500px) {
+    height: 78vw;
+  }
 `;
 
 const Section = styled.div`
-  margin: 10px 0 10px;
+  margin: 20px 30px 20px;
+`;
+
+const Section1 = styled(Section)`
+  @media (min-width: 1150px) {
+    grid-column: 1 / -1;
+    grid-row: 1 / 8;
+  }
+
+  @media (min-width: 1500px) {
+    grid-column: 1 / 15;
+    grid-row: 1 / 10;
+  }
+`;
+const Section2 = styled(Section)`
+  @media (min-width: 1150px) {
+    grid-column: 1 / 8;
+    grid-row: 8 / 15;
+  }
+
+  @media (min-width: 1500px) {
+    grid-column: 15 / -1;
+    grid-row: 1 / 10;
+  }
+`;
+const Section3 = styled(Section)`
+  @media (min-width: 1150px) {
+    grid-column: 8 / -1;
+    grid-row: 8 / 15;
+  }
+
+  @media (min-width: 1500px) {
+    grid-column: 1 / 10;
+    grid-row: 10 / -1;
+  }
+`;
+const Section4 = styled(Section)`
+  @media (min-width: 1150px) {
+    grid-column: 1 / 8;
+    grid-row: 15 / -1;
+  }
+
+  @media (min-width: 1500px) {
+    grid-column: 10 / -1;
+    grid-row: 10 / 14;
+  }
+`;
+const Section5 = styled(Section)`
+  @media (min-width: 1150px) {
+    grid-column: 8 / -1;
+    grid-row: 15 / -1;
+  }
+
+  @media (min-width: 1500px) {
+    grid-column: 10 / -1;
+    grid-row: 14 / -1;
+  }
 `;
 
 export default Homepage;

@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 
 export const Loading = () => {
-  console.log("here");
   return (
     <Wrapper>
       <Styledh2>LOADING...</Styledh2>

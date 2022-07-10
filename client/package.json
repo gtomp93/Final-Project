@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@auth0/auth0-react": "^1.6.0",
     "@googlemaps/js-api-loader": "^1.12.1",
@@ -26,10 +26,10 @@
   },
   "scripts": {
     "start-client": "react-scripts start",
-    "build": "react-scripts build && (cd server && yarn install)",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "cd server && yarn start"
+    "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [

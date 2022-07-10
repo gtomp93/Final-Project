@@ -6,7 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserContextProvider } from "./UserContext";
 import { MapContextProvider } from "./MapContext";
-import { GameContextProvider } from "./GameContext";
+// import { GameContextProvider } from "./GameContext";
 import { MapCreationContextProvider } from "./MapCreationContext";
 import { ModalContextProvider } from "./ModalContext";
 
@@ -24,13 +24,13 @@ ReactDOM.render(
     // }
   >
     <UserContextProvider>
-      <GameContextProvider>
-        <MapCreationContextProvider>
-          <ModalContextProvider>
-            <App />
-          </ModalContextProvider>
-        </MapCreationContextProvider>
-      </GameContextProvider>
+      {/* <GameContextProvider> */}
+      <MapCreationContextProvider>
+        <ModalContextProvider>
+          <App />
+        </ModalContextProvider>
+      </MapCreationContextProvider>
+      {/* </GameContextProvider> */}
     </UserContextProvider>
   </Auth0Provider>,
   document.getElementById("root")

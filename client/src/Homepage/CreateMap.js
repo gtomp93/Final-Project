@@ -19,7 +19,7 @@ const CreateMap = () => {
       }}
       style={{ cursor: "pointer" }}
     >
-      <SubTitle>Create Map</SubTitle>
+      <SubTitle style={{ margin: "10px 0 10px" }}>Create Map</SubTitle>
       <Image src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1932939785.jpg" />
     </CreateContainer>
   );
@@ -31,6 +31,8 @@ const Image = styled.img`
   width: 100%;
   height: 92%;
   object-fit: cover;
+  min-height: 0;
+  flex: 1;
   /* object-position: ; */
   border-radius: 6px;
 `;

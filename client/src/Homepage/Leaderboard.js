@@ -66,6 +66,10 @@ const StyledContainer = styled(Container)`
   );
   background-size: 400%; */
 
+  @media (max-width: 1149px) {
+    height: 500px;
+  }
+
   /* animation: ${movingBackground} 7s forwards infinite; */
   display: flex;
   flex-direction: column;
@@ -77,6 +81,21 @@ const ScrollContainer = styled.div`
   overflow-y: auto;
   width: 100;
   height: 100%;
+  &::-webkit-scrollbar {
+    width: 15px;
+    /* position: absolute; */
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    background: rgba(250, 250, 250, 0.4);
+    width: 15px;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 15px;
+    background: rgba(157, 156, 156, 0.7);
+    border-radius: 8px;
+  }
 `;
 
 const StyledTable = styled.table`

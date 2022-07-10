@@ -14,19 +14,19 @@ const GameOptions = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const [playerMode, setPlayerMode] = useState(null);
   const [timeMode, setTimeMode] = useState(null);
+  // const [gameLoaded, setGameLoaded] = useState(false);
   let navigate = useNavigate();
+  const [gameLink, setGameLink] = useState(null); // const {
+  //   gameState: { error, locations, _id, gameLink },
+  //   dispatch,
+  //   setSelected,
+  //   timed,
+  // } = useContext(GameContext);
 
-  const {
-    gameState: { error, locations, _id, gameLink },
-    dispatch,
-    setSelected,
-    timed,
-  } = useContext(GameContext);
-
-  const createGame = async (id, timeMode) => {
+  const createGame = async (timeMode) => {
     let randomLocations = null;
-    let _id = null;
     let mapName = null;
+    let gameId = null;
     await fetch(`/locations/${id}`)
       .then((res) => res.json())
       .then((res) => {
@@ -34,7 +34,8 @@ const GameOptions = () => {
         mapName = res.name;
       })
       .catch((err) => {
-        dispatch({ type: "error", error: err.stack });
+        // dispatch({ type: "error", error: err.stack });
+        console.log(err.stack);
       });
 
     await fetch("/createGame", {
@@ -54,22 +55,23 @@ const GameOptions = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res.gameId);
-        _id = res.gameId;
-        dispatch({
-          type: "createGame",
-          locations: randomLocations,
-          timeMode,
-          playerMode,
-          _id: res.gameId,
-        });
+        gameId = res.gameId;
+        // dispatch({
+        //   type: "createGame",
+        //   locations: randomLocations,
+        //   timeMode,
+        //   playerMode,
+        //   _id: res.gameId,
+        // });
         if (playerMode === "single") {
           console.log("going to game");
-          navigate(`/map/${_id}`);
+          navigate(`/map/${gameId}`);
+        } else {
+          setGameLink(`https://mapguesser-server.herokuapp.com/map/${gameId}`);
+          return gameId;
         }
       });
   };
-
-  console.log({ playerMode });
 
   return (
     <Container>
@@ -153,7 +155,7 @@ const GameOptions = () => {
             <StartGame
               onClick={async () => {
                 let gameId = null;
-                gameId = await createGame(id, timeMode);
+                gameId = await createGame(timeMode);
                 console.log(gameId);
               }}
             >
@@ -164,17 +166,25 @@ const GameOptions = () => {
           playerMode === "multi" && (
             <StartGame
               onClick={async () => {
-                await createGame(id, timeMode);
+                await createGame(timeMode);
               }}
             >
               Create Game
             </StartGame>
           )}
-        {_id && <div>Game Link: {gameLink}</div>}
+        {gameLink && (
+          <div>
+            <h2 style={{ marginBottom: "10px" }}>
+              Copy this link and send it to your friends to play multiplayer
+              mode:{" "}
+            </h2>
+            <h3>{gameLink}</h3>
+          </div>
+        )}
         {gameLink && (
           <StartGame
             onClick={() => {
-              navigate(`/map/${_id}`);
+              navigate(`/map/${id}`);
             }}
           >
             Start

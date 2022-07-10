@@ -34,8 +34,6 @@ const Search = ({ showModal, setShowModal }) => {
     debounceFunc(e.target.value);
   };
 
-  console.log(suggestions);
-
   return (
     <Container>
       <Searchbar
@@ -79,7 +77,7 @@ const Searchbar = styled.input`
   position: relative;
   z-index: 2;
   width: 200px;
-  background-color: #eae9ebbb;
+  background-color: #eae9ebd0;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 10%);
   height: 30px;

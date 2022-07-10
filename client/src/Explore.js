@@ -19,18 +19,12 @@ const Explore = () => {
   const [games, setGames] = useState(null);
   const [updatePage, setUpdatePage] = useState(false);
   const { currentUser } = useContext(UserContext);
-  const { setSelected, dispatch, resetMap } = useContext(GameContext);
+  // const { setSelected, dispatch, resetMap } = useContext(GameContext);
   const [fullList, setFullList] = useState(null);
   const { status, setStatus } = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
-  console.log(page, "page");
-  console.log({ showModal });
-
-  useEffect(() => {
-    if (id) setShowModal(id);
-    return () => setShowModal(null);
-  }, []);
+  // const { setTimer } = useContext(GameContext);
 
   useEffect(() => {
     fetch(`/getGames?page=${page}`)
@@ -39,18 +33,20 @@ const Explore = () => {
         setGames(res.result);
         setFullList(res.result);
       });
-    dispatch({ type: "clearGame" });
+    // dispatch({ type: "clearGame" });
   }, [currentUser, updatePage, page]);
 
   return (
     <>
-      <Container>
+      <Container full={games?.length > 19}>
         <ParallaxWrapper>
           {status && <Error status={status} setStatus={setStatus} />}
-          <Background
-            /*src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg" src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg"*/
-            src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg"
-          />
+          {games?.length > 19 && (
+            <Background
+              /*src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/pexels-pixabay-87651.jpg" src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg"*/
+              src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg"
+            />
+          )}
 
           {/* <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/287620190-huge.jpg" /> */}
           {games ? (
@@ -93,18 +89,20 @@ const Explore = () => {
                     Previous
                   </Page>
                 )}
-                <Page
-                  // to="/explore/?page="
-                  style={{ color: "white" }}
-                  onClick={() =>
-                    setSearchParams(
-                      { page: page + 1 }
-                      // pg ? { page: pg + 1 } : { page: 2 }
-                    )
-                  }
-                >
-                  Next
-                </Page>
+                {games.length > 19 && (
+                  <Page
+                    // to="/explore/?page="
+                    style={{ color: "white" }}
+                    onClick={() =>
+                      setSearchParams(
+                        { page: page + 1 }
+                        // pg ? { page: pg + 1 } : { page: 2 }
+                      )
+                    }
+                  >
+                    Next
+                  </Page>
+                )}
               </PageContainer>
             </GamesWrapper>
           ) : (
@@ -126,6 +124,13 @@ const Container = styled.div`
   overflow-x: hidden;
   perspective: 10px;
   perspective-origin: bottom;
+  background-image: ${({ full }) =>
+    full
+      ? "none"
+      : `url(
+      https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg
+    )`};
+  background-size: cover;
   /* position: relative; */
   /* background: black; */
 `;
@@ -235,7 +240,11 @@ const Background = styled.img`
     /* top: 1400px; */
     /* height: 32%; */
     /* } */
+
     height: 50.3%;
+  }
+  @media (min-height: 1246px) {
+    top: -500px;
   }
   /* @media (min-width: 756px) {
     /* top: 300px; */
@@ -246,8 +255,8 @@ const Background = styled.img`
     top: -400px;
     height: 56.4%;
   }
-  @media (min-height: 900px) and (min-width: 1148px) and (max-width: 1400px) {
-    top: -400px;
+  @media (min-height: 900px) and (min-width: 1148px) {
+    top: -450px;
     /* top: -1000px; */
     height: 56.5%;
   }
@@ -255,7 +264,6 @@ const Background = styled.img`
   @media (min-height: 900px) and (min-width: 1400px) and (max-width: 1525px) {
     top: -450px;
     /* top: -1000px; */
-    height: 57%;
   }
 
   @media (min-width: 1526px) {
@@ -285,7 +293,6 @@ const Background = styled.img`
   /* top: -270px; */
   /* } */
 `;
-
 const Likes = styled.span``;
 
 export default Explore;

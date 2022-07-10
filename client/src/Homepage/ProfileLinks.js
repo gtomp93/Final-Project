@@ -6,16 +6,14 @@ import { Container } from "./styledComponents";
 
 const ProfileLinks = () => {
   return (
-    <Container>
+    <StyledContainer>
       <Wrapper>
         <StyledLink to="/profile">
           <Title>Liked Maps</Title>
-          <FiHeart
+          <StyledFiHeart
             style={{
-              width: "80%",
               height: "80%",
               display: "block",
-              margin: "0 auto",
               fill: "lightpink",
             }}
           />
@@ -23,12 +21,10 @@ const ProfileLinks = () => {
         <StyledLink to="/profile/created">
           {" "}
           <Title>Created Maps</Title>
-          <FiMapPin
+          <StyledFiMapPin
             style={{
-              width: "80%",
               height: "75%",
               display: "block",
-              margin: "0 auto",
               fill: "lightgreen",
             }}
           />
@@ -36,22 +32,25 @@ const ProfileLinks = () => {
         <StyledLink to="/profile/active">
           {" "}
           <Title>Active Games</Title>
-          <FiMap
+          <StyledFiMap
             style={{
-              width: "80%",
               height: "80%",
-              display: "block",
-              margin: "0 auto",
+
               fill: "green",
             }}
           />
         </StyledLink>
       </Wrapper>
-    </Container>
+    </StyledContainer>
   );
 };
 
 export default ProfileLinks;
+
+const StyledContainer = styled(Container)`
+  /* box-sizing: content-box; */
+  padding-bottom: 10px;
+`;
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -59,24 +58,68 @@ const StyledLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  display: block;
+  justify-content: space-between;
+  /* display: block; */
   /* border: 1px solid red; */
   &:hover {
     transform: scale(1.04);
   }
+  @media (max-width: 1499px) {
+    height: 33%;
+    flex-direction: row;
+    /* width: auto; */
+  }
+  @media (max-width: 1149px) {
+    flex-direction: column;
+    height: 100%;
+  }
 `;
-
 const Title = styled.h2`
   font-size: 35px;
   text-align: center;
+  @media (max-width: 1499px) {
+    font-size: 40px;
+  }
 `;
 
 const Wrapper = styled.div`
   margin: 0 auto;
   height: 100%;
-  display: flex;
   width: 100%;
+  display: flex;
+  @media (max-width: 1499px) {
+    flex-direction: column;
+    width: 80%;
+  }
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 1149px) {
+    height: 180px;
+    flex-direction: row;
+  }
+`;
+
+const StyledFiMap = styled(FiMap)`
+  width: 33%;
+  @media (min-width: 1500px) {
+    width: 80%;
+  }
+`;
+
+const StyledFiMapPin = styled(FiMapPin)`
+  width: 25%;
+  width: 33%;
+
+  @media (min-width: 1500px) {
+    width: 80%;
+  }
+`;
+
+const StyledFiHeart = styled(FiHeart)`
+  width: 25%;
+  width: 33%;
+
+  @media (min-width: 1500px) {
+    width: 80%;
+  }
 `;

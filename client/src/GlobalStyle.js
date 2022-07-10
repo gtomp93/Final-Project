@@ -30,6 +30,12 @@ justify-content:center;
     /* background-color: rgba(0,0,0,0.9); */
     /* overflow-y: hidden ; */
   /* background-color: red ; */
+  /* &::-webkit-scrollbar-track {
+    background: green;
+  }
+  ::-webkit-scrollbar {
+  width: 10px;
+} */
     margin: 0 ;
     padding: 0;
     background: linear-gradient(

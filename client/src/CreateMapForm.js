@@ -1,8 +1,10 @@
 import { MapCreationContext } from "./MapCreationContext";
 import { Link } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { GameContext } from "./GameContext";
 const CreateMapForm = () => {
+  const { setTimer } = useContext(GameContext);
   const { dispatch } = useContext(MapCreationContext);
   const [submitted, setSubmitted] = useState(false);
   const [required, setRequired] = useState(false);
@@ -13,12 +15,13 @@ const CreateMapForm = () => {
     pic: "",
   });
   const [state, setState] = useState("Hello");
-
   const fillForm = (key, value) => {
     setMapForm({ ...mapForm, [key]: value });
   };
 
-  console.log(mapForm);
+  useEffect(() => {
+    setTimer(60);
+  }, []);
 
   return (
     <Background>
