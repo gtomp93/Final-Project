@@ -23,7 +23,7 @@ export const UserContextProvider = ({ children }) => {
         // localStorage.setItem("userinlocal", JSON.stringify(user));
 
         let email = user.email;
-        await fetch("/checkusers", {
+        await fetch("https://mapguesser-server.herokuapp.com/api/checkusers", {
           method: "POST",
           body: JSON.stringify({ email }),
           headers: {
@@ -47,7 +47,7 @@ export const UserContextProvider = ({ children }) => {
             games: [],
             score: 0,
           });
-          await fetch("/users", {
+          await fetch("https://mapguesser-server.herokuapp.com/api/users", {
             method: "POST",
             body: JSON.stringify({
               email,
@@ -83,57 +83,6 @@ export const UserContextProvider = ({ children }) => {
     ) {
       setStatus("noName");
     }
-    // }
-
-    // const addUser = async () => {
-    //   let doesNotExist = false;
-
-    //   if (isAuthenticated && !isLoading) {
-    //     localStorage.setItem("userinlocal", JSON.stringify(user));
-    //     let email = user.email;
-    //     await fetch("/checkusers", {
-    //       method: "POST",
-    //       body: JSON.stringify({email}),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     })
-    //       .then((res) => res.json())
-    //       .then((res) => {
-    //         userInfo = res.userInfo;
-    //         doesNotExist = res.doesNotExist;
-    //       });
-
-    //     if (doesNotExist) {
-    //       setCurrentUser({
-    //         email,
-    //         givenName: user.given_name,
-    //         lastName: user.family_name,
-    //         picture: user.picture,
-    //         likes: 0,
-    //         games: 0,
-    //         score: 0,
-    //       });
-    //       await fetch("/users", {
-    //         method: "POST",
-    //         body: JSON.stringify({
-    //           email,
-    //           givenName: user.given_name,
-    //           lastName: user.family_name,
-    //           picture: user.picture,
-    //           likes: 0,
-    //           games: 0,
-    //           score: 0,
-    //         }),
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       });
-    //     } else {
-    //       setCurrentUser(userInfo);
-    //     }
-    //   }
-    // };
   }, [isAuthenticated, isLoading, reloadUser]);
 
   return (

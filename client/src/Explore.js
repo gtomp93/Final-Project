@@ -19,7 +19,7 @@ const Explore = () => {
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
   useEffect(() => {
-    fetch(`/getGames?page=${page}`)
+    fetch(`https://mapguesser-server.herokuapp.com/api/getGames?page=${page}`)
       .then((res) => res.json())
       .then((res) => {
         setGames(res.result);
@@ -30,7 +30,9 @@ const Explore = () => {
     <>
       <Container full={games?.length > 19}>
         <ParallaxWrapper>
-          {status && <Error status={status} setStatus={setStatus} />}
+          {status && status !== "noName" && (
+            <Error status={status} setStatus={setStatus} />
+          )}
           {games?.length > 19 && (
             <Background src="https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_693729124.jpg" />
           )}

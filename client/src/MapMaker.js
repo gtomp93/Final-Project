@@ -15,6 +15,7 @@ import { MapCreationContext } from "./MapCreationContext";
 const streetViewStyle = {
   width: "75%",
   height: "250px",
+  zIndex: "0",
 };
 
 const libraries = ["places"];
@@ -111,7 +112,7 @@ const BackgroundContainer = styled.div`
   background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1228111945.jpg");
   background-size: cover;
   width: 100%;
-  height: calc(100% - 44px);
+  min-height: calc(100vh - 44px);
   display: grid;
   place-items: center;
 `;

@@ -19,14 +19,14 @@ const Homepage = () => {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    fetch("/getTopPlayers")
+    fetch("https://mapguesser-server.herokuapp.com/api/getTopPlayers")
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.data);
       });
   }, []);
   useEffect(() => {
-    fetch("/featuredMaps")
+    fetch("https://mapguesser-server.herokuapp.com/api/featuredMaps")
       .then((res) => res.json())
       .then((data) => {
         setMaps(data.result);
@@ -35,7 +35,9 @@ const Homepage = () => {
 
   return (
     <Container users={users} maps={maps}>
-      {status && <Error status={status} setStatus={setStatus} />}
+      {status && status !== "noName" && (
+        <Error status={status} setStatus={setStatus} />
+      )}
 
       {users && maps ? (
         <>

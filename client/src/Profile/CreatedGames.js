@@ -32,7 +32,7 @@ const CreatedGames = () => {
           <Link to="/CreateMapForm" style={{ color: "lightskyblue" }}>
             created any games
           </Link>{" "}
-          yet
+          yet. Try refreshing if you don't see recently created games
         </Message>
       )}
     </>
@@ -55,4 +55,7 @@ const GamesContainer = styled.div`
 const Message = styled.h2`
   color: white;
   margin-top: 20px;
+  max-width: 500px;
+  width: 95%;
+  text-align: center;
 `;

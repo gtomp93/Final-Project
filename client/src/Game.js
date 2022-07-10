@@ -24,7 +24,7 @@ const Game = ({ game, isLiked, index, type }) => {
     }
 
     setLiked(!liked);
-    fetch(`/likeGame/${game._id}`, {
+    fetch(`https://mapguesser-server.herokuapp.com/api/likeGame/${game._id}`, {
       method: "PATCH",
       body: JSON.stringify({
         liked: !liked,
@@ -36,16 +36,19 @@ const Game = ({ game, isLiked, index, type }) => {
       res.json();
     });
 
-    await fetch(`/addLikeToUser/${currentUser._id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        likedGame: game._id,
-        liked: !liked,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    await fetch(
+      `https://mapguesser-server.herokuapp.com/api/addLikeToUser/${currentUser._id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          likedGame: game._id,
+          liked: !liked,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         if (!liked) {

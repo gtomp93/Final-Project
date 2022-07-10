@@ -19,7 +19,9 @@ const Search = ({ showModal, setShowModal }) => {
   }, [ref]);
 
   const debounceFunc = _debounce((inputText) => {
-    fetch(`/searchMaps?searchQuery=${inputText}`)
+    fetch(
+      `https://mapguesser-server.herokuapp.com/api/searchMaps?searchQuery=${inputText}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setSuggestions(data.data);

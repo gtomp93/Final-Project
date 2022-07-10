@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import LoginButton from "./LoginButton";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { FiUser } from "react-icons/fi";
 import { BiWorld, BiMap } from "react-icons/bi";
+import { UserContext } from "./UserContext";
 
 const Header = () => {
   const { isAuthenticated } = useAuth0();
+  let Navigate = useNavigate();
+  const { currentUser, setStatus } = useContext(UserContext);
 
   return (
     <>
       <HeaderContainer>
-        {isAuthenticated && (
-          <Create to={"/CreateMapForm"}>
-            <BiMap size={"25px"} />
-            <Nav>{isAuthenticated ? "Create Map" : "MapGuesser"}</Nav>
-          </Create>
-        )}
+        <SearchWrapper to="/explore">
+          <FiSearch style={{ color: "#5a7bb0" }} size={25} />
+          <Nav>Explore</Nav>
+        </SearchWrapper>
         <Link
           style={{
             display: "flex",
@@ -31,10 +32,21 @@ const Header = () => {
           <BiWorld size={"40px"} style={{ color: "#5a7bb0" }} />
           <h1 style={{ marginBottom: "0", color: "#5a7bb0" }}> MapGuesser</h1>
         </Link>
-        <SearchWrapper to="/explore">
-          <FiSearch style={{ color: "#5a7bb0" }} size={25} />
-          <Nav>Explore</Nav>
-        </SearchWrapper>
+        {isAuthenticated && (
+          <Create
+            to={"/CreateMapForm"}
+            onClick={() => {
+              if (currentUser) {
+                Navigate("/CreateMapForm");
+              } else {
+                setStatus({ error: "create" });
+              }
+            }}
+          >
+            <BiMap size={"25px"} />
+            <Nav>{isAuthenticated ? "Create Map" : "MapGuesser"}</Nav>
+          </Create>
+        )}
         {isAuthenticated && (
           <ProfileLink to="/profile">
             <ProfileIcon size={"25px"} />

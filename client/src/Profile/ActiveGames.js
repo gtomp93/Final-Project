@@ -10,7 +10,7 @@ const ActiveGames = () => {
   const { currentUser } = useContext(UserContext);
   const [activeGames, setActiveGames] = useState(null);
   useEffect(() => {
-    fetch("/getMaps", {
+    fetch("https://mapguesser-server.herokuapp.com/api/getMaps", {
       method: "PATCH",
       body: JSON.stringify({ games: currentUser.games }),
       headers: {
@@ -125,6 +125,12 @@ const ActiveGames = () => {
               );
             }
           })}
+        {activeGames.length === 0 && (
+          <Message>
+            You haven't played any games yet. Try refreshing page if you don't
+            see a recent game!
+          </Message>
+        )}
       </Complete>
     </Container>
   );
@@ -174,4 +180,9 @@ const LastPlayed = styled.p`
   @media (max-width: 800px) {
     font-size: 16px;
   }
+`;
+
+const Message = styled.h2`
+  color: white;
+  margin-top: 20px;
 `;

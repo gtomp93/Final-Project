@@ -12,7 +12,7 @@ const AddNameModal = () => {
   const closeModal = (ev) => {
     ev.preventDefault();
     if (name.firstName?.length > 0 && name.lastName?.length > 0) {
-      fetch("/addName", {
+      fetch("https://mapguesser-server.herokuapp.com/api/addName", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
