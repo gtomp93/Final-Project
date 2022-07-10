@@ -42,8 +42,6 @@ const MapMaker = () => {
     return "loading maps";
   }
 
-  console.log(mapState.addresses);
-
   return (
     <BackgroundContainer>
       <InnerContainer>
@@ -57,7 +55,6 @@ const MapMaker = () => {
             <div>Your added locations will appear here</div>
           )}
           {mapState.addresses.map((address, index) => {
-            console.log(mapState.addresses[index]);
             return (
               <div style={{ border: "1px solid black" }}>
                 <MapItem address={address} dispatch={dispatch} index={index} />

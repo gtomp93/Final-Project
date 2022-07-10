@@ -1,12 +1,10 @@
 import React from "react";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
-import {FiLogIn} from "react-icons/fi";
+import { FiLogIn } from "react-icons/fi";
 
 const LoginButton = () => {
-  const {loginWithRedirect} = useAuth0();
-
-  //   console.log(user);
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <Login onClick={() => loginWithRedirect()}>

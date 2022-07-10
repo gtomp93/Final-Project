@@ -24,23 +24,16 @@ const LocationInput = ({
   const [location, setLocation] = useState(null);
   const [deleted, setDeleted] = useState(false);
 
-  console.log(index, disabled);
-
   let latitude = null;
   let longitude = null;
 
-  console.log("status", status);
-
   const searchLocation = (input, index) => {
-    console.log("indexInHere", index);
-
     Geocode.fromAddress(input)
       .then(
         (response) => {
           const { lat, lng } = response.results[0].geometry.location;
           latitude = lat;
           longitude = lng;
-          console.log(lat, lng);
         },
         (error) => {
           console.error(error);
@@ -48,7 +41,6 @@ const LocationInput = ({
         }
       )
       .then((res) => {
-        console.log(latitude, longitude);
         if (latitude && longitude) {
           getCoords(latitude, longitude, locationsList[index], index);
           setLocation({ lat: latitude, lng: longitude });
@@ -56,9 +48,6 @@ const LocationInput = ({
         }
       });
   };
-
-  console.log("index", index);
-  console.log("locationsList", locationsList);
 
   return (
     <>

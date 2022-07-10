@@ -22,12 +22,6 @@ const initial = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "addMapData":
-      console.log({
-        ...state,
-        name: action.name,
-        description: action.description,
-        pic: action.pic,
-      });
       return {
         ...state,
         name: action.name,
@@ -75,7 +69,6 @@ export const MapCreationContextProvider = ({ children }) => {
     let url = null;
 
     if (mapState.pic) {
-      console.log("spot1");
       await fetch("/s3url")
         .then((res) => res.json())
         .then((res) => {

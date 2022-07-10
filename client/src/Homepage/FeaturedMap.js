@@ -6,7 +6,6 @@ import { ModalContext } from "../ModalContext";
 import { UserContext } from "../UserContext";
 const FeaturedMap = ({ game, isLiked }) => {
   const { showModal, setShowModal } = useContext(ModalContext);
-  console.log(showModal, "showModal", game._id === showModal);
   const navigate = useNavigate();
 
   const { currentUser, setStatus } = useContext(UserContext);

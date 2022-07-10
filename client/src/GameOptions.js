@@ -54,7 +54,6 @@ const GameOptions = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.gameId);
         gameId = res.gameId;
         // dispatch({
         //   type: "createGame",
@@ -64,7 +63,6 @@ const GameOptions = () => {
         //   _id: res.gameId,
         // });
         if (playerMode === "single") {
-          console.log("going to game");
           navigate(`/map/${gameId}`);
         } else {
           setGameLink(`https://mapguesser-server.herokuapp.com/map/${gameId}`);
@@ -156,7 +154,6 @@ const GameOptions = () => {
               onClick={async () => {
                 let gameId = null;
                 gameId = await createGame(timeMode);
-                console.log(gameId);
               }}
             >
               Start

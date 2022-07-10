@@ -7,10 +7,6 @@ import { FiLoader } from "react-icons/fi";
 import { UserContext } from "../UserContext";
 
 export const Loading = () => {
-  console.log("loading");
-  let img =
-    "https://www.google-maps-bucket.s3.us-east-2.amazonaws.com/world map stock photo.jpg";
-
   return <Wrapper speed={1000}></Wrapper>;
 };
 

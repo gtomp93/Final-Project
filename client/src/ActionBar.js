@@ -59,17 +59,12 @@ const ActionBar = ({
       </CommentBox>
       <StartGame
         onClick={(ev) => {
-          // if (featured) {
-          //   console.log("hello");
-          //   ev.stopPropagation();
-          // }
           setShowModal(false);
 
           if (!currentUser) {
             setStatus({ error: "play" });
             ev.preventDefault();
             ev.stopPropagation();
-            console.log("hello?");
             return;
           }
         }}
@@ -155,10 +150,6 @@ const ActionBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: ${({ featured }) => (featured ? "4px" : "10px")};
-  @media (min-width: 769px) {
-    /* width: 93%; */
-  }
-  /* height: 100%; */
 `;
 
 export default ActionBar;

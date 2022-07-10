@@ -30,8 +30,6 @@ const MapInput = ({ dispatch, index, address }) => {
     }
   }, [value]);
 
-  console.log(value);
-
   return (
     <Container>
       <Option

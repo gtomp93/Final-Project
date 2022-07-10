@@ -109,24 +109,7 @@ const Map = () => {
     dispatch,
   } = useContext(GameContext);
 
-  console.log({
-    zoom,
-    guessed,
-    locations,
-    thirdPoint,
-    center,
-    locationIndex,
-    points,
-    gameScore,
-    endGame,
-    stop,
-    guessDistance,
-    guess,
-    otherPlayerData,
-    timeMode,
-  });
   const { currentUser } = useContext(UserContext);
-  console.log(center);
   useEffect(() => {
     if (!locations && currentUser) {
       fetch(`/getMap/${id}`, {
@@ -159,7 +142,6 @@ const Map = () => {
             locationIndex: data.locationIndex,
             otherPlayerData: data.otherPlayerData,
           });
-          console.log({ res, data });
           if (data.guessed && data.timeMode === "timed") {
             setTimer(0);
           } else if (!data.guessed && data.timeMode === "timed") {
@@ -174,21 +156,14 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    console.log("zin2");
-
     if (guessed) {
-      console.log("zin3");
       setTimer(60);
     }
   }, []);
 
   useEffect(() => {
-    console.log("xen1", { timeMode, guessed });
     if (timeMode === "timed" && guessed === false) {
-      console.log("xen2");
-
       if (timer === 0 && guessed === false) {
-        console.log("testing");
         submitGuess(
           midpoint ? midpoint.lat() : null,
           midpoint ? midpoint.lng() : null,
@@ -219,12 +194,10 @@ const Map = () => {
   let answerCoords = locations ? locations[locationIndex] : null;
 
   let answer = new window.google.maps.LatLng(answerCoords);
-  console.log({ otherPlayerData });
   const mapClickHandler = (ev) => {
     let testPointLng = null;
     setTimeout(() => {
       clickSpot = ev.latLng;
-      // console.log(ev.latLng.lng(), "lng", ev.latLng.lat(), "lat");
       setClickedLng(ev.latLng.lng());
       setClickedLat(ev.latLng.lat());
       setDistance(
@@ -273,8 +246,6 @@ const Map = () => {
     return "loading";
   }
 
-  // console.log(locationIndex, "locindex");
-  // console.log(otherPlayerData);
   return (
     <>
       <PageContainer picture={currentUser.picture} style={{}} beforeunload>
@@ -347,11 +318,7 @@ const Map = () => {
                         {otherPlayerData &&
                           otherPlayerData.map((player) => {
                             let playerData = player.gameData[locationIndex];
-                            console.log([
-                              playerData?.guess,
-                              playerData?.thirdPoint,
-                              locations[locationIndex],
-                            ]);
+
                             return playerData ? (
                               <>
                                 {guess && (

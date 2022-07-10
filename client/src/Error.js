@@ -9,7 +9,6 @@ import LoginButton from "./LoginButton";
 
 const Error = () => {
   const { setStatus, status } = useContext(UserContext);
-  console.log("Hello?");
   return ReactDOM.createPortal(
     <Container>
       <Message>

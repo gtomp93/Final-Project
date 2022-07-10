@@ -62,8 +62,7 @@ const addUser = async (req, res) => {
     });
     res.status(200).json({ status: 200, updated: _id });
   } catch (err) {
-    console.log(err);
-    res.status(404).json({ status: 404 });
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -146,8 +145,6 @@ const getTopPlayers = async (req, res) => {
       .limit(17)
       .toArray();
 
-    // console.log(players);
-
     res.status(200).json({ data: players, status: 200 });
   } catch (err) {
     res.status(404).json({ status: 404, message: "not found" });
@@ -165,17 +162,13 @@ const getGame = async (req, res) => {
     const { _id } = req.params;
 
     await client.connect();
-    console.log(_id);
-    // const Game_Modes = db.collection;
 
     const result = await db.collection("Game_Modes").findOne({ _id });
-
-    // const result = Game_Modes.aggregate([{$unwind: "$locations"}]);
 
     res.status(200).json({ status: 200, result });
     client.close();
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -194,7 +187,7 @@ const updateUserScore = async (req, res) => {
 
     res.status(200).json({ status: 200, updated: _id });
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -217,7 +210,7 @@ const CreateMap = async (req, res) => {
     res.status(200).json({ status: 200, _id, result });
   } catch (err) {
     res.status(404).json({ err });
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -239,7 +232,7 @@ const deleteGame = async (req, res) => {
 
     res.status(204).json({ status: 200, deleted: _id });
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -250,13 +243,10 @@ const createGame = async (req, res) => {
   const db = client.db("Final_Project");
 
   const { locations, player, mode, timeMode, icon, name } = req.body;
-  console.log(locations, mode);
   try {
     await client.connect();
     const _id = uuidv4();
     let result = null;
-
-    console.log(player);
 
     let newMultiplayerGame = {
       _id,
@@ -268,8 +258,6 @@ const createGame = async (req, res) => {
         { player, icon, gameData: [], guessed: false, time: Date.now() },
       ],
     };
-
-    console.log(newMultiplayerGame);
 
     if (mode === "multi")
       result = await db.collection("Games").insertOne(newMultiplayerGame);
@@ -319,8 +307,6 @@ const submitGuess = async (req, res) => {
       midPoint,
     } = req.body;
 
-    // console.log(req.body);
-
     let result = null;
     await client.connect();
 
@@ -343,7 +329,6 @@ const submitGuess = async (req, res) => {
     }
 
     if (mode === "multi") {
-      console.log("aightt");
       result = await db.collection("Games").updateOne(
         { _id, "players.player": player },
         {
@@ -363,7 +348,6 @@ const submitGuess = async (req, res) => {
         }
       );
     }
-    // console.log(result);
     res.status(200).json({ status: 200 });
   } catch (err) {
     console.log(err.stack);
@@ -378,7 +362,6 @@ const nextLocation = async (req, res) => {
 
   try {
     const { mode, _id, player } = req.body;
-    // console.log(req.body);
     await client.connect();
     if (mode === "single") {
       await db
@@ -412,7 +395,6 @@ const retrieveMap = async (req, res) => {
     const {
       currentUser: { email, picture },
     } = req.body;
-    console.log(email, picture, "player");
     await client.connect();
 
     let game = await db.collection("Games").findOne({ _id });
@@ -421,7 +403,6 @@ const retrieveMap = async (req, res) => {
       game.type === "multi" &&
       !game.players.some((item) => item.player === email)
     ) {
-      console.log("we in here");
       game.players.push({
         player: email,
         gameData: [],
@@ -464,15 +445,12 @@ const retrieveMap = async (req, res) => {
     let zoom = 2;
     let otherPlayerData = null;
 
-    console.log(guessed, 1);
-
     if (game.type === "single") {
       gameProgress = game.gameData.length;
       endGame = gameProgress >= 5;
       game.gameData.forEach((round) => {
         gameScore += round.score;
       });
-      console.log({ gameProgress, game });
       if (game.guessed) {
         guessed = true;
         locationIndex = gameProgress - 1;
@@ -485,7 +463,6 @@ const retrieveMap = async (req, res) => {
     }
     if (game.type === "multi") {
       let playerGame = game.players.find((item) => item.player === email);
-      console.log(playerGame, "playergame");
       gameProgress = playerGame.gameData.length;
       endGame = gameProgress >= 5;
       otherPlayerData = game.players.filter((user) => {
@@ -497,7 +474,6 @@ const retrieveMap = async (req, res) => {
       });
       if (playerGame.guessed) {
         guessed = true;
-        console.log(guessed, 2);
         points = playerGame.gameData[gameProgress - 1].score;
         locationIndex = gameProgress - 1;
         distance = playerGame.gameData[gameProgress - 1].distance;
@@ -509,7 +485,6 @@ const retrieveMap = async (req, res) => {
 
     if (guessed) {
       if (distance > 3000000) {
-        console.log("heeeere");
         zoom = 1;
       } else if (distance > 1000000 && (guess.lat > 58 || guess.lat < -58)) {
         zoom = 2;
@@ -535,22 +510,6 @@ const retrieveMap = async (req, res) => {
         zoom = 11;
       }
     }
-    console.log({
-      points,
-      timeMode,
-      endGame,
-      gameScore,
-      locationIndex,
-      distance,
-      guessed,
-      thirdPoint,
-      guess,
-      midPoint,
-      playerMode: game.type,
-      locations: game.locations,
-      zoom,
-      otherPlayerData,
-    });
 
     res.status(200).json({
       status: 200,
@@ -611,13 +570,11 @@ const loadOtherPlayers = async (req, res) => {
     await client.connect();
 
     let gameInfo = await db.collection("Games").findOne({ _id });
-    console.log(gameInfo);
     let data = gameInfo
       ? gameInfo.players.filter((user) => {
           return user.player !== player;
         })
       : null;
-    console.log(data, "data");
     if (!data.length) {
       data = null;
     }
@@ -646,7 +603,7 @@ const AddMapToUser = async (req, res) => {
 
     res.status(200).json({ status: 200, updated: _id });
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -668,7 +625,7 @@ const removeGameFromUser = async (req, res) => {
 
     res.status(200).json({ status: 200, updated: _id });
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -681,7 +638,6 @@ const getGames = async (req, res) => {
   try {
     const { page } = req.query;
     let indexStart = (Number(page) - 1) * 20;
-    console.log(req.query);
     await client.connect();
     let result = null;
     if (page > 1) {
@@ -692,7 +648,6 @@ const getGames = async (req, res) => {
         .limit(20)
         .toArray();
     } else {
-      console.log("we in here");
       result = await db.collection("Game_Modes").find().limit(20).toArray();
     }
 
@@ -721,7 +676,6 @@ const getFeaturedMaps = async (req, res) => {
       .collection("Game_Modes")
       .find({ _id: { $in: maps } })
       .toArray();
-    console.log("mappy", result);
 
     res.status(200).json({ status: 200, result });
   } catch (err) {
@@ -754,9 +708,9 @@ const likeGame = async (req, res) => {
     }
 
     res.status(200).json({ status: 200, updated: _id });
+    // res.status(404).json({ status: 404, message: "not found" });
   } catch (err) {
-    res.status(404).json({ status: 404, message: "not found" });
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -807,8 +761,7 @@ const addToLikes = async (req, res) => {
 
     res.status(200).json({ status: 200, result });
   } catch (err) {
-    res.status(404).json({ status: 404, message: "Not Found" });
-    console.log(err);
+    console.log(err.stack);
   } finally {
     await client.close();
   }
@@ -828,7 +781,6 @@ const getPlayerGames = async (req, res) => {
 
     res.status(200).json({ status: 200, data: results });
   } catch (err) {
-    res.status(404).json({ status: 404, message: "Not Found" });
     console.log(err.stack);
   } finally {
     await client.close();
@@ -838,7 +790,6 @@ const getPlayerGames = async (req, res) => {
 const getS3url = async (req, res) => {
   try {
     const url = await generateUploadURL();
-    console.log("url", url);
     res.status(200).json({ status: 200, url });
   } catch (err) {
     console.log(err);
@@ -853,8 +804,6 @@ const searchMaps = async (req, res) => {
     await client.connect();
 
     const { searchQuery } = req.query;
-    console.log(req.query);
-    console.log({ searchQuery });
 
     await db
       .collection("Game_Modes")
@@ -864,8 +813,6 @@ const searchMaps = async (req, res) => {
       .collection("Game_Modes")
       .find({ $text: { $search: searchQuery, $caseSensitive: false } })
       .toArray();
-
-    console.log({ games });
 
     if (games) {
       res.status(200).json({ status: 200, data: games });

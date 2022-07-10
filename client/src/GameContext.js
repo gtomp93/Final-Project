@@ -113,7 +113,6 @@ export const GameContextProvider = ({ children }) => {
 
   const [opponent, setOpponent] = useState(null);
   const [timer, setTimer] = useState(60);
-  console.log("zin1");
 
   if (gameState.playerMode === "multi") {
   }
@@ -129,7 +128,6 @@ export const GameContextProvider = ({ children }) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.doesNotExist) {
-          // console.log("player not found");
         } else if (!res.doesNotExist) {
           setOpponent(email);
         }
@@ -165,7 +163,6 @@ export const GameContextProvider = ({ children }) => {
       clickSpotLng === null ||
       clickspotLat === null
     ) {
-      console.log("inhere");
       guessDistance = null;
     } else {
       if (guessDistance > 3000000) {
@@ -242,7 +239,6 @@ export const GameContextProvider = ({ children }) => {
       timeMode = null;
     }
 
-    console.log({ gameState });
     dispatch({
       type: "submitGuess",
       center: lat ? { lat, lng } : { lat: 0, lng: 0 },
@@ -293,7 +289,7 @@ export const GameContextProvider = ({ children }) => {
         }),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res, "update user score response"));
+        .then((res) => {});
   };
 
   const resetMap = async () => {
@@ -316,7 +312,6 @@ export const GameContextProvider = ({ children }) => {
     return;
   };
 
-  // console.log(timer);
   return (
     <GameContext.Provider
       value={{

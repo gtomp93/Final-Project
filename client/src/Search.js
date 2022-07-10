@@ -15,16 +15,13 @@ const Search = ({ showModal, setShowModal }) => {
   };
   useEffect(() => {
     document.addEventListener("click", clickOutside);
-    console.log("heya");
     return () => document.removeEventListener("click", clickOutside);
   }, [ref]);
 
   const debounceFunc = _debounce((inputText) => {
-    console.log({ inputValue });
     fetch(`/searchMaps?searchQuery=${inputText}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setSuggestions(data.data);
       });
   }, 500);

@@ -63,8 +63,6 @@ const Game = ({ game, isLiked, index, setUpdatePage, type }) => {
       type={type}
       index={index}
       onClick={() => {
-        console.log("hello", { game, showModal });
-
         if (!showModal) {
           navigate(`game/${game._id}`);
           setShowModal(game._id);

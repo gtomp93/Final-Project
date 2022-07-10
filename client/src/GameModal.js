@@ -11,7 +11,6 @@ import { Loading } from "./Loading";
 import Error from "./Error";
 import { ModalContext } from "./ModalContext";
 export default function GameModal({}) {
-  console.log("heyall");
   const [comment, setComment] = useState("");
   const { currentUser, status, setStatus } = useContext(UserContext);
   const [inputValue, setInputValue] = useState("");

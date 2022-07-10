@@ -18,7 +18,6 @@ const Profile = ({ active }) => {
   const { setShowModal } = useContext(ModalContext);
   // const [showGames, setShowGames] = useState("liked");
   const { logout } = useAuth0();
-  console.log("currentUser", currentUser);
   // background: inherit;
   // font-size: 24px;
   // border: none;
@@ -40,7 +39,6 @@ const Profile = ({ active }) => {
 
     if (currentUser) {
       if (currentUser && !isCancelled) {
-        console.log(currentUser.games);
         const gamesData = await fetch("/getPlayerGames", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -83,16 +81,8 @@ const Profile = ({ active }) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => {});
   };
-
-  console.log("games", games);
-
-  // if (isLoading || !currentUser || !Object.values(games).length) {
-  //   return <Loading />;
-  // }
-
-  console.log(games, "games");
 
   return (
     <ScrollContainer>

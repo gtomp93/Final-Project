@@ -15,10 +15,8 @@ const AddNameModal = () => {
     setReloadUser,
     reloadUser,
   } = useContext(UserContext);
-  console.log("status", status);
   const closeModal = (ev) => {
     ev.preventDefault();
-    console.log("here", name.firstName, name.lastName);
     if (name.firstName?.length > 0 && name.lastName?.length > 0) {
       fetch("/addName", {
         method: "PATCH",
@@ -33,7 +31,6 @@ const AddNameModal = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data, "data");
           if (data.status === 200) {
             setCurrentUser({
               ...currentUser,

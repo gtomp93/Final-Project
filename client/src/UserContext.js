@@ -63,8 +63,6 @@ export const UserContextProvider = ({ children }) => {
             },
           });
 
-          console.log("inhere", user.given_name, user.family_name);
-
           if (!user.given_name || !user.family_name) {
             setStatus("noName");
           }
@@ -137,14 +135,6 @@ export const UserContextProvider = ({ children }) => {
     //   }
     // };
   }, [isAuthenticated, isLoading, reloadUser]);
-
-  console.log({
-    status,
-    currentUser,
-    user,
-    givenName: user?.givenName,
-    thing: "status",
-  });
 
   return (
     <UserContext.Provider

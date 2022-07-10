@@ -9,7 +9,6 @@ import { UserContext } from "../UserContext";
 const ActiveGames = () => {
   const { currentUser } = useContext(UserContext);
   const [activeGames, setActiveGames] = useState(null);
-  console.log({ currentUser });
   useEffect(() => {
     fetch("/getMaps", {
       method: "PATCH",
@@ -24,18 +23,14 @@ const ActiveGames = () => {
       });
   }, []);
 
-  console.log(activeGames);
-
   return (
     <Container>
       <Active>
         <Subtitle>Active Games</Subtitle>
         {activeGames &&
           activeGames.map((game) => {
-            console.log({ game });
             let date = "";
             if (game.type === "single") {
-              console.log({ thing: game.time });
               date = format(game.time, "MMM do y 'at' h:mm");
               //
             } else {
@@ -88,7 +83,6 @@ const ActiveGames = () => {
             let date = "";
 
             if (game.type === "single") {
-              console.log({ thing: game.time });
               date = format(game.time, "MMM do y 'at' h:mm");
               //
             } else {

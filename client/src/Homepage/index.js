@@ -24,7 +24,6 @@ const Homepage = () => {
     fetch("/getTopPlayers")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUsers(data.data);
       });
   }, []);
@@ -32,7 +31,6 @@ const Homepage = () => {
     fetch("/featuredMaps")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.result);
         setMaps(data.result);
       });
   }, []);

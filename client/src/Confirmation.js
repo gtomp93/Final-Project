@@ -11,8 +11,6 @@ const Confirmation = () => {
     );
   }
 
-  console.log(confirmationDetails);
-
   return (
     <Container>
       <div>{confirmationDetails.name}</div>

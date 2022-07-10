@@ -1,10 +1,10 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import {FiHeart, FiMessageCircle, FiPlay} from "react-icons/fi";
-import {Link} from "react-router-dom";
-import {UserContext} from "./UserContext";
+import { FiHeart, FiMessageCircle, FiPlay } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
 import Comment from "./Comment";
-import {BiTrash} from "react-icons/bi";
+import { BiTrash } from "react-icons/bi";
 
 const ProfileGame = ({
   game,
@@ -14,7 +14,7 @@ const ProfileGame = ({
   deleteGame,
 }) => {
   const [liked, setLiked] = useState(isLiked);
-  const {currentUser} = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
   const [comment, setComment] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -22,16 +22,6 @@ const ProfileGame = ({
   const [toggleDelete, setToggleDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [viewMore, setViewMore] = useState(false);
-
-  // console.log(game);
-
-  // if (!currentUser) {
-  //   return "loading";
-  // }
-
-  // if (game.comments.length) {
-  //   comments = game.comments;
-  // }
 
   const likeGame = async () => {
     fetch(`/likeGame/${game._id}`, {
@@ -56,7 +46,6 @@ const ProfileGame = ({
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("HEERE");
         setLiked(!liked);
         if (!liked) {
           setNumLikes(numLikes + 1);
@@ -80,17 +69,13 @@ const ProfileGame = ({
       },
     })
       .then((res) => {
-        console.log("Gotten here");
-
         res.json();
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => {});
   };
 
   return (
-    <div style={deleted ? {display: "none"} : {display: "block"}}>
+    <div style={deleted ? { display: "none" } : { display: "block" }}>
       <GameContainer>
         <Box>
           <GameBox>
@@ -115,7 +100,7 @@ const ProfileGame = ({
                   >
                     <FiHeart
                       size="22px"
-                      style={liked ? {fill: "red"} : {fill: "none"}}
+                      style={liked ? { fill: "red" } : { fill: "none" }}
                     />
                   </LikeButton>
                   <Likes>{numLikes ? numLikes : null}</Likes>{" "}
@@ -128,7 +113,7 @@ const ProfileGame = ({
                 </NumComments>
               </CommentBox>
               <StartGame to={`/gameOptions/${game._id}`}>
-                <FiPlay size="22px" style={{fill: "green"}} />
+                <FiPlay size="22px" style={{ fill: "green" }} />
                 <Play>Play</Play>
               </StartGame>
             </ActionBar>
@@ -197,7 +182,7 @@ const ProfileGame = ({
               setToggleDelete(true);
             }}
           >
-            <BiTrash style={{marginRight: "3px"}} />
+            <BiTrash style={{ marginRight: "3px" }} />
             Delete Map
           </StyledButton>
         </DeleteBox>
@@ -227,7 +212,7 @@ const ProfileGame = ({
                   deleteGame(game._id);
                   setDeleted(true);
                 }}
-                style={{marginLeft: "4px"}}
+                style={{ marginLeft: "4px" }}
               >
                 Yes
               </DeleteChoice>
@@ -235,7 +220,7 @@ const ProfileGame = ({
                 onClick={() => {
                   setToggleDelete(false);
                 }}
-                style={{marginLeft: "4px"}}
+                style={{ marginLeft: "4px" }}
               >
                 No
               </DeleteChoice>{" "}
