@@ -142,7 +142,8 @@ export default function GameModal() {
             <CommentsSection>
               {gameInfo.comments.length > 2 && (
                 <View
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setViewMore(!viewMore);
                   }}
                 >
