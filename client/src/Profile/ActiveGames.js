@@ -26,7 +26,7 @@ const ActiveGames = () => {
   return (
     <Container>
       <Active>
-        <Subtitle>Active Games</Subtitle>
+        {activeGames?.length > 0 && <Subtitle>Active Games</Subtitle>}
         {activeGames &&
           activeGames.map((game) => {
             let date = "";
@@ -77,7 +77,7 @@ const ActiveGames = () => {
           })}
       </Active>
       <Complete>
-        <Subtitle>Completed Games</Subtitle>
+        {activeGames?.length > 0 && <Subtitle>Completed Games</Subtitle>}
         {activeGames &&
           activeGames.map((game) => {
             let date = "";
@@ -125,10 +125,10 @@ const ActiveGames = () => {
               );
             }
           })}
-        {activeGames.length === 0 && (
+        {activeGames?.length === 0 && (
           <Message>
-            You haven't played any games yet. Try refreshing page if you don't
-            see a recent game!
+            You haven't played any games yet. Try refreshing the page if you
+            don't see a recent game!
           </Message>
         )}
       </Complete>
@@ -185,4 +185,7 @@ const LastPlayed = styled.p`
 const Message = styled.h2`
   color: white;
   margin-top: 20px;
+  max-width: 500px;
+  width: 95%;
+  text-align: center;
 `;

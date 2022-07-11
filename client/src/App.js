@@ -18,6 +18,7 @@ import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
 import ActiveGames from "./Profile/ActiveGames";
 import GameMap from "./GameMap";
+import ModalContainer from "./ModalContainer";
 
 function App() {
   const { status } = useContext(UserContext);
@@ -30,7 +31,7 @@ function App() {
         {status === "noName" && <AddNameModal />}
         <Routes>
           <Route exact path="/" element={<Homepage />}>
-            <Route exact path="/game/:id" element={<GameModal />} />
+            <Route path="/game/:id" element={<GameModal />} />
           </Route>
 
           <Route exact path="/explore" element={<Explore />}>

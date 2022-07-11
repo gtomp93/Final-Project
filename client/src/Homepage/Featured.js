@@ -4,7 +4,7 @@ import { UserContext } from "../UserContext";
 import { Container, SubTitle } from "./styledComponents";
 import FeaturedMap from "./FeaturedMap";
 
-const Featured = ({ showModal, setShowModal, maps }) => {
+const Featured = ({ showModal, setShowModal, maps, gameId }) => {
   const { currentUser } = useContext(UserContext);
 
   return (
@@ -22,6 +22,8 @@ const Featured = ({ showModal, setShowModal, maps }) => {
               key={Math.random() * 99999}
               showModal={showModal}
               setShowModal={setShowModal}
+              gameId={gameId}
+              route="/"
             />
           );
         })}

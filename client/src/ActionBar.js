@@ -60,6 +60,7 @@ const ActionBar = ({
       <StartGame
         onClick={(ev) => {
           setShowModal(false);
+          ev.stopPropagation();
 
           if (!currentUser) {
             setStatus({ error: "play" });

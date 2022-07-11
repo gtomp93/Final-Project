@@ -19,6 +19,12 @@ const Explore = () => {
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
   useEffect(() => {
+    if (!id) {
+      setShowModal(false);
+    }
+  }, []);
+
+  useEffect(() => {
     fetch(`https://mapguesser-server.herokuapp.com/api/getGames?page=${page}`)
       .then((res) => res.json())
       .then((res) => {
@@ -56,6 +62,8 @@ const Explore = () => {
                       setUpdatePage={setUpdatePage}
                       showModal={showModal}
                       setShowModal={setShowModal}
+                      gameId={id}
+                      route="/explore"
                     />
                   );
                 })}

@@ -230,8 +230,6 @@ const Map = () => {
     }, 200);
   };
 
-  console.log(guess?.lat, !guessed, "ehhlo");
-
   if (!locations) {
     return <Loading />;
   }

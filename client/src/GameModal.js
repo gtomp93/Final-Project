@@ -23,10 +23,13 @@ export default function GameModal() {
     numLikes,
     setNumLikes,
     game,
+    route,
     // likeGame,
   ] = useOutletContext();
-  const { setShowModal } = useContext(ModalContext);
+  const test = useOutletContext();
+  const { setShowModal, showModal } = useContext(ModalContext);
   // const [numLikes, setNumLikes] = useOutletContext();
+  const navigate = useNavigate();
   const likeGame = async () => {
     if (!currentUser) {
       setStatus({ error: "like" });
@@ -69,7 +72,6 @@ export default function GameModal() {
       });
   };
 
-  const navigate = useNavigate();
   const submitComment = async (comment, ev) => {
     if (!currentUser) {
       setStatus({ error: "comment" });
@@ -161,6 +163,7 @@ export default function GameModal() {
               <CreateComment>
                 <CommentInput
                   placeholder="comment"
+                  onClick={(e) => e.stopPropagation()}
                   onChange={(ev) => {
                     setComment(ev.target.value);
                     setInputValue(ev.target.value);
@@ -169,6 +172,7 @@ export default function GameModal() {
                 ></CommentInput>
                 <Submit
                   onClick={(ev) => {
+                    ev.stopPropagation();
                     submitComment(comment, ev);
                     setInputValue("");
                   }}
@@ -186,7 +190,7 @@ export default function GameModal() {
         <CloseModal
           onClick={(ev) => {
             ev.stopPropagation();
-            navigate(-1);
+            navigate(route ? route : "/profile");
             setShowModal(false);
           }}
         >

@@ -4,10 +4,9 @@ import styled from "styled-components";
 import ActionBar from "../ActionBar";
 import { ModalContext } from "../ModalContext";
 import { UserContext } from "../UserContext";
-const FeaturedMap = ({ game, isLiked }) => {
+const FeaturedMap = ({ game, isLiked, gameId, route }) => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const navigate = useNavigate();
-
   const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
   const [liked, setLiked] = useState(isLiked);
@@ -61,7 +60,7 @@ const FeaturedMap = ({ game, isLiked }) => {
           navigate(`game/${game._id}`);
           setShowModal(game._id);
         }
-        // ev.stopPropagation();
+        ev.stopPropagation();
         // navigate(`/game/${game._id}`);
         // setShowModal(game._id);
       }}
@@ -77,11 +76,11 @@ const FeaturedMap = ({ game, isLiked }) => {
         likeGame={likeGame}
         featured={true}
       />
-      {game._id === showModal && (
+      {game._id === showModal || game._id === gameId ? (
         <Outlet
-          context={[showModal, setShowModal, liked, setLiked, likeGame, game]}
+          context={[liked, setLiked, numLikes, setNumLikes, game, route]}
         />
-      )}
+      ) : null}
     </Container>
   );
 };

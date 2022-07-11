@@ -6,9 +6,8 @@ import ActionBar from "./ActionBar";
 import { Outlet } from "react-router-dom";
 import { ModalContext } from "./ModalContext";
 
-const Game = ({ game, isLiked, index, type }) => {
+const Game = ({ game, isLiked, index, type, gameId, route }) => {
   const { showModal, setShowModal } = useContext(ModalContext);
-
   const [liked, setLiked] = useState(isLiked);
   const { currentUser, setStatus } = useContext(UserContext);
   const [numLikes, setNumLikes] = useState(game.likes);
@@ -64,10 +63,10 @@ const Game = ({ game, isLiked, index, type }) => {
       type={type}
       index={index}
       onClick={() => {
-        if (!showModal) {
-          navigate(`game/${game._id}`);
-          setShowModal(game._id);
-        }
+        // if (!showModal) {
+        navigate(`game/${game._id}`);
+        setShowModal(game._id);
+        // }
       }}
     >
       <Box>
@@ -85,11 +84,11 @@ const Game = ({ game, isLiked, index, type }) => {
           type={type}
         />
       </Box>
-      {game._id === showModal && (
+      {game._id === showModal || gameId === game._id ? (
         <Outlet
-          context={[showModal, setShowModal, liked, setLiked, likeGame, game]}
+          context={[liked, setLiked, numLikes, setNumLikes, game, route]}
         />
-      )}
+      ) : null}
     </GameContainer>
   );
 };

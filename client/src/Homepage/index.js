@@ -11,12 +11,20 @@ import { ModalContext } from "../ModalContext";
 import ProfileLinks from "./ProfileLinks";
 import SignUp from "./SignUp";
 import { UserContext } from "../UserContext";
+import { useParams } from "react-router-dom";
 
 const Homepage = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
   const [maps, setMaps] = useState(null);
   const { currentUser, status, setStatus } = useContext(UserContext);
   const [users, setUsers] = useState(null);
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (!id) {
+      setShowModal(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetch("https://mapguesser-server.herokuapp.com/api/getTopPlayers")
@@ -63,6 +71,7 @@ const Homepage = () => {
                 setShowModal={setShowModal}
                 maps={maps}
                 setMaps={setMaps}
+                gameId={id}
               />{" "}
             </Section5>{" "}
           </Wrapper>

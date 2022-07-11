@@ -20,6 +20,7 @@ const CreatedGames = () => {
                   isLiked={isLiked}
                   deleteGame={deleteGame}
                   type="profile"
+                  route="/profile/created"
                 />
                 // </div>
               );
