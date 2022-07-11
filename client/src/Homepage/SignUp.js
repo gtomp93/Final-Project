@@ -6,18 +6,13 @@ import { FiLogIn } from "react-icons/fi";
 
 const SignUp = () => {
   const { loginWithRedirect } = useAuth0();
+  console.log("isit?");
   return (
     <StyledContainer onClick={() => loginWithRedirect()}>
       <Wrapper>
         <Message>
-          Sign in or sign up to play{" "}
-          <FiLogIn style={{ display: "block", marginLeft: "8px" }} />
+          Sign in or sign up to play <FiLogIn style={{ marginLeft: "0px" }} />
         </Message>
-        <Img
-          src={
-            "https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1302294157.jpg"
-          }
-        />
       </Wrapper>
     </StyledContainer>
   );
@@ -27,19 +22,13 @@ export default SignUp;
 
 const Wrapper = styled.div`
   width: 100%;
+  @media (max-width: 1149px) {
+    min-height: 33vw;
+  }
   height: 100%;
-  position: relative;
-`;
-
-const Img = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-  top: 0;
-
-  /* padding: 12px; */
+  background-image: url("https://google-maps-bucket.s3.us-east-2.amazonaws.com/shutterstock_1302294157.jpg");
+  background-size: cover;
+  background-position: center;
 `;
 
 const StyledContainer = styled(Container)`
@@ -49,16 +38,26 @@ const StyledContainer = styled(Container)`
   }
   transition: 200ms;
   cursor: pointer;
+  min-height: 120px;
 `;
 
 const Message = styled.p`
-  position: absolute;
-  top: 0;
+  font-size: 35px;
+  @media (max-width: 1266px) {
+    font-size: 31px;
+  }
+  @media (max-width: 1149px) {
+    font-size: 45px;
+  }
+  @media (max-width: 750px) {
+    font-size: 7vw;
+  }
+
+  top: 20px;
   color: rgba(0, 0, 0, 0.8);
   color: darkblue;
   z-index: 3;
   font-weight: bold;
-  font-size: 36px;
   display: flex;
   align-items: center;
 `;

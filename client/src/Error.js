@@ -4,15 +4,17 @@ import ReactDOM from "react-dom";
 import { UserContext } from "./UserContext";
 import { BiX } from "react-icons/bi";
 import LoginButton from "./LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Error = () => {
   const { setStatus, status } = useContext(UserContext);
+  const { loginWithRedirect } = useAuth0();
   return ReactDOM.createPortal(
     <Container>
       <Message>
         Please sign up or log in in order to {status.error} a map 😊
       </Message>{" "}
-      <LoginButton />
+      <LoginButton errorLogin={true}>Log In</LoginButton>
       <CloseModal
         onClick={(ev) => {
           ev.stopPropagation();
@@ -55,7 +57,7 @@ const CloseModal = styled.button`
   border-radius: 5px;
   /* margin: 6px; */
   opacity: 0.5;
-  font-size: 18px;
+  font-size: 20px;
   display: grid;
   place-content: center;
 `;

@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Children } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { FiLogIn } from "react-icons/fi";
 
-const LoginButton = () => {
+const LoginButton = ({ children, errorLogin }) => {
   const { loginWithRedirect } = useAuth0();
-
+  console.log(errorLogin);
   return (
-    <Login onClick={() => loginWithRedirect()}>
+    <Login errorLogin={errorLogin} onClick={() => loginWithRedirect()}>
       <LoginIcon />
-      <LoginLabel>Log In</LoginLabel>
+      {/* <LoginLabel>Log In</LoginLabel> */}
+      <Label>{children}</Label>
     </Login>
   );
 };
@@ -19,11 +20,11 @@ export default LoginButton;
 const Login = styled.button`
   background: none;
   background-color: none;
-  color: #5a7bb0;
+  color: ${({ errorLogin }) => (errorLogin ? "#7bf716" : "#5a7bb0")};
   border: none;
   display: flex;
   align-items: center;
-  font-size: 20px;
+  font-size: ${({ errorLogin }) => (errorLogin ? "30px" : "20px")};
   margin-right: 10px;
   font-weight: bolder;
   &:hover {
@@ -37,9 +38,4 @@ const Login = styled.button`
 
 const LoginIcon = styled(FiLogIn)``;
 
-const LoginLabel = styled.span`
-  display: none;
-  @media (min-width: 700px) {
-    display: block;
-  }
-`;
+const Label = styled.span``;
