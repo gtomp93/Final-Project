@@ -47,7 +47,7 @@ const StyledContainer = styled(Container)`
   display: flex;
   flex-direction: column;
 
-  padding: 7px 15px 7px;
+  padding: 7px 8px 7px;
 `;
 
 const ScrollContainer = styled.div`
@@ -73,13 +73,9 @@ const ScrollContainer = styled.div`
 const StyledTable = styled.table`
   border-collapse: collapse;
   width: 100%;
-  @media (min-width: 1740px) {
-  }
 `;
 
 const Row = styled.tr`
-  tr:not(:first-child) {
-  }
   width: 100%;
 `;
 
@@ -88,7 +84,6 @@ const ProfPic = styled.img`
   height: 32px;
   object-fit: cover;
   border: 1px solid white;
-
   border-radius: 50%;
 `;
 

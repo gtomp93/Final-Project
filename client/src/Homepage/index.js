@@ -128,7 +128,7 @@ const Wrapper = styled.div`
     height: 120vw;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     height: 78vw;
   }
 `;
@@ -143,7 +143,7 @@ const Section1 = styled(Section)`
     grid-row: 1 / 8;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     grid-column: 1 / 15;
     grid-row: 1 / 10;
   }
@@ -154,7 +154,7 @@ const Section2 = styled(Section)`
     grid-row: 8 / 15;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     grid-column: 15 / -1;
     grid-row: 1 / 10;
   }
@@ -165,7 +165,7 @@ const Section3 = styled(Section)`
     grid-row: 8 / 15;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     grid-column: 1 / 10;
     grid-row: 10 / -1;
   }
@@ -176,7 +176,7 @@ const Section4 = styled(Section)`
     grid-row: 15 / -1;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     grid-column: 10 / -1;
     grid-row: 10 / 14;
   }
@@ -187,7 +187,7 @@ const Section5 = styled(Section)`
     grid-row: 15 / -1;
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     grid-column: 10 / -1;
     grid-row: 14 / -1;
   }

@@ -209,14 +209,20 @@ const Background = styled.img`
 
     height: 50.3%;
   }
+
+  @media (min-width: 1000px) {
+    top: 200px;
+
+    height: 48.5%;
+  }
+
   @media (min-height: 1246px) {
     top: -500px;
   }
 
   @media (min-width: 1148px) {
-    height: 66%;
-    top: -400px;
-    height: 56.4%;
+    top: -200px;
+    height: 53.5%;
   }
   @media (min-height: 900px) and (min-width: 1148px) {
     top: -450px;
@@ -228,18 +234,45 @@ const Background = styled.img`
   }
 
   @media (min-width: 1526px) {
-    height: 59%;
+    height: 57%;
+    top: -330px;
   }
 
-  @media (min-height: 920px) and (min-width: 1526px) {
+  @media (min-height: 856px) and (min-width: 1526px) {
     top: -700px;
-
-    height: 65.5%;
+    height: 64%;
+  }
+  @media (min-width: 1526px) and (min-height: 1120px) {
+    height: 68.2%;
+    top: -900px;
+  }
+  @media (min-width: 1526px) and (min-height: 1312px) {
+    height: 71%;
+    top: -1100px;
+  }
+  @media (min-width: 1906px) {
+    top: -800px;
+    height: 70.2%;
   }
 
-  @media (min-width: 2100px) {
-    top: -900px;
-    height: 74%;
+  @media (min-width: 1906px) and (min-height: 1100px) {
+    top: -1100px;
+    height: 77%;
+  }
+
+  @media (min-width: 1906px) and (max-height: 1044px) {
+    top: -800px;
+    height: 70%;
+  }
+
+  @media (min-width: 1906px) and (max-height: 850px) {
+    top: -700px;
+    height: 68%;
+  }
+
+  @media (min-width: 1906px) and (min-height: 1336px) {
+    top: -1400px;
+    height: 84.9%;
   }
 `;
 

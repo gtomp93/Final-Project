@@ -18,7 +18,6 @@ import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
 import ActiveGames from "./Profile/ActiveGames";
 import GameMap from "./GameMap";
-import ModalContainer from "./ModalContainer";
 
 function App() {
   const { status } = useContext(UserContext);

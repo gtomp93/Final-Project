@@ -62,7 +62,7 @@ const StyledLink = styled(Link)`
   &:hover {
     transform: scale(1.04);
   }
-  @media (max-width: 1499px) {
+  @media (max-width: 1149px) {
     height: 33%;
     flex-direction: row;
   }
@@ -77,7 +77,7 @@ const StyledLink = styled(Link)`
 const Title = styled.h2`
   font-size: 35px;
   text-align: center;
-  @media (max-width: 1499px) {
+  @media (max-width: 1149px) {
     font-size: 40px;
   }
   @media (max-width: 450px) {
@@ -92,7 +92,7 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
-  @media (max-width: 1499px) {
+  @media (max-width: 1250px) {
     flex-direction: column;
     width: 80%;
   }
@@ -107,7 +107,7 @@ const Wrapper = styled.div`
 
 const StyledFiMap = styled(FiMap)`
   width: 33%;
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     width: 80%;
   }
 `;
@@ -116,7 +116,7 @@ const StyledFiMapPin = styled(FiMapPin)`
   width: 25%;
   width: 33%;
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     width: 80%;
   }
 `;
@@ -125,7 +125,7 @@ const StyledFiHeart = styled(FiHeart)`
   width: 25%;
   width: 33%;
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1250px) {
     width: 80%;
   }
 `;
