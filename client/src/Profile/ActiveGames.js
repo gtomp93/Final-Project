@@ -11,7 +11,7 @@ const ActiveGames = () => {
   const [activeGames, setActiveGames] = useState(null);
   const [finishedGames, setFinishedGames] = useState(null);
   useEffect(() => {
-    fetch("/api/getMaps", {
+    fetch("https://mapguesser-server.herokuapp.com/api/getMaps", {
       method: "PATCH",
       body: JSON.stringify({
         games: currentUser.games,

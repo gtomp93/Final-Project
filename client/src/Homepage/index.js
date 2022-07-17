@@ -27,14 +27,14 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/getTopPlayers")
+    fetch("https://mapguesser-server.herokuapp.com/api/getTopPlayers")
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.data);
       });
   }, []);
   useEffect(() => {
-    fetch("/api/featuredMaps")
+    fetch("https://mapguesser-server.herokuapp.com/api/featuredMaps")
       .then((res) => res.json())
       .then((data) => {
         setMaps(data.result);

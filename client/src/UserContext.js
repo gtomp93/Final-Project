@@ -23,7 +23,7 @@ export const UserContextProvider = ({ children }) => {
         // localStorage.setItem("userinlocal", JSON.stringify(user));
 
         let email = user.email;
-        await fetch("/api/checkusers", {
+        await fetch("https://mapguesser-server.herokuapp.com/api/checkusers", {
           method: "POST",
           body: JSON.stringify({ email }),
           headers: {
@@ -47,7 +47,7 @@ export const UserContextProvider = ({ children }) => {
             games: [],
             score: 0,
           });
-          await fetch("/api/users", {
+          await fetch("https://mapguesser-server.herokuapp.com/api/users", {
             method: "POST",
             body: JSON.stringify({
               email,

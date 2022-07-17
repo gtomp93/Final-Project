@@ -161,7 +161,7 @@ const BottomContainer = ({
           Next
         </StyledButton>
       )}
-      {endGame && <StyledButton to={"/"}>Home</StyledButton>}
+      {endGame && <Home to={"/"}>Home</Home>}
     </Container>
   );
 };
@@ -177,17 +177,18 @@ const Home = styled(Link)`
   display: grid;
   align-items: center;
   width: 39px;
-  font-size: 18px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
   width: fit-content;
-  padding: 1px 10px 2px;
+  padding: 3px 7px 4px;
+  font-size: 22px;
+
   background-color: rgba(0, 0, 0, 0.87);
   color: #5a7bb0;
   box-shadow: 0 0 10px rgb(255 255 255 / 10%);
   border-radius: 4px;
-  margin-top: 16px;
+  margin-top: 4px;
 `;
 
 const StyledButton = styled.button`

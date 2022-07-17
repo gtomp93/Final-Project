@@ -26,7 +26,7 @@ const Explore = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/getGames?page=${page}`)
+    fetch(`https://mapguesser-server.herokuapp.com/api/getGames?page=${page}`)
       .then((res) => res.json())
       .then((res) => {
         setGames(res.result);

@@ -106,7 +106,7 @@ const GameMap = () => {
 
   useEffect(() => {
     if (!locations && currentUser) {
-      fetch(`/api/getMap/${id}`, {
+      fetch(`https://mapguesser-server.herokuapp.com/api/getMap/${id}`, {
         method: "PATCH",
         body: JSON.stringify({ currentUser }),
         headers: {
@@ -257,7 +257,7 @@ const GameMap = () => {
             >
               <GuessMap
                 mapContainerStyle={mapContainerStyle}
-                zoom={center.lat ? zoom : 1}
+                zoom={center?.lat ? zoom : 1}
                 center={
                   !guessed
                     ? center

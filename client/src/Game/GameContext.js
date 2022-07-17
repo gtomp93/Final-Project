@@ -140,7 +140,7 @@ export const GameContextProvider = ({ children }) => {
   }, [countDown, currentUser]);
 
   const searchOpponent = (email) => {
-    fetch("/api/checkusers", {
+    fetch("https://mapguesser-server.herokuapp.com/api/checkusers", {
       method: "POST",
       body: JSON.stringify({ email }),
       headers: {
@@ -173,7 +173,7 @@ export const GameContextProvider = ({ children }) => {
     let gameData = [...gameState.myGameData];
     if (gameState.playerMode === "multi") {
       const result = await fetch(
-        `/api/loadOtherPlayers/${id}/${currentUser.email}`
+        `https://mapguesser-server.herokuapp.com/api/loadOtherPlayers/${id}/${currentUser.email}`
       );
       const parsedResult = await result.json();
       otherPlayerData = parsedResult.data;
@@ -230,7 +230,7 @@ export const GameContextProvider = ({ children }) => {
       gameData,
     });
 
-    await fetch("/api/submitGuess", {
+    await fetch("https://mapguesser-server.herokuapp.com/api/submitGuess", {
       method: "PATCH",
       body: JSON.stringify({
         mode: gameState.playerMode,
@@ -250,22 +250,25 @@ export const GameContextProvider = ({ children }) => {
     });
 
     if (endGame)
-      await fetch("/api/updateUserScore", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          _id: currentUser._id,
-          score: gameState.gameScore + score,
-        }),
-      })
+      await fetch(
+        "https://mapguesser-server.herokuapp.com/api/updateUserScore",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id: currentUser._id,
+            score: gameState.gameScore + score,
+          }),
+        }
+      )
         .then((res) => res.json())
         .then((res) => {});
   };
 
   const resetMap = async () => {
-    await fetch("/api/nextLocation", {
+    await fetch("https://mapguesser-server.herokuapp.com/api/nextLocation", {
       method: "PATCH",
       body: JSON.stringify({
         player: currentUser.email,
