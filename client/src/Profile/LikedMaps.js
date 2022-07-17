@@ -1,9 +1,9 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import Game from "../Game";
+import Game from "../Map";
 import styled from "styled-components";
 
-const LikedGames = () => {
+const LikedMaps = () => {
   const [games, currentUser, deleteGame] = useOutletContext();
   return (
     <>
@@ -30,14 +30,14 @@ const LikedGames = () => {
       ) : (
         <Message>
           You haven't liked any maps yet 😢. Try refreshing if you don't see
-          recently created games
+          recently liked games
         </Message>
       )}
     </>
   );
 };
 
-export default LikedGames;
+export default LikedMaps;
 
 const GamesContainer = styled.div`
   /* display: ${(props) => (props.created ? "block" : "none")}; */

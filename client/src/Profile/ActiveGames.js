@@ -9,24 +9,30 @@ import { UserContext } from "../UserContext";
 const ActiveGames = () => {
   const { currentUser } = useContext(UserContext);
   const [activeGames, setActiveGames] = useState(null);
+  const [finishedGames, setFinishedGames] = useState(null);
   useEffect(() => {
-    fetch("https://mapguesser-server.herokuapp.com/api/getMaps", {
+    fetch("/api/getMaps", {
       method: "PATCH",
-      body: JSON.stringify({ games: currentUser.games }),
+      body: JSON.stringify({
+        games: currentUser.games,
+        email: currentUser.email,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        setActiveGames(data.data);
+        console.log(data);
+        setActiveGames(data.data.active);
+        setFinishedGames(data.data.complete);
       });
   }, []);
 
   return (
     <Container>
       <Active>
-        {activeGames?.length > 0 && <Subtitle>Active Games</Subtitle>}
+        <Subtitle>Active Games</Subtitle>
         {activeGames &&
           activeGames.map((game) => {
             let date = "";
@@ -39,47 +45,39 @@ const ActiveGames = () => {
               ).time;
               date = format(timestamp, "MMM do y 'at' hh:mm");
             }
-            if (
-              game.gameData?.length < 5 ||
-              game.players?.find((i) => i.player === currentUser.email).gameData
-                .length < 5
-            ) {
-              return (
-                <GameDiv to={`/map/${game._id}`}>
-                  <Flex>
-                    <BiGlobe
-                      size={90}
-                      style={{ fill: "white", display: "block" }}
-                    />
-                    <div>
-                      {" "}
-                      <Info style={{ color: "lightgrey" }}>
-                        {game.name}
-                      </Info>{" "}
-                      <Info style={{ color: "lightgrey" }}>
-                        {game.type} player
-                      </Info>
-                      <Info style={{ color: "lightgrey" }}>
-                        {game.timeMode}
-                      </Info>
-                    </div>
-                  </Flex>
-                  <div>
-                    <LastPlayed style={{ color: "yellow" }}>
-                      Last Played
-                    </LastPlayed>
 
-                    <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
+            return (
+              <GameDiv to={`/map/${game._id}`}>
+                <Flex>
+                  <BiGlobe
+                    size={90}
+                    style={{ fill: "white", display: "block" }}
+                  />
+                  <div>
+                    {" "}
+                    <Info style={{ color: "lightgrey" }}>{game.name}</Info>{" "}
+                    <Info style={{ color: "lightgrey" }}>
+                      {game.type} player
+                    </Info>
+                    <Info style={{ color: "lightgrey" }}>{game.timeMode}</Info>
                   </div>
-                </GameDiv>
-              );
-            }
+                </Flex>
+                <div>
+                  <LastPlayed style={{ color: "yellow" }}>
+                    Last Played
+                  </LastPlayed>
+
+                  <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
+                </div>
+              </GameDiv>
+            );
           })}
       </Active>
       <Complete>
-        {activeGames?.length > 0 && <Subtitle>Completed Games</Subtitle>}
-        {activeGames &&
-          activeGames.map((game) => {
+        <Subtitle>Completed Games</Subtitle>
+        {finishedGames &&
+          finishedGames.map((game) => {
+            console.log("huh");
             let date = "";
 
             if (game.type === "single") {
@@ -92,40 +90,32 @@ const ActiveGames = () => {
               date = format(timestamp, "MMM do y 'at' h:mm");
             }
 
-            if (
-              game.gameData?.length > 4 ||
-              game.players?.find((i) => i.player === currentUser.email).gameData
-                .length > 4
-            ) {
-              return (
-                <GameDiv to={`/map/${game._id}`}>
-                  <Flex>
-                    <BiGlobe
-                      size={90}
-                      style={{ fill: "white", display: "block" }}
-                    />
-                    <div>
-                      <Info style={{ color: "lightgrey" }}>{game.name}</Info>
-                      <Info style={{ color: "lightgrey" }}>
-                        {game.type} player
-                      </Info>
-                      <Info style={{ color: "lightgrey" }}>
-                        {game.timeMode}
-                      </Info>
-                    </div>
-                  </Flex>
+            return (
+              <GameDiv to={`/map/${game._id}`}>
+                <Flex>
+                  <BiGlobe
+                    size={90}
+                    style={{ fill: "white", display: "block" }}
+                  />
                   <div>
-                    <LastPlayed style={{ color: "yellow" }}>
-                      Last Played
-                    </LastPlayed>
-
-                    <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
+                    <Info style={{ color: "lightgrey" }}>{game.name}</Info>
+                    <Info style={{ color: "lightgrey" }}>
+                      {game.type} player
+                    </Info>
+                    <Info style={{ color: "lightgrey" }}>{game.timeMode}</Info>
                   </div>
-                </GameDiv>
-              );
-            }
+                </Flex>
+                <div>
+                  <LastPlayed style={{ color: "yellow" }}>
+                    Last Played
+                  </LastPlayed>
+
+                  <LastPlayed style={{ color: "white" }}>{date}</LastPlayed>
+                </div>
+              </GameDiv>
+            );
           })}
-        {activeGames?.length === 0 && (
+        {!activeGames === 0 && !finishedGames === 0 && (
           <Message>
             You haven't played any games yet. Try refreshing the page if you
             don't see a recent game!

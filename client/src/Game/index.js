@@ -1,13 +1,13 @@
 import React from "react";
 import { GameContextProvider } from "./GameContext";
-import Map from "./Map";
-const GameMap = () => {
+import GameMap from "./GameMap";
+const Game = () => {
   return (
     <GameContextProvider>
       {" "}
-      <Map />
+      <GameMap />
     </GameContextProvider>
   );
 };
 
-export default GameMap;
+export default Game;

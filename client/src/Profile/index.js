@@ -14,7 +14,7 @@ const Profile = () => {
   const [games, setGames] = useState({});
   const { setShowModal } = useContext(ModalContext);
   const { logout } = useAuth0();
-
+  console.log({ currentUser });
   const navLinkStyle = {
     background: "inherit",
     fontSize: "24px",
@@ -26,24 +26,18 @@ const Profile = () => {
 
     if (currentUser) {
       if (currentUser && !isCancelled) {
-        const gamesData = await fetch(
-          "https://mapguesser-server.herokuapp.com/api/getPlayerGames",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ games: currentUser.maps }),
-          }
-        );
+        const gamesData = await fetch("/api/getPlayerGames", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ games: currentUser.maps }),
+        });
         const parsedGamesData = await gamesData.json();
 
-        const likesData = await fetch(
-          "https://mapguesser-server.herokuapp.com/api/getPlayerGames",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ games: currentUser.likes }),
-          }
-        );
+        const likesData = await fetch("/api/getPlayerGames", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ games: currentUser.likes }),
+        });
 
         const parsedLikesData = await likesData.json();
         setGames({
@@ -59,17 +53,14 @@ const Profile = () => {
   }, [currentUser]);
 
   const deleteGame = async (_id) => {
-    await fetch(
-      `https://mapguesser-server.herokuapp.com/api/deleteGame/${_id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    await fetch(`/api/deleteGame/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    fetch("https://mapguesser-server.herokuapp.com/api/removeFromUser", {
+    fetch("/api/removeFromUser", {
       method: "PUT",
       body: JSON.stringify({ gameid: _id, user: currentUser._id }),
       headers: {

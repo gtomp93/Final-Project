@@ -1,9 +1,17 @@
-import React, { createContext, useContext, useState, useReducer } from "react";
-import { UserContext } from "./UserContext";
-
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useReducer,
+  useEffect,
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+import { calculateScore } from "./calculateScore";
 export const GameContext = createContext(null);
 
 const gameReducer = (state, action) => {
+  console.log(action);
   switch (action.type) {
     case "clearGame":
       return {
@@ -16,7 +24,6 @@ const gameReducer = (state, action) => {
         playerMode: action.playerMode,
         timeMode: action.timeMode,
         _id: action._id,
-        gameLink: `localhost:3000/map/${action._id}`,
       };
     case "loadGame":
       return {
@@ -31,13 +38,13 @@ const gameReducer = (state, action) => {
         points: action.points,
         endGame: action.endGame,
         gameScore: action.gameScore,
-        gameLink: action.gameLink,
         timeMode: action.timeMode,
         stop: action.stop,
         zoom: action.zoom,
         _id: action.id,
         locationIndex: action.locationIndex,
         otherPlayerData: action.otherPlayerData,
+        myGameData: action.myGameData,
       };
     case "submitGuess":
       return {
@@ -54,6 +61,7 @@ const gameReducer = (state, action) => {
         zoom: action.zoom,
         thirdPoint: action.thirdPoint,
         otherPlayerData: action.otherPlayerData,
+        myGameData: action.gameData,
       };
     case "resetMap":
       return {
@@ -67,6 +75,18 @@ const gameReducer = (state, action) => {
         zoom: 2,
         center: { lat: 0, lng: 0 },
         timer: 60,
+      };
+    case "viewSummary":
+      return {
+        ...state,
+        center: action.center,
+        zoom: 2,
+      };
+    case "closeSummary":
+      return {
+        ...state,
+        center: action.center,
+        zoom: action.zoom,
       };
     // case "error":
     //   return { ...state, error: action.error };
@@ -91,28 +111,36 @@ const initialGame = {
   error: null,
   endGame: false,
   stop: false,
-  timer: 3,
+  timer: 60,
   timeMode: null,
   thirdPoint: null,
-  gameLink: null,
-  otherPlayerData: null,
+  otherPlayerData: [],
+  myGameData: [],
 };
 
 export const GameContextProvider = ({ children }) => {
-  const { currentUser } = useContext(UserContext);
-
+  const { currentUser, status, setStatus } = useContext(UserContext);
   const [gameState, dispatch] = useReducer(gameReducer, initialGame);
-  const [midpoint, setMidpoint] = useState(null);
+  const [midpoint, setmidpoint] = useState(null);
   const [testPoint, setTestPoint] = useState(null);
-
+  const [viewSummary, setViewSummary] = useState(false);
   const [opponent, setOpponent] = useState(null);
   const [timer, setTimer] = useState(60);
+  const [countDown, setCountdown] = useState(6);
+  console.log(gameState);
 
-  if (gameState.playerMode === "multi") {
-  }
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (countDown < 1 && !currentUser) {
+      setStatus({ error: "play" });
+      navigate("/");
+    } else {
+      !currentUser && setTimeout(() => setCountdown(countDown - 1), 1000);
+    }
+  }, [countDown, currentUser]);
 
   const searchOpponent = (email) => {
-    fetch("https://mapguesser-server.herokuapp.com/api/checkusers", {
+    fetch("/api/checkusers", {
       method: "POST",
       body: JSON.stringify({ email }),
       headers: {
@@ -142,10 +170,10 @@ export const GameContextProvider = ({ children }) => {
     let endGame = false;
     let timeMode = gameState.timeMode;
     let otherPlayerData = null;
-
+    let gameData = [...gameState.myGameData];
     if (gameState.playerMode === "multi") {
       const result = await fetch(
-        `https://mapguesser-server.herokuapp.com/api/loadOtherPlayers/${id}/${currentUser.email}`
+        `/api/loadOtherPlayers/${id}/${currentUser.email}`
       );
       const parsedResult = await result.json();
       otherPlayerData = parsedResult.data;
@@ -159,79 +187,28 @@ export const GameContextProvider = ({ children }) => {
     ) {
       guessDistance = null;
     } else {
-      if (guessDistance > 3000000) {
-        zoom = 1;
-      } else if (
-        guessDistance > 1000000 &&
-        (clickspotLat > 58 || clickspotLat < -58)
-      ) {
-        zoom = 2;
-      } else if (guessDistance > 1750000) {
-        zoom = 2;
-      } else if (guessDistance > 1000000) {
-        zoom = 3;
-      } else if (guessDistance > 500000) {
-        zoom = 4;
-      } else if (guessDistance > 200000) {
-        zoom = 5;
-      } else if (guessDistance > 100000) {
-        zoom = 6;
-      } else if (guessDistance > 50000) {
-        zoom = 7;
-      } else if (guessDistance > 20000) {
-        zoom = 8;
-      } else if (guessDistance > 5000) {
-        zoom = 9;
-      } else if (guessDistance > 1000) {
-        zoom = 10;
-      } else {
-        zoom = 11;
-      }
-
-      if (guessDistance <= 100) {
-        score = 2000;
-      } else if (guessDistance <= 250) {
-        score = 1975;
-      } else if (guessDistance <= 500) {
-        score = 1950;
-      } else if (guessDistance <= 1000) {
-        score = 1900;
-      } else if (guessDistance <= 2000) {
-        score = 1850;
-      } else if (guessDistance <= 20000) {
-        score = 1800;
-      } else if (guessDistance <= 50000) {
-        score = 1750;
-      } else if (guessDistance <= 100000) {
-        score = 1700;
-      } else if (guessDistance <= 150000) {
-        score = 1600;
-      } else if (guessDistance <= 200000) {
-        score = 1500;
-      } else if (guessDistance <= 300000) {
-        score = 1400;
-      } else if (guessDistance <= 400000) {
-        score = 1200;
-      } else if (guessDistance <= 700000) {
-        score = 1000;
-      } else if (guessDistance <= 1200000) {
-        score = 800;
-      } else if (guessDistance <= 1600000) {
-        score = 600;
-      } else if (guessDistance <= 2000000) {
-        score = 500;
-      } else if (guessDistance <= 4000000) {
-        score = 400;
-      } else if (guessDistance <= 5000000) {
-        score = 200;
-      } else if (guessDistance <= 6000000) {
-        score = 100;
-      }
+      score = calculateScore(guessDistance, clickspotLat).score;
+      zoom = calculateScore(guessDistance, clickspotLat).zoom;
     }
     if (gameState.locationIndex === gameState.locations.length - 1) {
       endGame = true;
       timeMode = null;
     }
+
+    gameData.push({
+      score,
+      distance: guessDistance,
+      guess: clickspotLat
+        ? {
+            lat: clickspotLat,
+            lng: clickSpotLng,
+          }
+        : null,
+      thirdPoint: thirdPoint ? thirdPoint : { lat: 0, lng: 0 },
+      midpoint: lat ? { lat, lng } : null,
+    });
+
+    console.log({ gameData });
 
     dispatch({
       type: "submitGuess",
@@ -250,9 +227,10 @@ export const GameContextProvider = ({ children }) => {
       timeMode,
       thirdPoint: thirdPoint ? thirdPoint : { lat: 0, lng: 0 },
       otherPlayerData,
+      gameData,
     });
 
-    await fetch("https://mapguesser-server.herokuapp.com/api/submitGuess", {
+    await fetch("/api/submitGuess", {
       method: "PATCH",
       body: JSON.stringify({
         mode: gameState.playerMode,
@@ -264,7 +242,7 @@ export const GameContextProvider = ({ children }) => {
         thirdPoint,
         center: { lat, lng },
         player: currentUser.email,
-        midPoint: { lat, lng },
+        midpoint: { lat, lng },
       }),
       headers: {
         "Content-Type": "application/json",
@@ -272,25 +250,22 @@ export const GameContextProvider = ({ children }) => {
     });
 
     if (endGame)
-      await fetch(
-        "https://mapguesser-server.herokuapp.com/api/updateUserScore",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: currentUser._id,
-            score: gameState.gameScore + score,
-          }),
-        }
-      )
+      await fetch("/api/updateUserScore", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _id: currentUser._id,
+          score: gameState.gameScore + score,
+        }),
+      })
         .then((res) => res.json())
         .then((res) => {});
   };
 
   const resetMap = async () => {
-    await fetch("https://mapguesser-server.herokuapp.com/api/nextLocation", {
+    await fetch("/api/nextLocation", {
       method: "PATCH",
       body: JSON.stringify({
         player: currentUser.email,
@@ -303,7 +278,7 @@ export const GameContextProvider = ({ children }) => {
     });
 
     dispatch({ type: "resetMap" });
-    setMidpoint(null);
+    setmidpoint(null);
     setTestPoint(null);
     setTimer(60);
     return;
@@ -322,9 +297,11 @@ export const GameContextProvider = ({ children }) => {
         timer,
         setTimer,
         midpoint,
-        setMidpoint,
+        setmidpoint,
         testPoint,
         setTestPoint,
+        viewSummary,
+        setViewSummary,
       }}
     >
       {children}

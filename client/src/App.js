@@ -12,12 +12,13 @@ import GlobalStyle from "./GlobalStyle";
 import MapMaker from "./MapMaker";
 import Confirmation from "./Confirmation";
 import GameModal from "./GameModal";
-import LikedGames from "./Profile/LikedGames";
-import CreatedGames from "./Profile/CreatedGames";
+import LikedMaps from "./Profile/LikedMaps";
+import CreatedMaps from "./Profile/CreatedMaps";
+
 import { UserContext } from "./UserContext";
 import AddNameModal from "./AddNameModal";
 import ActiveGames from "./Profile/ActiveGames";
-import GameMap from "./GameMap";
+import GameMap from "./Game";
 
 function App() {
   const { status } = useContext(UserContext);
@@ -48,10 +49,10 @@ function App() {
           <Route exact path="/logoutPage" element={<Logout />} />
 
           <Route exact path="/profile" element={<Profile active="liked" />}>
-            <Route index element={<LikedGames active="liked" />}></Route>
+            <Route index element={<LikedMaps active="liked" />}></Route>
             <Route path="/profile/game/:id" element={<GameModal />} />
 
-            <Route path="/profile/created" element={<CreatedGames />}>
+            <Route path="/profile/created" element={<CreatedMaps />}>
               <Route path="/profile/created/game/:id" element={<GameModal />} />
             </Route>
             <Route path="/profile/active" element={<ActiveGames />} />

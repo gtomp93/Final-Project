@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "./UserContext";
-import Game from "./Game";
+import Game from "./Map";
 import Error from "./Error";
 import { Loading } from "./Loading";
 import Search from "./Search";
 import { ModalContext } from "./ModalContext";
+import Map from "./Map";
 
 const Explore = () => {
   const { id } = useParams();
@@ -25,7 +26,7 @@ const Explore = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`https://mapguesser-server.herokuapp.com/api/getGames?page=${page}`)
+    fetch(`/api/getGames?page=${page}`)
       .then((res) => res.json())
       .then((res) => {
         setGames(res.result);
@@ -54,7 +55,7 @@ const Explore = () => {
                 {games.map((game) => {
                   let isLiked = currentUser?.likes.includes(game._id);
                   return (
-                    <Game
+                    <Map
                       game={game}
                       isLiked={isLiked}
                       key={Math.random() * 99999}

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
-import Game from "../Game";
+import Game from "../Map";
 
-const CreatedGames = () => {
+const CreatedMaps = () => {
   const [games, currentUser, deleteGame] = useOutletContext();
   return (
     <>
@@ -40,7 +40,7 @@ const CreatedGames = () => {
   );
 };
 
-export default CreatedGames;
+export default CreatedMaps;
 
 const GamesContainer = styled.div`
   /* display: ${(props) => (props.created ? "block" : "none")}; */

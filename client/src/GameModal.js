@@ -37,7 +37,7 @@ export default function GameModal() {
     }
 
     setLiked(!liked);
-    fetch(`https://mapguesser-server.herokuapp.com/api/likeGame/${game._id}`, {
+    fetch(`/api/likeGame/${game._id}`, {
       method: "PATCH",
       body: JSON.stringify({
         liked: !liked,
@@ -49,19 +49,16 @@ export default function GameModal() {
       res.json();
     });
 
-    await fetch(
-      `https://mapguesser-server.herokuapp.com/api/addLikeToUser/${currentUser._id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          likedGame: game._id,
-          liked: !liked,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    await fetch(`/api/addLikeToUser/${currentUser._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        likedGame: game._id,
+        liked: !liked,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         if (!liked) {
@@ -80,20 +77,17 @@ export default function GameModal() {
       return;
     }
 
-    await fetch(
-      `https://mapguesser-server.herokuapp.com/api/comment/${gameInfo._id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          comment: comment,
-          commentBy: currentUser._id,
-          pic: currentUser.picture,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    await fetch(`/api/comment/${gameInfo._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        comment: comment,
+        commentBy: currentUser._id,
+        pic: currentUser.picture,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => {
         res.json();
       })
@@ -102,7 +96,7 @@ export default function GameModal() {
       });
   };
   useEffect(() => {
-    fetch(`https://mapguesser-server.herokuapp.com/api/getGame/${id}`)
+    fetch(`/api/getGame/${id}`)
       .then((res) => res.json())
       .then((res) => {
         setGameInfo(res.result);
