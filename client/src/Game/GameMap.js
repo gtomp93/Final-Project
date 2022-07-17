@@ -15,22 +15,9 @@ import {
 } from "@react-google-maps/api";
 import { Loading } from "../Loading";
 import BottomContainer from "./BottomContainer";
+import GameSummary from "./GameSummary";
 /* eslint-disable no-undef */
 /* global google */
-
-const mapContainerStyle = {
-  width: "100%",
-  height: "100%",
-};
-
-const streetViewStyle = {
-  height: "100%",
-
-  position: "absolute",
-  top: "0",
-  left: "0",
-  width: "100%",
-};
 
 const options = {
   fullscreenControl: false,
@@ -101,6 +88,22 @@ const GameMap = () => {
   } = useContext(GameContext);
 
   const { currentUser } = useContext(UserContext);
+
+  const mapContainerStyle = {
+    width: "100%",
+    height: "100%",
+    maxHeight: guessed ? "350px" : "none",
+  };
+
+  const streetViewStyle = {
+    height: "100%",
+    maxHeight: guessed ? "350px" : "none",
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+  };
+
   useEffect(() => {
     if (!locations && currentUser) {
       fetch(`/api/getMap/${id}`, {
@@ -491,6 +494,7 @@ const GameMap = () => {
             viewSummary={viewSummary}
             otherPlayerData={otherPlayerData}
           />
+          {viewSummary && <GameSummary />}{" "}
         </BigWrapper>
       </PageContainer>
     </>
@@ -528,12 +532,12 @@ const GuessMap = styled(GoogleMap)`
   display: ${(props) => (props.guessed || !props.hide ? "block" : "none")};
 
   height: ${(props) => (props.guessed || !props.hide ? "100%" : "36%")};
-
   @media (min-width: 501px) {
     opacity: ${(props) => (props.guessed || props.expand ? "1" : "0.7")};
     display: ${(props) => (!props.hide || props.guessed ? "block" : "none")};
     width: ${(props) => (props.guessed || props.expand ? "100%" : "38%")};
     height: ${(props) => (props.guessed || props.expand ? "100%" : "36%")};
+    max-height: ${(props) => (props.guessed ? "100px" : "36%")};
   }
 `;
 
@@ -544,6 +548,7 @@ const PageContainer = styled.div`
   justify-content: center;
   width: 100vw;
   height: 90vh;
+  overflow: auto;
 `;
 
 const BigWrapper = styled.div`
@@ -569,10 +574,11 @@ const BigWrapper = styled.div`
     props.guessed &&
     css`
       @media (min-width: 769px) and (min-height: 600px) {
-        height: 67%;
+        height: 90%;
         width: 55%;
       }
     `};
+  overflow: auto;
 `;
 
 const GameOver = styled.div`
@@ -585,14 +591,15 @@ const GameOver = styled.div`
 const MapsWrapper = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 9/5;
   ${(props) =>
     props.guessed &&
     css`
       @media (min-width: 769px) {
         height: 75%;
+        max-height: 355px;
       }
     `};
+  aspect-ratio: 9/5;
 `;
 
 const Message = styled.div`

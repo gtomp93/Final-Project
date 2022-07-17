@@ -32,7 +32,7 @@ const GameOptions = () => {
     await fetch("/api/createGame", {
       method: "POST",
       body: JSON.stringify({
-        player: currentUser.email,
+        player: currentUser,
         icon: currentUser.picture,
         locations: randomLocations,
         mode: playerMode,

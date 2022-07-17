@@ -115,7 +115,7 @@ const ActiveGames = () => {
               </GameDiv>
             );
           })}
-        {!activeGames === 0 && !finishedGames === 0 && (
+        {!activeGames && !finishedGames && (
           <Message>
             You haven't played any games yet. Try refreshing the page if you
             don't see a recent game!
