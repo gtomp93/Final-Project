@@ -66,13 +66,6 @@ const BottomContainer = ({
       lng: sums.lng / allLocations.length,
     };
 
-    console.log({
-      otherPlayerLocations,
-      myLocations,
-      allLocations,
-      sums,
-      newCenter,
-    });
     setViewSummary(!viewSummary);
 
     dispatch({ type: "viewSummary", center: newCenter });

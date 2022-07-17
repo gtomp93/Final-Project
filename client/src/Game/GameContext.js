@@ -11,7 +11,6 @@ import { calculateScore } from "./calculateScore";
 export const GameContext = createContext(null);
 
 const gameReducer = (state, action) => {
-  console.log(action);
   switch (action.type) {
     case "clearGame":
       return {
@@ -127,7 +126,6 @@ export const GameContextProvider = ({ children }) => {
   const [opponent, setOpponent] = useState(null);
   const [timer, setTimer] = useState(60);
   const [countDown, setCountdown] = useState(6);
-  console.log(gameState);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -207,8 +205,6 @@ export const GameContextProvider = ({ children }) => {
       thirdPoint: thirdPoint ? thirdPoint : { lat: 0, lng: 0 },
       midpoint: lat ? { lat, lng } : null,
     });
-
-    console.log({ gameData });
 
     dispatch({
       type: "submitGuess",

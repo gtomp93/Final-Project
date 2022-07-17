@@ -14,7 +14,6 @@ const Profile = () => {
   const [games, setGames] = useState({});
   const { setShowModal } = useContext(ModalContext);
   const { logout } = useAuth0();
-  console.log({ currentUser });
   const navLinkStyle = {
     background: "inherit",
     fontSize: "24px",

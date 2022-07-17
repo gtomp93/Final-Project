@@ -23,7 +23,6 @@ const ActiveGames = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setActiveGames(data.data.active);
         setFinishedGames(data.data.complete);
       });
@@ -77,7 +76,6 @@ const ActiveGames = () => {
         <Subtitle>Completed Games</Subtitle>
         {finishedGames &&
           finishedGames.map((game) => {
-            console.log("huh");
             let date = "";
 
             if (game.type === "single") {

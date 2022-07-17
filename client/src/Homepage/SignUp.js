@@ -6,7 +6,6 @@ import { FiLogIn } from "react-icons/fi";
 
 const SignUp = () => {
   const { loginWithRedirect } = useAuth0();
-  console.log("isit?");
   return (
     <StyledContainer onClick={() => loginWithRedirect()}>
       <Wrapper>

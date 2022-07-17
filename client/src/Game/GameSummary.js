@@ -9,7 +9,6 @@ const GameSummary = () => {
   } = useContext(GameContext);
   const { currentUser } = useContext(UserContext);
 
-  console.log(playerMode);
   return (
     <>
       <StyledTable>
@@ -41,22 +40,27 @@ const GameSummary = () => {
 
         {playerMode === "multi" &&
           otherPlayerData?.map((player) => {
-            console.log(otherPlayerData);
             let playerScore = player.gameData.reduce((total, round) => {
               return total + round.score;
             }, 0);
-            console.log(playerScore);
             return (
               <StyledRow>
                 <StyledTableData>{player.name}</StyledTableData>
                 {player.gameData.map((round) => {
                   return (
                     <StyledTableData>
-                      distance: {Math.round(round.distance)}m score:{" "}
-                      {round.score}{" "}
+                      distance:{" "}
+                      {round.distance > 1000
+                        ? Math.round(round.distance / 1000) + "km"
+                        : Math.round(round.distance) + "m"}{" "}
+                      score: {round.score}{" "}
                     </StyledTableData>
                   );
                 })}
+                {[...Array(5 - player.gameData.length).keys()].map(() => (
+                  <StyledTableData></StyledTableData>
+                ))}
+
                 <StyledTableData>{playerScore}</StyledTableData>
               </StyledRow>
             );
